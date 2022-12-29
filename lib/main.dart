@@ -2,10 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riviera23/cubit/events/events_cubit.dart';
+import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
+import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_theme.dart';
 
+import 'cubit/events/events_cubit.dart';
+import 'cubit/featured/featured_cubit.dart';
+import 'data/repository/events_repository.dart';
+import 'data/repository/featured_repository.dart';
+import 'data/repository/proshows_repository.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -34,9 +40,7 @@ void main() async {
       print('Message also contained a notification: ${message.notification}');
     }
   });
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider<EventsCubit>(create: (context) => EventsCubit()),
-  ], child: MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -45,11 +49,27 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: AppTheme.appTheme,
-      home: const SplashScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => EventsCubit(EventsRepository()),
+        ),
+        BlocProvider(
+          create: (context) => ProShowsCubit(ProShowsRepository()),
+        ),
+        BlocProvider(
+          create: (context) => FeaturedCubit(FeaturedRepository()),
+        ),
+        BlocProvider(
+          create: (context) => AnnouncementsCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: AppTheme.appTheme,
+        home: const SplashScreen(),
+      ),
     );
   }
 }

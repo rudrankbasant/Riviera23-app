@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:riviera23/presentation/screens/contacts_screen.dart';
 import 'package:riviera23/presentation/screens/faq_screen.dart';
 
@@ -37,12 +36,13 @@ class _InfoScreenState extends State<InfoScreen> {
             titleSpacing: 0.0,
             title: Transform(
                 // you can forcefully translate values left side using Transform
-                transform: Matrix4.translationValues(-20.0, 0.0, 0.0),
+                transform: Matrix4.translationValues(10.0, 2.0, 0.0),
                 child: Container(
-                  child: SvgPicture.asset(
-                    'assets/riviera_icon.svg',
-                    height: 20,
-                    width: 60,
+                  child: Image.asset(
+                    'assets/riviera_icon.png',
+                    height: 40,
+                    width: 90,
+                    fit: BoxFit.contain,
                   ),
                 )),
             bottom: const TabBar(

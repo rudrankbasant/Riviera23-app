@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/cubit/featured/featured_cubit.dart';
+import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
+import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 
@@ -25,6 +29,18 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final cubitProShows = context.read<ProShowsCubit>();
+      cubitProShows.getAllProShows();
+
+      final cubitFeatured = context.read<FeaturedCubit>();
+      cubitFeatured.getAllFeatured();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
@@ -44,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         titleSpacing: 0.0,
         title: Transform(
             // you can forcefully translate values left side using Transform
-            transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+            transform: Matrix4.translationValues(10.0, 2.0, 0.0),
             child: Container(
               child: Image.asset(
                 'assets/riviera_icon.png',
@@ -59,10 +75,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SvgPicture.asset('assets/search_icon.svg',
                 height: 20, width: 20),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 30.0),
-            child: SvgPicture.asset('assets/notification_icon.svg',
-                height: 20, width: 20),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AnnouncementHistoryScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 30.0),
+              child: SvgPicture.asset('assets/notification_icon.svg',
+                  height: 20, width: 20),
+            ),
           ),
         ],
       ),
@@ -75,23 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 10),
               Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("FEATURED EVENTS",
-                            style: AppTheme.appTheme.textTheme.headline6),
-                        Text(
-                          "See More",
-                          style: TextStyle(
-                              fontFamily: GoogleFonts.sora.toString(),
-                              color: AppColors.highlightColor,
-                              fontSize: 12),
-                        )
-                      ],
-                    ),
-                  ),
                   FeaturedEvents(imgList: imgList),
                 ],
               )

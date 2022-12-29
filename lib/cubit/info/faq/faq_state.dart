@@ -1,4 +1,4 @@
-part of 'faq_cubit.dart';
+part of './faq_cubit.dart';
 
 abstract class FaqState extends Equatable {
   const FaqState();

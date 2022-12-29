@@ -13,7 +13,7 @@ class InitEventsState extends EventsState {}
 class EventsLoading extends EventsState {}
 
 class EventsSuccess extends EventsState {
-  final List<EventModel> events;
+  List<EventModel> events;
 
   EventsSuccess(this.events);
 
