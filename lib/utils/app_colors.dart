@@ -9,6 +9,5 @@ class AppColors {
   static Color cardBgColor = HexColor('515050');
   static Color cardBgColor2 = HexColor('1E1D1D');
 
-
   AppColors();
 }

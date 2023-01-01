@@ -27,25 +27,38 @@ class CustomBottomNavBarItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          index == 2 ? (selectedIndex==index?SizedBox(height: 2):SizedBox(height: 3,)) : const SizedBox(height: 0),
           Container(
-            child: selectedIndex == index
-                ? SvgPicture.asset(imgPath,
-                    color: AppColors.highlightColor,
-                    height: 20,
-                    width: 20,
-                    fit: BoxFit.scaleDown)
-                : SvgPicture.asset(imgPath,
-                    color: AppColors.secondaryColor,
-                    height: 15,
-                    width: 15,
-                    fit: BoxFit.scaleDown),
+            child: index == 2
+                ? (selectedIndex == index
+                    ? Image.asset(imgPath,
+                        color: AppColors.highlightColor,
+                        height: 50,
+                        width: 120,
+                        fit: BoxFit.scaleDown)
+                    : Image.asset(imgPath,
+                        color: AppColors.secondaryColor,
+                        height: 40,
+                        width: 90,
+                        fit: BoxFit.scaleDown))
+                : (selectedIndex == index
+                    ? SvgPicture.asset(imgPath,
+                        color: AppColors.highlightColor,
+                        height: 20,
+                        width: 20,
+                        fit: BoxFit.scaleDown)
+                    : SvgPicture.asset(imgPath,
+                        color: AppColors.secondaryColor,
+                        height: 15,
+                        width: 15,
+                        fit: BoxFit.scaleDown)),
           ),
           index == 2 ? const SizedBox(height: 0) : const SizedBox(height: 5),
-          Text(label,
+          index!=2? Text(label,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: selectedIndex == index ? 12 : 10,
-                  fontFamily: GoogleFonts.getFont('Sora').fontFamily)),
+                  color: selectedIndex== index? AppColors.highlightColor: Colors.white,
+                  fontSize: index==2 ? 10 :(selectedIndex == index ? 12 : 10),
+                  fontFamily: index == 2? GoogleFonts.getFont('Bad Script').toString() : GoogleFonts.getFont('Sora').fontFamily)): SizedBox(height: 0,),
         ],
       ),
     );

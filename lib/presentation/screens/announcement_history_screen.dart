@@ -7,7 +7,8 @@ import '../../cubit/announcements/announcements_cubit.dart';
 
 class AnnouncementHistoryScreen extends StatefulWidget {
   @override
-  State<AnnouncementHistoryScreen> createState() => _AnnouncementHistoryScreenState();
+  State<AnnouncementHistoryScreen> createState() =>
+      _AnnouncementHistoryScreenState();
 }
 
 class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
@@ -17,55 +18,51 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-                builder: (context, state) {
-                  if (state is AnnouncementsSuccess) {
-                    return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.announcementsList.length,
-                        itemBuilder: (context, position) {
-                          return Container(
+        builder: (context, state) {
+          if (state is AnnouncementsSuccess) {
+            return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: state.announcementsList.length,
+                itemBuilder: (context, position) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.cardBgColor,
+                    ),
+                    child: ExpansionTile(
+                        backgroundColor: AppColors.cardBgColor,
+                        title: Text(
+                          "Q. ${state.announcementsList[position].heading}",
+                          style: TextStyle(
+                              color: AppColors.secondaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.cardBgColor,
+                              color: AppColors.secondaryColor,
                             ),
-                            child: ExpansionTile(
-                                backgroundColor: AppColors.cardBgColor,
-                                title: Text(
-                                  "Q. ${state.announcementsList[position].heading}",
-                                  style: TextStyle(
-                                      color: AppColors.secondaryColor,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                    child: Text(
-                                      state.announcementsList[position].desc,
-                                      style: TextStyle(
-                                          color: AppColors.secondaryColor,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 12,
-                                  )
-                                ]),
-                          );
-                        });
-                  }
+                            child: Text(
+                              state.announcementsList[position].desc,
+                              style: TextStyle(
+                                  color: AppColors.secondaryColor,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          )
+                        ]),
+                  );
+                });
+          }
 
-                  return Center(child: Text("Loading Announcement History ...", style: TextStyle(color: AppColors.secondaryColor)));
-                },
-              ),
-
-
-
-
-
-      );
-
+          return Center(
+              child: Text("Loading Announcement History ...",
+                  style: TextStyle(color: AppColors.secondaryColor)));
+        },
+      ),
+    );
   }
 }

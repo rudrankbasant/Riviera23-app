@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/contact_model.dart';
+
 part './contacts_state.dart';
 
 class ContactsCubit extends Cubit<ContactsState> {
@@ -15,14 +16,18 @@ class ContactsCubit extends Cubit<ContactsState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      DocumentSnapshot timelineSnapshot =
-      await firestore.collection('contacts').doc('LTBXtL4ML3ptl6LGbK9y').get();
+      DocumentSnapshot timelineSnapshot = await firestore
+          .collection('contacts')
+          .doc('LTBXtL4ML3ptl6LGbK9y')
+          .get();
       Map<String, dynamic> data =
-      timelineSnapshot.data() as Map<String, dynamic>;
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
+      debugPrint("heyy");
       ContactList contactsListModel = ContactList.fromMap(data);
-
+      debugPrint("here!!--");
+      debugPrint(contactsListModel.toString());
       emit(ContactsSuccess(contactsList: contactsListModel.contactList));
     } catch (e) {
       emit(ContactsFailed(error: e.toString()));

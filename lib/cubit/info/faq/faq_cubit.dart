@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/faq_model.dart';
+
 part './faq_state.dart';
 
 class FaqCubit extends Cubit<FaqState> {

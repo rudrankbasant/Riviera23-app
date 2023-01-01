@@ -1,7 +1,5 @@
 part of './team_cubit.dart';
 
-
-
 abstract class TeamState extends Equatable {
   const TeamState();
 

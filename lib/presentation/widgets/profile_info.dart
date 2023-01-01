@@ -7,12 +7,14 @@ class ProfileInfo extends StatelessWidget {
   final String imgPath;
   final String infoText;
   final bool isButton;
+  final Function()? onPressed;
 
   const ProfileInfo({
     Key? key,
     required this.imgPath,
     required this.infoText,
     required this.isButton,
+    this.onPressed,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,9 @@ class ProfileInfo extends StatelessWidget {
                   fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
           isButton
               ? ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                      onPressed!();
+                  },
                   child: SvgPicture.asset('assets/right_arrow.svg',
                       height: 20, width: 20),
                 )

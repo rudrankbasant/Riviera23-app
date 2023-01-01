@@ -5,7 +5,6 @@ import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/info/faq/faq_cubit.dart';
 
-
 class FAQScreen extends StatefulWidget {
   @override
   State<FAQScreen> createState() => _FAQScreenState();
@@ -42,7 +41,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                 color: AppColors.cardBgColor,
                               ),
                               child: ExpansionTile(
-                                backgroundColor: AppColors.cardBgColor,
+                                  backgroundColor: AppColors.cardBgColor,
                                   title: Text(
                                     "Q. ${state.faqList[position].question}",
                                     style: TextStyle(
@@ -76,7 +75,6 @@ class _FAQScreenState extends State<FAQScreen> {
                 SizedBox(
                   height: 16,
                 ),
-
               ],
             ),
           ),

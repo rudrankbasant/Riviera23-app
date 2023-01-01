@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
+import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
+import 'package:riviera23/presentation/widgets/hashtag_card.dart';
 import 'package:riviera23/utils/app_theme.dart';
 
 import 'cubit/events/events_cubit.dart';
 import 'cubit/featured/featured_cubit.dart';
+import 'cubit/hashtag/hashtag_cubit.dart';
 import 'data/repository/events_repository.dart';
 import 'data/repository/featured_repository.dart';
 import 'data/repository/proshows_repository.dart';
@@ -62,6 +65,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AnnouncementsCubit(),
+        ),
+        BlocProvider(
+            create: (context) => HashtagCubit(HashtagRepository())
         ),
       ],
       child: MaterialApp(

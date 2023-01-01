@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/featured/featured_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
-import 'package:riviera23/utils/app_theme.dart';
 
 import '../widgets/carousel_with_dots_page.dart';
 import '../widgets/featured_events.dart';
@@ -77,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AnnouncementHistoryScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AnnouncementHistoryScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 30.0),

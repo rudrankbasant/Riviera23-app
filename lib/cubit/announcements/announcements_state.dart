@@ -1,7 +1,5 @@
 part of './announcements_cubit.dart';
 
-
-
 abstract class AnnouncementsState extends Equatable {
   const AnnouncementsState();
 

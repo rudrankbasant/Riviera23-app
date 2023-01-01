@@ -15,16 +15,19 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      DocumentSnapshot timelineSnapshot =
-      await firestore.collection('announcements').doc('lq7FACaQrVL4hO3cM6Iq').get();
+      DocumentSnapshot timelineSnapshot = await firestore
+          .collection('announcements')
+          .doc('lq7FACaQrVL4hO3cM6Iq')
+          .get();
 
       Map<String, dynamic> data =
-      timelineSnapshot.data() as Map<String, dynamic>;
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
       AnnouncementList announcementsListModel = AnnouncementList.fromMap(data);
 
-      emit(AnnouncementsSuccess(announcementsList: announcementsListModel.announcementList));
+      emit(AnnouncementsSuccess(
+          announcementsList: announcementsListModel.announcementList));
     } catch (e) {
       emit(AnnouncementsFailed(error: e.toString()));
     }

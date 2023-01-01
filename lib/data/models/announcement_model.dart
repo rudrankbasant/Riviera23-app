@@ -5,7 +5,7 @@ class AnnouncementList {
 
   factory AnnouncementList.fromMap(Map<String, dynamic> map) {
     List<Announcement> mAnnouncementList = [];
-    map['Announcements'].forEach((v) {
+    map['announcements'].forEach((v) {
       mAnnouncementList.add(Announcement.fromMap(v));
     });
     return AnnouncementList(announcementList: mAnnouncementList);
@@ -16,13 +16,13 @@ class Announcement {
   final int id;
   final String heading;
   final String desc;
-  final String url;
+  final String? url;
 
   Announcement({
     required this.id,
     required this.heading,
     required this.desc,
-    required this.url,
+    this.url,
   });
 
   factory Announcement.fromMap(Map<String, dynamic> map) {

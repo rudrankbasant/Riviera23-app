@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:riviera23/data/models/event_model.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../utils/app_colors.dart';
@@ -26,6 +27,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<EventModel> filteredEvents = [];
+    List<EventModel> filteredFavEvents = [];
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -80,31 +84,6 @@ class _EventsScreenState extends State<EventsScreen> {
           ),
           body: TabBarView(
             children: [
-              /*BlocBuilder<EventsCubit, EventsState>( builder: (context, state) {
-                if (state is EventsSuccess) {
-                  return ListView.builder(
-                    itemCount: state.events.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Column(
-                          children: [
-                            Text(state.events[index].name.toString()),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                } else if (state is EventsError) {
-                  return Center(
-                    child: Text("errorrrr"),
-                  );
-                } else {
-                  debugPrint(state.toString() + "hellllloo");
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              })*/
               AllEvents(),
               FavouriteEvents()
             ],

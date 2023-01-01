@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:riviera23/cubit/events/events_cubit.dart';
 
 import '../../cubit/events/events_state.dart';
@@ -54,6 +53,4 @@ class _AllEventsState extends State<AllEvents> {
       }
     });
   }
-
-
 }
