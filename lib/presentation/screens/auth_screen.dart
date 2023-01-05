@@ -1,17 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/service/auth.dart';
-import 'package:riviera23/utils/app_colors.dart';
-
-import '../../utils/app_theme.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -21,8 +14,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController cpasswordController = TextEditingController();
@@ -37,14 +28,14 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void loginUser() {
-    AuthService(FirebaseAuth.instance).loginWithEmail(
-      email: emailController.text,
-      password: passwordController.text,
-      context: context,
-    ).then((value) => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const BottomNavScreen())));
+    AuthService(FirebaseAuth.instance)
+        .loginWithEmail(
+          email: emailController.text,
+          password: passwordController.text,
+          context: context,
+        )
+        .then((value) => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNavScreen())));
   }
 
   @override
@@ -56,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -86,24 +77,27 @@ class _AuthScreenState extends State<AuthScreen> {
                       )),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                  child: TextField(
-                    style: const TextStyle(color: Colors.white),
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      label: Text("Email", style: TextStyle(color: Colors.white),),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                    child: TextField(
+                      style: const TextStyle(color: Colors.white),
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        label: Text(
+                          "Email",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(7))),
+                        hintText: 'Email',
                       ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(7))),
-                      hintText: 'Email',
-                    ),
-                  )
-                ),
+                    )),
                 Padding(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
                     child: TextField(
@@ -111,18 +105,21 @@ class _AuthScreenState extends State<AuthScreen> {
                       controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: const InputDecoration(
-                        label: Text("Password", style: TextStyle(color: Colors.white),),
+                        label: Text(
+                          "Password",
+                          style: TextStyle(color: Colors.white),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white, width: 1),
                           borderRadius: BorderRadius.all(Radius.circular(7)),
                         ),
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(7))),
                         hintText: 'Password',
                       ),
-                    )
-                ),
+                    )),
                 Visibility(
                   visible: showConfirmPassword,
                   child: Padding(
@@ -132,52 +129,57 @@ class _AuthScreenState extends State<AuthScreen> {
                         controller: cpasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         decoration: const InputDecoration(
-                          label: Text("Confirm Password", style: TextStyle(color: Colors.white),),
+                          label: Text(
+                            "Confirm Password",
+                            style: TextStyle(color: Colors.white),
+                          ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white, width: 1),
-                              borderRadius: BorderRadius.all(Radius.circular(7))),
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(7))),
                           hintText: 'Confirm Password',
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 GestureDetector(
                   onTap: () {
                     if (emailController.text.trim().isNotEmpty &&
                         passwordController.text.trim().isNotEmpty) {
-                      if(showConfirmPassword){
-                        if(cpasswordController.text.trim().isNotEmpty){
-                          if(passwordController.text.trim() == cpasswordController.text.trim()){
+                      if (showConfirmPassword) {
+                        if (cpasswordController.text.trim().isNotEmpty) {
+                          if (passwordController.text.trim() ==
+                              cpasswordController.text.trim()) {
                             signUpUser();
-                          }else{
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text("Passwords do not match"),
                               ),
                             );
                           }
-                        }else{
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Please enter confirm password"),
                             ),
                           );
                         }
-                      }else{
+                      } else {
                         loginUser();
                       }
-                    }else{
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Please enter email and password"),
                         ),
                       );
                     }
-
                   },
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
@@ -192,40 +194,55 @@ class _AuthScreenState extends State<AuthScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              showConfirmPassword ? Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, ),) :
-                              Text("Sign In", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, ),),
+                              showConfirmPassword
+                                  ? Text(
+                                      "Sign Up",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  : Text(
+                                      "Sign In",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
-                      )
-                  ),
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                  child: Row(
-                      children:  <Widget>[
-                        Expanded(
-                            child: Divider(color: Colors.grey, )
-                        ),
-
-                        Text("OR", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, )),
-
-                        Expanded(
-                            child: Divider(color: Colors.grey,)
-                        ),
-                      ]
-                  ),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                        child: Divider(
+                      color: Colors.grey,
+                    )),
+                    Text("OR",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    Expanded(
+                        child: Divider(
+                      color: Colors.grey,
+                    )),
+                  ]),
                 ),
-              GestureDetector(
-                onTap: () {
-                  AuthService(FirebaseAuth.instance)
-                      .signInWithGoogle(context)
-                      .then((value) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNavScreen())));
-                },
-                child: Padding(
+                GestureDetector(
+                  onTap: () {
+                    AuthService(FirebaseAuth.instance)
+                        .signInWithGoogle(context)
+                        .then((value) => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const BottomNavScreen())));
+                  },
+                  child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
                       child: Container(
                         height: 50,
@@ -242,16 +259,20 @@ class _AuthScreenState extends State<AuthScreen> {
                               SizedBox(
                                 width: 10,
                               ),
-                              const Text("Continue with Google", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, ),),
+                              const Text(
+                                "Continue with Google",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      )
-                  ),
-              ),
+                      )),
+                ),
                 GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
                       child: Container(
@@ -269,12 +290,17 @@ class _AuthScreenState extends State<AuthScreen> {
                               SizedBox(
                                 width: 10,
                               ),
-                              const Text("Continue with Apple", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, ),),
+                              const Text(
+                                "Continue with Apple",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      )
-                  ),
+                      )),
                 ),
               ],
             ),
@@ -297,15 +323,26 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          showConfirmPassword? Text("Already have an account? Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, ),) :
-                          Text("Don't have an account? Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, ),),
+                          showConfirmPassword
+                              ? Text(
+                                  "Already have an account? Login",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                )
+                              : Text(
+                                  "Don't have an account? Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                         ],
                       ),
                     ),
-                  )
-              ),
+                  )),
             ),
-
           ],
         ),
       ),

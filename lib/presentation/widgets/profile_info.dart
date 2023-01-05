@@ -30,10 +30,10 @@ class ProfileInfo extends StatelessWidget {
                   margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                   width: 50.0,
                   height: 50.0,
-                  decoration:  BoxDecoration(
-                      shape: BoxShape.circle,
-                     ),
-              child: SvgPicture.asset(imgPath)),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(imgPath)),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.05,
               ),

@@ -23,7 +23,6 @@ class FavouriteModel {
     map['favouriteEventIds'] = favouriteEventIds;
     return map;
   }
-
 }
 
 class FavoriteEventIds {
@@ -44,5 +43,4 @@ class FavoriteEventIds {
     map['favEventIds'] = favEventIds;
     return map;
   }
-
 }

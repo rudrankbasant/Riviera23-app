@@ -43,7 +43,7 @@ class _ContactScreenState extends State<ContactScreen> {
                           itemCount: state.teamList.length,
                           itemBuilder: (context, position) {
                             var teamMember = state.teamList[position];
-                            return  Padding(
+                            return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: Card(
                                 color: AppColors.cardBgColor,
@@ -52,16 +52,24 @@ class _ContactScreenState extends State<ContactScreen> {
                                     Padding(
                                       padding: const EdgeInsets.all(8),
                                       child: Container(
-                                          height: MediaQuery.of(context).size.height * 0.2,
-                                          width: MediaQuery.of(context).size.height * 0.15,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.2,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.15,
                                           child: Image.network(
                                             "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
                                             fit: BoxFit.cover,
                                           )),
                                     ),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(teamMember.name.toString(),
@@ -69,13 +77,14 @@ class _ContactScreenState extends State<ContactScreen> {
                                                 color: Colors.white,
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: GoogleFonts.sora.toString()
+                                                fontFamily: GoogleFonts.sora
+                                                    .toString())),
+                                        Text(teamMember.designation,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.normal,
                                             )),
-                                        Text(teamMember.designation, style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.normal,
-                                        )),
                                       ],
                                     )
                                   ],
@@ -105,7 +114,7 @@ class _ContactScreenState extends State<ContactScreen> {
                           itemCount: state.contactsList.length,
                           itemBuilder: (context, position) {
                             var contact = state.contactsList[position];
-                            return   Padding(
+                            return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: Card(
                                 color: AppColors.primaryColor,
@@ -119,18 +128,20 @@ class _ContactScreenState extends State<ContactScreen> {
                                             color: Colors.grey,
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: GoogleFonts.sora.toString()
+                                            fontFamily:
+                                                GoogleFonts.sora.toString())),
+                                    Text(contact.designation,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.normal,
                                         )),
-                                    Text(contact.designation, style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.normal,
-                                    )),
-                                    Text(contact.email, style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.normal,
-                                    )),
+                                    Text(contact.email,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.normal,
+                                        )),
                                   ],
                                 ),
                               ),

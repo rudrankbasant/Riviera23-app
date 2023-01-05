@@ -10,8 +10,8 @@ import 'home_screen.dart';
 import 'info_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
-  
   const BottomNavScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _BottomNavState();

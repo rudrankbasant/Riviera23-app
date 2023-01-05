@@ -65,12 +65,14 @@ class _FAQScreenState extends State<FAQScreen> {
                                   children: [
                                     Container(
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                      padding:
+                                          EdgeInsets.fromLTRB(10, 10, 10, 10),
                                       decoration: BoxDecoration(
                                         color: AppColors.cardBgColor,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 0, 0, 0),
                                         child: Text(
                                           state.faqList[position].answer,
                                           style: TextStyle(
@@ -87,7 +89,8 @@ class _FAQScreenState extends State<FAQScreen> {
                           });
                     }
 
-                    return Text("Loading FAQ", style: TextStyle(color:  AppColors.secondaryColor));
+                    return Text("Loading FAQ",
+                        style: TextStyle(color: AppColors.secondaryColor));
                   },
                 ),
                 SizedBox(

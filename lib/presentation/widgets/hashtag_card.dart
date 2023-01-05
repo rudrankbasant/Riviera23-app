@@ -21,7 +21,7 @@ class HashtagCard extends StatefulWidget {
 
   @override
   State<HashtagCard> createState() => _HashtagCardState(
-    index: index,
+      index: index,
       caption: caption,
       imgUrl: imgUrl,
       color: color,
@@ -39,7 +39,7 @@ class _HashtagCardState extends State<HashtagCard> {
 
   _HashtagCardState(
       {required this.index,
-        required this.caption,
+      required this.caption,
       required this.imgUrl,
       required this.color,
       required this.likeCount,
@@ -51,7 +51,11 @@ class _HashtagCardState extends State<HashtagCard> {
       children: [
         Expanded(
           child: RotationTransition(
-            turns: (index!=null)? (index! % 2 == 0 ? AlwaysStoppedAnimation(15 / 360) : AlwaysStoppedAnimation(-15 / 360)) : AlwaysStoppedAnimation(0),
+            turns: (index != null)
+                ? (index! % 2 == 0
+                    ? AlwaysStoppedAnimation(15 / 360)
+                    : AlwaysStoppedAnimation(-15 / 360))
+                : AlwaysStoppedAnimation(0),
             child: Container(
               margin: EdgeInsets.all(40),
               padding: const EdgeInsets.all(20),
@@ -77,7 +81,9 @@ class _HashtagCardState extends State<HashtagCard> {
                     children: [
                       Container(
                         child: Image.network(
-                          widget.imgUrl != null? widget.imgUrl.toString() : "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
+                          widget.imgUrl != null
+                              ? widget.imgUrl.toString()
+                              : "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
                           // width: 300,
                           // height: 300,
                           fit: BoxFit.contain,

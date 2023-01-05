@@ -67,8 +67,7 @@ class MyApp extends StatelessWidget {
           create: (context) => AnnouncementsCubit(),
         ),
         BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
-        BlocProvider(
-            create: (context)=> FavouriteCubit())
+        BlocProvider(create: (context) => FavouriteCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

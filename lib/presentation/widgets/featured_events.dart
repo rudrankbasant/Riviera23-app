@@ -32,10 +32,10 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
       if (state is FeaturedSuccess) {
         final List<Widget> imageSliders = state.featured
             .map((item) => GestureDetector(
-          onTap: () {
-            showCustomBottomSheet(context, item);
-          },
-              child: Padding(
+                  onTap: () {
+                    showCustomBottomSheet(context, item);
+                  },
+                  child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -86,7 +86,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                       ),
                     ),
                   ),
-            ))
+                ))
             .toList();
 
         return Column(
@@ -100,8 +100,10 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                       style: AppTheme.appTheme.textTheme.headline6),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => EventsScreen(0)));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventsScreen(0)));
                     },
                     child: Text(
                       "See More",

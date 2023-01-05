@@ -27,9 +27,7 @@ class AuthService {
 
   Future<bool> checkAlreadySignedIn() async {
     try {
-
-      if(FirebaseAuth.instance.currentUser != null) {
-
+      if (FirebaseAuth.instance.currentUser != null) {
         print("User is signed in");
         return true;
       } else {
@@ -41,8 +39,6 @@ class AuthService {
       return false;
     }
   }
-
-
 
   // EMAIL SIGN UP
   Future<void> signUpWithEmail({
@@ -99,8 +95,6 @@ class AuthService {
     }
   }
 
-
-
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
@@ -116,7 +110,6 @@ class AuthService {
       );
 
       final firebaseCredential = await auth.signInWithCredential(credential);
-
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
     }
@@ -183,8 +176,6 @@ class AuthService {
     }, merge: true);
   }*/
 
-
-
   Future<bool> signOut(BuildContext context) async {
     try {
       print("authentication method is  ${user.providerData[0].providerId}");
@@ -192,9 +183,7 @@ class AuthService {
         await GoogleSignIn().signOut();
       } else if (user.providerData[0].providerId == 'apple.com') {
         //await Apple.instance.logOut();
-      } else {
-
-      }
+      } else {}
 
       await _auth.signOut();
       return true;

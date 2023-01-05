@@ -33,20 +33,21 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkifUserLoggedIn() async {
-    bool isLoggedIn = await AuthService(FirebaseAuth.instance).checkAlreadySignedIn();
+    bool isLoggedIn =
+        await AuthService(FirebaseAuth.instance).checkAlreadySignedIn();
 
     if (isLoggedIn) {
       Timer(
           Duration(seconds: 3),
-              () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const BottomNavScreen())));
+          () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BottomNavScreen())));
     } else {
       Timer(
           Duration(seconds: 3),
-              () => Navigator.pushReplacement(context,
+          () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const AuthScreen())));
     }
-
-
   }
 }

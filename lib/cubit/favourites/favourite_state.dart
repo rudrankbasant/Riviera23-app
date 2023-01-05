@@ -1,6 +1,5 @@
 part of './favourite_cubit.dart';
 
-
 abstract class FavouriteState extends Equatable {
   const FavouriteState();
 

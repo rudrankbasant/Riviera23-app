@@ -1,16 +1,17 @@
 class EventModel {
   EventModel({
-      this.id, 
-      this.name, 
-      this.organizingBody, 
-      this.imageUrl, 
-      this.start, 
-      this.end, 
-      this.loc, 
-      this.description, 
-      this.instructions, 
-      this.eventType, 
-      this.featured,});
+    this.id,
+    this.name,
+    this.organizingBody,
+    this.imageUrl,
+    this.start,
+    this.end,
+    this.loc,
+    this.description,
+    this.instructions,
+    this.eventType,
+    this.featured,
+  });
 
   EventModel.fromJson(dynamic json) {
     id = json['_id'];
@@ -25,6 +26,7 @@ class EventModel {
     eventType = json['event_type'];
     featured = json['featured'];
   }
+
   String? id;
   String? name;
   String? organizingBody;
@@ -52,5 +54,4 @@ class EventModel {
     map['featured'] = featured;
     return map;
   }
-
 }

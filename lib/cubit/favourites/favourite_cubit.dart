@@ -10,10 +10,9 @@ import '../../service/auth.dart';
 part './favourite_state.dart';
 
 class FavouriteCubit extends Cubit<FavouriteState> {
-  FavouriteCubit() : super(FavouriteLoading()) {
-  }
+  FavouriteCubit() : super(FavouriteLoading()) {}
 
-  void loadFavourites(User user ) async {
+  void loadFavourites(User user) async {
     try {
       emit(FavouriteLoading());
       if (user != null) {
@@ -22,13 +21,15 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         DocumentSnapshot timelineSnapshot =
             await firestore.collection('favourites').doc(user.uid).get();
         if (timelineSnapshot.exists) {
-          Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              timelineSnapshot.data() as Map<String, dynamic>;
           debugPrint(user.uid + data.toString());
           debugPrint("---here debug--${FavouriteModel.fromMap(data)}");
           FavouriteModel userFavourites = FavouriteModel.fromMap(data);
           emit(FavouriteSuccess(favouriteList: userFavourites));
         } else {
-          FavouriteModel userFavourites = FavouriteModel(uniqueUserId: user.uid, favouriteEventIds: []);
+          FavouriteModel userFavourites =
+              FavouriteModel(uniqueUserId: user.uid, favouriteEventIds: []);
           upDateFavourites(userFavourites);
           emit(FavouriteSuccess(favouriteList: userFavourites));
         }
@@ -48,7 +49,8 @@ class FavouriteCubit extends Cubit<FavouriteState> {
       await firestore
           .collection('favourites')
           .doc(user.uid)
-          .set(favouriteModel.toMap()).then((_) => print('Added'))
+          .set(favouriteModel.toMap())
+          .then((_) => print('Added'))
           .catchError((error) => print('Add failed: $error'));
       print("-----here-----");
       //loadFavourites(user);

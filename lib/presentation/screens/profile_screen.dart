@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
@@ -19,8 +17,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     final user = AuthService(FirebaseAuth.instance).user;
@@ -74,8 +70,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(user.photoURL.toString())))),
-
+                                image:
+                                    NetworkImage(user.photoURL.toString())))),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -129,13 +125,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Row(
                     children: [
                       Container(
-                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              ),
-                       child: SvgPicture.asset("assets/sign_out_icon.svg"),),
+                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        width: 50.0,
+                        height: 50.0,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgPicture.asset("assets/sign_out_icon.svg"),
+                      ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.05,
                       ),
@@ -143,23 +140,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                              fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
+                              fontFamily:
+                                  GoogleFonts.getFont("Sora").fontFamily)),
                     ],
                   ),
                   ElevatedButton(
                     onPressed: () {
                       AuthService(FirebaseAuth.instance)
-                          .signOut(context).
-                      then((isSuccess) {
+                          .signOut(context)
+                          .then((isSuccess) {
                         if (isSuccess) {
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) => const AuthScreen()));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AuthScreen()));
                         }
                       });
                     },
                     child: Icon(Icons.chevron_right),
                   ),
-
                 ],
               ),
             )

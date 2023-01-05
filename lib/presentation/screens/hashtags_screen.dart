@@ -1,10 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../cubit/Hashtag/Hashtag_state.dart';
 import '../../cubit/hashtag/hashtag_cubit.dart';
 import '../../utils/app_colors.dart';
@@ -16,7 +16,6 @@ class HashtagsScreen extends StatefulWidget {
 }
 
 class _HashtagsScreenState extends State<HashtagsScreen> {
-
   List<Color> colorsList = [
     Color(0xff466FFF),
     Color(0xff4C3CB6),
@@ -47,19 +46,20 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                 text: TextSpan(
                   text: '#riviera23',
                   style: TextStyle(
-                      color: AppColors.highlightColor,
-                      fontSize: 23,
-                      fontFamily: GoogleFonts.sora.toString(),
-                  fontWeight: FontWeight.bold,
+                    color: AppColors.highlightColor,
+                    fontSize: 23,
+                    fontFamily: GoogleFonts.sora.toString(),
+                    fontWeight: FontWeight.bold,
                   ),
                   children: <TextSpan>[
                     TextSpan(
                         text: ' photowall',
                         style: TextStyle(
-                            color: AppColors.secondaryColor,
-                            fontSize: 23,
-                            fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,)),
+                          color: AppColors.secondaryColor,
+                          fontSize: 23,
+                          fontFamily: GoogleFonts.sora.toString(),
+                          fontWeight: FontWeight.bold,
+                        )),
                   ],
                 ),
               ),
@@ -74,74 +74,78 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                 text: TextSpan(
                   text: 'Use ',
                   style: TextStyle(
-                      color: AppColors.secondaryColor,
-                      fontSize: 15,
-                      fontFamily: GoogleFonts.sora.toString(),
-                    fontWeight: FontWeight.bold,),
+                    color: AppColors.secondaryColor,
+                    fontSize: 15,
+                    fontFamily: GoogleFonts.sora.toString(),
+                    fontWeight: FontWeight.bold,
+                  ),
                   children: <TextSpan>[
                     TextSpan(
                         text: '#riviera23',
                         style: TextStyle(
-                            color: AppColors.highlightColor,
-                            fontSize: 15,
-                            fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,)),
+                          color: AppColors.highlightColor,
+                          fontSize: 15,
+                          fontFamily: GoogleFonts.sora.toString(),
+                          fontWeight: FontWeight.bold,
+                        )),
                     TextSpan(
                         text:
                             ' on your instagram to get featured on this timeline.',
                         style: TextStyle(
-                            color: AppColors.secondaryColor,
-                            fontSize: 15,
-                            fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,)),
+                          color: AppColors.secondaryColor,
+                          fontSize: 15,
+                          fontFamily: GoogleFonts.sora.toString(),
+                          fontWeight: FontWeight.bold,
+                        )),
                   ],
                 ),
               ),
             ),
-             Expanded(
-               child: BlocBuilder<HashtagCubit, HashtagState>(
-                  builder: (context, state) {
-                    if (state is HashtagSuccess) {
-                      if (state.hashtags.isNotEmpty) {
-                        return ListView.builder(
-                            primary: false,
-                            shrinkWrap: true,
+            Expanded(
+              child: BlocBuilder<HashtagCubit, HashtagState>(
+                builder: (context, state) {
+                  if (state is HashtagSuccess) {
+                    if (state.hashtags.isNotEmpty) {
+                      return ListView.builder(
+                          primary: false,
+                          shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: state.hashtags.length,
                           itemBuilder: (context, itemIndex) {
-                              return GestureDetector(
-                                onTap: () {
-                                  _launchURL(state.hashtags[itemIndex].permalink);
-                                },
-                                child: Center(
-                                  child: HashtagCard(
-                                    index: itemIndex,
-                                    caption: state.hashtags[itemIndex].caption,
-                                    imgUrl: state.hashtags[itemIndex].mediaUrl,
-                                    color: colorsList[itemIndex % 2],
-                                    likeCount: state.hashtags[itemIndex].likeCount,
-                                    commentCount: state.hashtags[itemIndex].commentsCount,
-                                  ),
+                            return GestureDetector(
+                              onTap: () {
+                                _launchURL(state.hashtags[itemIndex].permalink);
+                              },
+                              child: Center(
+                                child: HashtagCard(
+                                  index: itemIndex,
+                                  caption: state.hashtags[itemIndex].caption,
+                                  imgUrl: state.hashtags[itemIndex].mediaUrl,
+                                  color: colorsList[itemIndex % 2],
+                                  likeCount:
+                                      state.hashtags[itemIndex].likeCount,
+                                  commentCount:
+                                      state.hashtags[itemIndex].commentsCount,
                                 ),
-                              );
-                            });
-                      } else {
-                        return const Text("No posts yet");
-                      }
+                              ),
+                            );
+                          });
+                    } else {
+                      return const Text("No posts yet");
                     }
-                    if (state is HashtagError) {
-                      return Text(state.error);
-                    }
-                    return Center(
-                      child: SpinKitThreeBounce(
-                        color: AppColors.secondaryColor,
-                        size: 30,
-                      ),
-                    );
-                  },
-                ),
-             ),
-
+                  }
+                  if (state is HashtagError) {
+                    return Text(state.error);
+                  }
+                  return Center(
+                    child: SpinKitThreeBounce(
+                      color: AppColors.secondaryColor,
+                      size: 30,
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

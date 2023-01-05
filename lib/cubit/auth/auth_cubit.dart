@@ -11,7 +11,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   void checkAlreadySignedIn() async {
     try {
-      SharedPreferences sharedPreferences =  await SharedPreferences.getInstance();
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       bool _isLoggedIn = sharedPreferences.getBool("isLoggedIn") ?? false;
       //String _idToken = sharedPreferences.getString("idToken") ?? "";
       if (_isLoggedIn) {
@@ -37,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth =
-      await googleSignInAccount!.authentication;
+          await googleSignInAccount!.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -46,13 +47,9 @@ class AuthCubit extends Cubit<AuthState> {
       final firebaseCredential = await auth.signInWithCredential(credential);
       String idToken = await firebaseCredential.user!.getIdToken(true);
 
-
       //signInAsync(recreatedToken);
     } catch (e) {
       emit(NotSignedInState());
     }
   }
-
-
 }
-
