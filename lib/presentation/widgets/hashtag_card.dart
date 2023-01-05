@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HashtagCard extends StatefulWidget {
-  final String caption;
-  final String imgUrl;
-  final Color color;
+  final int index;
+  final String? caption;
+  final String? imgUrl;
+  final Color? color;
   final int? likeCount;
   final int? commentCount;
 
   const HashtagCard(
       {Key? key,
+      required this.index,
       required this.caption,
       required this.imgUrl,
       required this.color,
@@ -19,6 +21,7 @@ class HashtagCard extends StatefulWidget {
 
   @override
   State<HashtagCard> createState() => _HashtagCardState(
+    index: index,
       caption: caption,
       imgUrl: imgUrl,
       color: color,
@@ -27,14 +30,16 @@ class HashtagCard extends StatefulWidget {
 }
 
 class _HashtagCardState extends State<HashtagCard> {
-  final String caption;
-  final String imgUrl;
-  final Color color;
+  final int? index;
+  final String? caption;
+  final String? imgUrl;
+  final Color? color;
   final int? likeCount;
   final int? commentCount;
 
   _HashtagCardState(
-      {required this.caption,
+      {required this.index,
+        required this.caption,
       required this.imgUrl,
       required this.color,
       required this.likeCount,
@@ -45,81 +50,78 @@ class _HashtagCardState extends State<HashtagCard> {
     return Row(
       children: [
         Expanded(
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0x40A3A3A3),
-                  blurRadius: 4, // soften the shadow
-                  spreadRadius: 0,
-                  //extend the shadow
-                  offset: Offset(
-                    0, // Move to right 10  horizontally
-                    4, // Move to bottom 10 Vertically
+          child: RotationTransition(
+            turns: (index!=null)? (index! % 2 == 0 ? AlwaysStoppedAnimation(15 / 360) : AlwaysStoppedAnimation(-15 / 360)) : AlwaysStoppedAnimation(0),
+            child: Container(
+              margin: EdgeInsets.all(40),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: color,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x40A3A3A3),
+                    blurRadius: 4, // soften the shadow
+                    spreadRadius: 0,
+                    //extend the shadow
+                    offset: Offset(
+                      0, // Move to right 10  horizontally
+                      4, // Move to bottom 10 Vertically
+                    ),
+                  )
+                ],
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        child: Image.network(
+                          widget.imgUrl != null? widget.imgUrl.toString() : "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
+                          // width: 300,
+                          // height: 300,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.favorite_outlined),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text("${likeCount ?? ""}")
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 100,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.comment),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Text("${commentCount ?? ""}")
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Image.network(
-                        widget.imgUrl,
-                        // width: 300,
-                        // height: 300,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.favorite_outlined),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text("${likeCount ?? ""}")
-                          ],
-                        ),
-                        SizedBox(
-                          width: 100,
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.comment),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text("${commentCount ?? ""}")
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                // ExpandableText(
-                //   caption,
-                //   expandText: "more",
-                //   collapseText: "see less",
-                //   maxLines: 4,
-                // ),
-              ],
+                  // ExpandableText(
+                  //   caption,
+                  //   expandText: "more",
+                  //   collapseText: "see less",
+                  //   maxLines: 4,
+                  // ),
+                ],
+              ),
             ),
           ),
         ),

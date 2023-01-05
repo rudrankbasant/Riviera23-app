@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_state.dart';
+import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
 class CarouselWithDotsPage extends StatefulWidget {
@@ -20,17 +21,21 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
+    double height = MediaQuery.of(context).size.height;
     return BlocBuilder<ProShowsCubit, ProShowsState>(builder: (context, state) {
       if (state is ProShowsSuccess) {
         final List<Widget> imageSliders = state.proShows
-            .map((item) => Container(
+            .map((item) => GestureDetector(
+                  onTap: () {
+                    showCustomBottomSheet(context, item);
+                  },
                   child: Stack(
                     children: [
                       Image.network(
                         item.imageUrl.toString(),
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                         width: width,
+                        height: height * 0.4,
                       ),
                       Positioned(
                         bottom: 0.0,

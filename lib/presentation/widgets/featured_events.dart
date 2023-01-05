@@ -9,6 +9,8 @@ import 'package:riviera23/utils/app_colors.dart';
 import '../../cubit/featured/featured_cubit.dart';
 import '../../cubit/featured/featured_state.dart';
 import '../../utils/app_theme.dart';
+import '../methods/show_event_details.dart';
+import '../screens/events_screen.dart';
 
 class FeaturedEvents extends StatefulWidget {
   List<String> imgList;
@@ -29,57 +31,62 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
     return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
       if (state is FeaturedSuccess) {
         final List<Widget> imageSliders = state.featured
-            .map((item) => Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: AppColors.primaryColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 250,
-                          width: 200,
-                          child: Image.network(
-                            item.imageUrl.toString(),
-                            fit: BoxFit.cover,
+            .map((item) => GestureDetector(
+          onTap: () {
+            showCustomBottomSheet(context, item);
+          },
+              child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: AppColors.primaryColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 250,
+                            width: 200,
+                            child: Image.network(
+                              item.imageUrl.toString(),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          item.name.toString(),
-                          style: TextStyle(
-                              fontFamily: GoogleFonts.sora.toString(),
-                              color: AppColors.highlightColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          parseDateTime(item.start),
-                          style: TextStyle(
-                              fontFamily: GoogleFonts.sora.toString(),
-                              color: Colors.grey,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          item.loc.toString(),
-                          style: TextStyle(
-                              fontFamily: GoogleFonts.sora.toString(),
-                              color: Colors.grey,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            item.name.toString(),
+                            style: TextStyle(
+                                fontFamily: GoogleFonts.sora.toString(),
+                                color: AppColors.highlightColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            parseDate(item.start),
+                            style: TextStyle(
+                                fontFamily: GoogleFonts.sora.toString(),
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          Text(
+                            item.loc.toString(),
+                            style: TextStyle(
+                                fontFamily: GoogleFonts.sora.toString(),
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ))
+            ))
             .toList();
 
         return Column(
@@ -91,12 +98,18 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                 children: [
                   Text("FEATURED EVENTS",
                       style: AppTheme.appTheme.textTheme.headline6),
-                  Text(
-                    "See More",
-                    style: TextStyle(
-                        fontFamily: GoogleFonts.sora.toString(),
-                        color: AppColors.highlightColor,
-                        fontSize: 12),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => EventsScreen(0)));
+                    },
+                    child: Text(
+                      "See More",
+                      style: TextStyle(
+                          fontFamily: GoogleFonts.sora.toString(),
+                          color: AppColors.highlightColor,
+                          fontSize: 12),
+                    ),
                   )
                 ],
               ),

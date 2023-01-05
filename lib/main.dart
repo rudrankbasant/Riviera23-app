@@ -3,10 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
+import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
-import 'package:riviera23/presentation/widgets/hashtag_card.dart';
 import 'package:riviera23/utils/app_theme.dart';
 
 import 'cubit/events/events_cubit.dart';
@@ -66,13 +66,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AnnouncementsCubit(),
         ),
+        BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
         BlocProvider(
-            create: (context) => HashtagCubit(HashtagRepository())
-        ),
+            create: (context)=> FavouriteCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Riviera23',
         theme: AppTheme.appTheme,
         home: const SplashScreen(),
       ),

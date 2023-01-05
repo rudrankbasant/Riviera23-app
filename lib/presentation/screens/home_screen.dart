@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,9 @@ import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
+import '../../cubit/events/events_cubit.dart';
+import '../../cubit/favourites/favourite_cubit.dart';
+import '../../service/auth.dart';
 import '../widgets/carousel_with_dots_page.dart';
 import '../widgets/featured_events.dart';
 
@@ -35,6 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final cubitFeatured = context.read<FeaturedCubit>();
       cubitFeatured.getAllFeatured();
+
+      final user = AuthService(FirebaseAuth.instance).user;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        final cubit = context.read<EventsCubit>();
+        cubit.getAllEvents();
+        final cubit2 = context.read<FavouriteCubit>();
+        cubit2.loadFavourites(user);
+      });
     });
   }
 
@@ -68,11 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             )),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 30.0),
-            child: SvgPicture.asset('assets/search_icon.svg',
-                height: 20, width: 20),
-          ),
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
@@ -93,11 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CarouselWithDotsPage(imgList: imgList),
               SizedBox(height: 10),
-              Column(
-                children: [
-                  FeaturedEvents(imgList: imgList),
-                ],
-              )
+              FeaturedEvents(imgList: imgList)
             ],
           ),
         ),

@@ -1,12 +1,13 @@
 class HashtagModel {
   HashtagModel({
-      this.permalink, 
-      this.caption, 
-      this.commentsCount, 
-      this.likeCount, 
-      this.mediaType, 
-      this.mediaUrl, 
-      this.id,});
+    this.permalink,
+    this.caption,
+    this.commentsCount,
+    this.likeCount,
+    this.mediaType,
+    this.mediaUrl,
+    this.id,
+  });
 
   HashtagModel.fromJson(dynamic json) {
     permalink = json['permalink'];
@@ -17,6 +18,7 @@ class HashtagModel {
     mediaUrl = json['media_url'];
     id = json['id'];
   }
+
   String? permalink;
   String? caption;
   int? commentsCount;
@@ -36,5 +38,4 @@ class HashtagModel {
     map['id'] = id;
     return map;
   }
-
 }

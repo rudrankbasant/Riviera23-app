@@ -41,24 +41,42 @@ class _FAQScreenState extends State<FAQScreen> {
                                 color: AppColors.cardBgColor,
                               ),
                               child: ExpansionTile(
+                                  collapsedIconColor: AppColors.secondaryColor,
+                                  iconColor: AppColors.secondaryColor,
                                   backgroundColor: AppColors.cardBgColor,
-                                  title: Text(
-                                    "Q. ${state.faqList[position].question}",
-                                    style: TextStyle(
+                                  title: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.circle,
                                         color: AppColors.secondaryColor,
-                                        fontWeight: FontWeight.w500),
+                                        size: 10,
+                                      ),
+                                      SizedBox(
+                                        width: 7,
+                                      ),
+                                      Text(
+                                        "${state.faqList[position].question}",
+                                        style: TextStyle(
+                                            color: AppColors.secondaryColor,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
                                   ),
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(16),
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                                       decoration: BoxDecoration(
-                                        color: AppColors.secondaryColor,
+                                        color: AppColors.cardBgColor,
                                       ),
-                                      child: Text(
-                                        state.faqList[position].answer,
-                                        style: TextStyle(
-                                            color: AppColors.secondaryColor,
-                                            fontWeight: FontWeight.w300),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        child: Text(
+                                          state.faqList[position].answer,
+                                          style: TextStyle(
+                                              color: AppColors.secondaryColor,
+                                              fontWeight: FontWeight.w300),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -69,7 +87,7 @@ class _FAQScreenState extends State<FAQScreen> {
                           });
                     }
 
-                    return Text("Loading FAQ");
+                    return Text("Loading FAQ", style: TextStyle(color:  AppColors.secondaryColor));
                   },
                 ),
                 SizedBox(

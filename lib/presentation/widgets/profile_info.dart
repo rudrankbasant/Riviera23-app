@@ -22,32 +22,34 @@ class ProfileInfo extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              width: 50.0,
-              height: 50.0,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(
-                          "https://upload.wikimedia.org/wikipedia/en/6/66/Matthew_Perry_as_Chandler_Bing.png")))),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.05,
+          Row(
+            children: [
+              Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  width: 50.0,
+                  height: 50.0,
+                  decoration:  BoxDecoration(
+                      shape: BoxShape.circle,
+                     ),
+              child: SvgPicture.asset(imgPath)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              Text(infoText,
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
+            ],
           ),
-          Text(infoText,
-              style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                  fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
           isButton
               ? ElevatedButton(
                   onPressed: () {
-                      onPressed!();
+                    onPressed!();
                   },
-                  child: SvgPicture.asset('assets/right_arrow.svg',
+                  child: SvgPicture.asset('assets/right_arrow_icon.svg',
                       height: 20, width: 20),
                 )
               : Container(),

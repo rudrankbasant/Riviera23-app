@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:riviera23/utils/constants.dart';
 
-
 import '../models/hashtag_model.dart';
 
 class HashtagRepository {

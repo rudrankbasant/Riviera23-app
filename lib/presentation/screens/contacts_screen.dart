@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../cubit/info/contacts/contacts_cubit.dart';
 import '../../cubit/info/team/team_cubit.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/app_theme.dart';
 
 class ContactScreen extends StatefulWidget {
   @override
@@ -30,6 +32,8 @@ class _ContactScreenState extends State<ContactScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text("MEET THE TEAM",
+                    style: AppTheme.appTheme.textTheme.headline6),
                 BlocBuilder<TeamCubit, TeamState>(
                   builder: (context, state) {
                     if (state is TeamSuccess) {
@@ -38,35 +42,45 @@ class _ContactScreenState extends State<ContactScreen> {
                           shrinkWrap: true,
                           itemCount: state.teamList.length,
                           itemBuilder: (context, position) {
-                            return Container(
-                              decoration: BoxDecoration(
+                            var teamMember = state.teamList[position];
+                            return  Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: Card(
                                 color: AppColors.cardBgColor,
-                              ),
-                              child: ExpansionTile(
-                                  backgroundColor: AppColors.cardBgColor,
-                                  title: Text(
-                                    "Q. ${state.teamList[position].name}",
-                                    style: TextStyle(
-                                        color: AppColors.secondaryColor,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                child: Row(
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.secondaryColor,
-                                      ),
-                                      child: Text(
-                                        state.teamList[position].designation,
-                                        style: TextStyle(
-                                            color: AppColors.secondaryColor,
-                                            fontWeight: FontWeight.w300),
-                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Container(
+                                          height: MediaQuery.of(context).size.height * 0.2,
+                                          width: MediaQuery.of(context).size.height * 0.15,
+                                          child: Image.network(
+                                            "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
+                                            fit: BoxFit.cover,
+                                          )),
                                     ),
-                                    SizedBox(
-                                      height: 12,
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(teamMember.name.toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: GoogleFonts.sora.toString()
+                                            )),
+                                        Text(teamMember.designation, style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.normal,
+                                        )),
+                                      ],
                                     )
-                                  ]),
+                                  ],
+                                ),
+                              ),
                             );
                           });
                     }
@@ -80,6 +94,8 @@ class _ContactScreenState extends State<ContactScreen> {
                 SizedBox(
                   height: 16,
                 ),
+                Text("CONTACT US",
+                    style: AppTheme.appTheme.textTheme.headline6),
                 BlocBuilder<ContactsCubit, ContactsState>(
                   builder: (context, state) {
                     if (state is ContactsSuccess) {
@@ -88,36 +104,36 @@ class _ContactScreenState extends State<ContactScreen> {
                           shrinkWrap: true,
                           itemCount: state.contactsList.length,
                           itemBuilder: (context, position) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.cardBgColor,
-                              ),
-                              child: ExpansionTile(
-                                  backgroundColor: AppColors.cardBgColor,
-                                  title: Text(
-                                    "Q. ${state.contactsList[position].name}",
-                                    style: TextStyle(
-                                        color: AppColors.secondaryColor,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                            var contact = state.contactsList[position];
+                            return   Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: Card(
+                                color: AppColors.primaryColor,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.secondaryColor,
-                                      ),
-                                      child: Text(
-                                        state.contactsList[position].phone
-                                            .toString(),
+                                    Text(contact.name.toString(),
                                         style: TextStyle(
-                                            color: AppColors.secondaryColor,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 12,
-                                    )
-                                  ]),
+                                            color: Colors.grey,
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: GoogleFonts.sora.toString()
+                                        )),
+                                    Text(contact.designation, style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                                    Text(contact.email, style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                                  ],
+                                ),
+                              ),
                             );
                           });
                     }

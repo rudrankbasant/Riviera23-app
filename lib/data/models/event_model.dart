@@ -7,6 +7,8 @@ class EventModel {
       this.start, 
       this.end, 
       this.loc, 
+      this.description, 
+      this.instructions, 
       this.eventType, 
       this.featured,});
 
@@ -18,6 +20,8 @@ class EventModel {
     start = json['start'];
     end = json['end'];
     loc = json['loc'];
+    description = json['description'];
+    instructions = json['instructions'];
     eventType = json['event_type'];
     featured = json['featured'];
   }
@@ -28,6 +32,8 @@ class EventModel {
   String? start;
   String? end;
   String? loc;
+  String? description;
+  String? instructions;
   String? eventType;
   bool? featured;
 
@@ -40,6 +46,8 @@ class EventModel {
     map['start'] = start;
     map['end'] = end;
     map['loc'] = loc;
+    map['description'] = description;
+    map['instructions'] = instructions;
     map['event_type'] = eventType;
     map['featured'] = featured;
     return map;

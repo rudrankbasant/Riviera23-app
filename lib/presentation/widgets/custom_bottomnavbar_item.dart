@@ -27,7 +27,13 @@ class CustomBottomNavBarItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          index == 2 ? (selectedIndex==index?SizedBox(height: 2):SizedBox(height: 3,)) : const SizedBox(height: 0),
+          index == 2
+              ? (selectedIndex == index
+                  ? SizedBox(height: 2)
+                  : SizedBox(
+                      height: 3,
+                    ))
+              : const SizedBox(height: 0),
           Container(
             child: index == 2
                 ? (selectedIndex == index
@@ -54,11 +60,20 @@ class CustomBottomNavBarItem extends StatelessWidget {
                         fit: BoxFit.scaleDown)),
           ),
           index == 2 ? const SizedBox(height: 0) : const SizedBox(height: 5),
-          index!=2? Text(label,
-              style: TextStyle(
-                  color: selectedIndex== index? AppColors.highlightColor: Colors.white,
-                  fontSize: index==2 ? 10 :(selectedIndex == index ? 12 : 10),
-                  fontFamily: index == 2? GoogleFonts.getFont('Bad Script').toString() : GoogleFonts.getFont('Sora').fontFamily)): SizedBox(height: 0,),
+          index != 2
+              ? Text(label,
+                  style: TextStyle(
+                      color: selectedIndex == index
+                          ? AppColors.highlightColor
+                          : Colors.white,
+                      fontSize:
+                          index == 2 ? 10 : (selectedIndex == index ? 12 : 10),
+                      fontFamily: index == 2
+                          ? GoogleFonts.getFont('Bad Script').toString()
+                          : GoogleFonts.getFont('Sora').fontFamily))
+              : SizedBox(
+                  height: 0,
+                ),
         ],
       ),
     );

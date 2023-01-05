@@ -1,15 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../presentation/methods/showSnackBar.dart';
 
 class AuthService {
-
   final FirebaseAuth _auth;
+
   AuthService(this._auth);
 
   // FOR EVERY FUNCTION HERE
@@ -22,21 +19,97 @@ class AuthService {
 
   // STATE PERSISTENCE STREAM
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+
   // OTHER WAYS (depends on use case):
   // Stream get authState => FirebaseAuth.instance.userChanges();
   // Stream get authState => FirebaseAuth.instance.idTokenChanges();
   // KNOW MORE ABOUT THEM HERE: https://firebase.flutter.dev/docs/auth/start#auth-state
-  Future<void> signInWithGoogle(BuildContext context) async {
+
+  Future<bool> checkAlreadySignedIn() async {
     try {
 
+      if(FirebaseAuth.instance.currentUser != null) {
+
+        print("User is signed in");
+        return true;
+      } else {
+        print("User is not signed in");
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
+  }
+
+
+
+  // EMAIL SIGN UP
+  Future<void> signUpWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await sendEmailVerification(context);
+    } on FirebaseAuthException catch (e) {
+      // if you want to display your own custom error message
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+      showSnackBar(
+          context, e.message!); // Displaying the usual firebase error message
+    }
+  }
+
+  // EMAIL LOGIN
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      if (!user.emailVerified) {
+        await sendEmailVerification(context);
+        // restrict access to certain things using provider
+        // transition to another page instead of home screen
+      }
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Displaying the error message
+    }
+  }
+
+  // EMAIL VERIFICATION
+  Future<void> sendEmailVerification(BuildContext context) async {
+    try {
+      _auth.currentUser!.sendEmailVerification();
+      showSnackBar(context, 'Email verification sent!');
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!); // Display error message
+    }
+  }
+
+
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
       FirebaseAuth auth = FirebaseAuth.instance;
       GoogleSignIn _googleSignIn = GoogleSignIn();
       // Trigger the authentication flow
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
-
       final GoogleSignInAuthentication googleAuth =
-      await googleSignInAccount!.authentication;
+          await googleSignInAccount!.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -110,12 +183,24 @@ class AuthService {
     }, merge: true);
   }*/
 
-  Future<void> signOut(BuildContext context) async {
+
+
+  Future<bool> signOut(BuildContext context) async {
     try {
+      print("authentication method is  ${user.providerData[0].providerId}");
+      if (user.providerData[0].providerId == 'google.com') {
+        await GoogleSignIn().signOut();
+      } else if (user.providerData[0].providerId == 'apple.com') {
+        //await Apple.instance.logOut();
+      } else {
+
+      }
+
       await _auth.signOut();
+      return true;
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
+      return false;
     }
   }
 }
-

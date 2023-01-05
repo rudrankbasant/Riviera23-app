@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/presentation/screens/auth_screen.dart';
+import 'package:riviera23/presentation/screens/events_screen.dart';
 import 'package:riviera23/service/auth.dart';
 
 import '../../utils/app_colors.dart';
@@ -16,8 +19,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+
   @override
   Widget build(BuildContext context) {
+    final user = AuthService(FirebaseAuth.instance).user;
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
@@ -53,42 +59,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.06,
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      width: 75.0,
-                      height: 75.0,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(
-                                  "https://upload.wikimedia.org/wikipedia/en/6/66/Matthew_Perry_as_Chandler_Bing.png")))),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Tame Impala",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontFamily:
-                                  GoogleFonts.getFont("Sora").fontFamily)),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text("21BCH1234",
+            Visibility(
+              visible: user.displayName != null,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        width: 75.0,
+                        height: 75.0,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(user.photoURL.toString())))),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(user.displayName.toString(),
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 24,
                                 color: Colors.white,
                                 fontFamily:
                                     GoogleFonts.getFont("Sora").fontFamily)),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -107,53 +107,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.025,
             ),
-            const ProfileInfo(
-                imgPath: "assets/icons/qr_code.svg",
-                infoText: "tameimpala@gmail.com",
+            ProfileInfo(
+                imgPath: "assets/email_icon.svg",
+                infoText: user.email.toString(),
                 isButton: false),
-            const ProfileInfo(
-                imgPath: "assets/icons/qr_code.svg",
-                infoText: "8756391101",
-                isButton: false),
-            const ProfileInfo(
-                imgPath: "assets/icons/qr_code.svg",
-                infoText: "Favorite Events",
-                isButton: true),
-             ProfileInfo(
-                imgPath: "assets/icons/qr_code.svg",
-                infoText: "Sign Out",
-                isButton: true,
-             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => EventsScreen(1)));
+              },
+              child: ProfileInfo(
+                  imgPath: "assets/favourite_icon.svg",
+                  infoText: "Favorite Events",
+                  isButton: true),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      width: 50.0,
-                      height: 50.0,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(
-                                  "https://upload.wikimedia.org/wikipedia/en/6/66/Matthew_Perry_as_Chandler_Bing.png")))),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
+                  Row(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              ),
+                       child: SvgPicture.asset("assets/sign_out_icon.svg"),),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      Text('Sign Out',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
+                    ],
                   ),
-                  Text('deletethis',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                          fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
-                   ElevatedButton(
+                  ElevatedButton(
                     onPressed: () {
-
+                      AuthService(FirebaseAuth.instance)
+                          .signOut(context).
+                      then((isSuccess) {
+                        if (isSuccess) {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => const AuthScreen()));
+                        }
+                      });
                     },
-                    child: SvgPicture.asset('assets/right_arrow.svg',
-                        height: 20, width: 20),
-                  )
+                    child: Icon(Icons.chevron_right),
+                  ),
+
                 ],
               ),
             )

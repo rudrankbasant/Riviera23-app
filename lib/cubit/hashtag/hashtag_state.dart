@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:riviera23/data/models/event_model.dart';
 import 'package:riviera23/data/models/hashtag_model.dart';
 
 abstract class HashtagState extends Equatable {
