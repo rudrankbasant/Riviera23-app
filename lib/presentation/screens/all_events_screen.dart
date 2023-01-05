@@ -8,19 +8,28 @@ import '../../data/models/event_model.dart';
 import '../methods/parse_datetime.dart';
 
 class AllEvents extends StatefulWidget {
+  String? eventsSearchQuery;
+
+  AllEvents(String eventsSearchQuery);
+
   @override
   State<AllEvents> createState() => _AllEventsState();
 }
 
 class _AllEventsState extends State<AllEvents> {
+  List<EventModel> filteredEvents = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
       if (state is EventsSuccess) {
+        List<EventModel> filteredEvents = state.events;
+
+        debugPrint("--- and----" + filteredEvents.length.toString());
         return ListView.builder(
-          itemCount: state.events.length,
+          itemCount: filteredEvents.length,
           itemBuilder: (context, index) {
-            EventModel event = state.events[index];
+            EventModel event = filteredEvents[index];
             return Card(
               child: Row(
                 children: [
@@ -34,7 +43,7 @@ class _AllEventsState extends State<AllEvents> {
                   Column(
                     children: [
                       Text(event.name.toString()),
-                      Text(parseDateTime(event.start))
+                      Text(parseDate(event.start))
                     ],
                   )
                 ],
