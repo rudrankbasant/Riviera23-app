@@ -35,119 +35,118 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Image.asset("assets/riviera_icon.png"),
-            Container(
-              width: double.infinity,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: '#riviera23',
-                  style: TextStyle(
-                    color: AppColors.highlightColor,
-                    fontSize: 23,
-                    fontFamily: GoogleFonts.sora.toString(),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: ' photowall',
-                        style: TextStyle(
-                          color: AppColors.secondaryColor,
-                          fontSize: 23,
-                          fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
+      body: ListView(
+        children: [
+          Image.asset("assets/riviera_icon.png"),
+          Container(
+            width: double.infinity,
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: '#riviera23',
+                style: TextStyle(
+                  color: AppColors.highlightColor,
+                  fontSize: 23,
+                  fontFamily: GoogleFonts.sora.toString(),
+                  fontWeight: FontWeight.bold,
                 ),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: ' photowall',
+                      style: TextStyle(
+                        color: AppColors.secondaryColor,
+                        fontSize: 23,
+                        fontFamily: GoogleFonts.sora.toString(),
+                        fontWeight: FontWeight.bold,
+                      )),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 5,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Use ',
+                style: TextStyle(
+                  color: AppColors.secondaryColor,
+                  fontSize: 15,
+                  fontFamily: GoogleFonts.sora.toString(),
+                  fontWeight: FontWeight.bold,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: '#riviera23',
+                      style: TextStyle(
+                        color: AppColors.highlightColor,
+                        fontSize: 15,
+                        fontFamily: GoogleFonts.sora.toString(),
+                        fontWeight: FontWeight.bold,
+                      )),
+                  TextSpan(
+                      text:
+                          ' on your instagram to get featured on this timeline.',
+                      style: TextStyle(
+                        color: AppColors.secondaryColor,
+                        fontSize: 15,
+                        fontFamily: GoogleFonts.sora.toString(),
+                        fontWeight: FontWeight.bold,
+                      )),
+                ],
+              ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Use ',
-                  style: TextStyle(
+          ),
+          BlocBuilder<HashtagCubit, HashtagState>(
+            builder: (context, state) {
+              if (state is HashtagSuccess) {
+                if (state.hashtags.isNotEmpty) {
+                  return ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.hashtags.length,
+                      itemBuilder: (context, itemIndex) {
+                        return GestureDetector(
+                          onTap: () {
+                            _launchURL(state.hashtags[itemIndex].permalink);
+                          },
+                          child: Center(
+                            child: HashtagCard(
+                              index: itemIndex,
+                              caption: state.hashtags[itemIndex].caption,
+                              imgUrl: state.hashtags[itemIndex].mediaUrl,
+                              color: colorsList[itemIndex % 2],
+                              likeCount:
+                                  state.hashtags[itemIndex].likeCount,
+                              commentCount:
+                                  state.hashtags[itemIndex].commentsCount,
+                            ),
+                          ),
+                        );
+                      });
+                } else {
+                  return const Text("No posts yet");
+                }
+              }
+              if (state is HashtagError) {
+                return Text(state.error);
+              }
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: SpinKitThreeBounce(
                     color: AppColors.secondaryColor,
-                    fontSize: 15,
-                    fontFamily: GoogleFonts.sora.toString(),
-                    fontWeight: FontWeight.bold,
+                    size: 30,
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: '#riviera23',
-                        style: TextStyle(
-                          color: AppColors.highlightColor,
-                          fontSize: 15,
-                          fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,
-                        )),
-                    TextSpan(
-                        text:
-                            ' on your instagram to get featured on this timeline.',
-                        style: TextStyle(
-                          color: AppColors.secondaryColor,
-                          fontSize: 15,
-                          fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: BlocBuilder<HashtagCubit, HashtagState>(
-                builder: (context, state) {
-                  if (state is HashtagSuccess) {
-                    if (state.hashtags.isNotEmpty) {
-                      return ListView.builder(
-                          primary: false,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.hashtags.length,
-                          itemBuilder: (context, itemIndex) {
-                            return GestureDetector(
-                              onTap: () {
-                                _launchURL(state.hashtags[itemIndex].permalink);
-                              },
-                              child: Center(
-                                child: HashtagCard(
-                                  index: itemIndex,
-                                  caption: state.hashtags[itemIndex].caption,
-                                  imgUrl: state.hashtags[itemIndex].mediaUrl,
-                                  color: colorsList[itemIndex % 2],
-                                  likeCount:
-                                      state.hashtags[itemIndex].likeCount,
-                                  commentCount:
-                                      state.hashtags[itemIndex].commentsCount,
-                                ),
-                              ),
-                            );
-                          });
-                    } else {
-                      return const Text("No posts yet");
-                    }
-                  }
-                  if (state is HashtagError) {
-                    return Text(state.error);
-                  }
-                  return Center(
-                    child: SpinKitThreeBounce(
-                      color: AppColors.secondaryColor,
-                      size: 30,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

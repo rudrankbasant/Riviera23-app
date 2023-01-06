@@ -31,11 +31,9 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   },
                   child: Stack(
                     children: [
-                      Image.network(
-                        item.imageUrl.toString(),
-                        fit: BoxFit.cover,
-                        width: width,
-                        height: height * 0.4,
+                      Container(
+                        height: height * 0.9,
+                        child: FadeInImage(image: NetworkImage(item.imageUrl.toString()), placeholder: NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"), fit: BoxFit.cover, width: width,),
                       ),
                       Positioned(
                         bottom: 0.0,

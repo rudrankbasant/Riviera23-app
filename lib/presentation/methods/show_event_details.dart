@@ -82,10 +82,8 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                           child: Container(
                             height: MediaQuery.of(context).size.height * 0.4,
                             width: MediaQuery.of(context).size.width,
-                            child: Image.network(
-                              event.imageUrl.toString(),
-                              fit: BoxFit.cover,
-                            ),
+                              child: FadeInImage(image: NetworkImage(event.imageUrl.toString()), placeholder: NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"), fit: BoxFit.cover,),
+
                           ),
                         ),
                         Positioned(

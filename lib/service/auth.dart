@@ -1,6 +1,8 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:riviera23/presentation/widgets/custom_dialog_box.dart';
 
 import '../presentation/methods/showSnackBar.dart';
 
@@ -65,13 +67,13 @@ class AuthService {
   }
 
   // EMAIL LOGIN
-  Future<void> loginWithEmail({
+  Future<dynamic> loginWithEmail({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential =await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -79,9 +81,12 @@ class AuthService {
         await sendEmailVerification(context);
         // restrict access to certain things using provider
         // transition to another page instead of home screen
+        return null;
       }
+      return userCredential;
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Displaying the error message
+      showSnackBar(context, e.message!);
+      return null;// Displaying the error message
     }
   }
 
@@ -89,13 +94,22 @@ class AuthService {
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      showSnackBar(context, 'Email verification sent!');
+      //showSnackBar(context, 'Email verification sent!');
+      //CustomDialogBox(title: "Email Verification!",  descriptions: 'Email Verification Sent',text: 'Check your email for verification link in spam folder as well',);
+      Flushbar(
+        margin: const EdgeInsets.all(8),
+        borderRadius: BorderRadius.circular(10),
+        flushbarPosition: FlushbarPosition.TOP,
+        title:  "Email Verification Sent!",
+        message:  "Please check your inbox or spam folder for verification link",
+        duration:  const Duration(seconds: 3),
+      ).show(context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Display error message
     }
   }
 
-  Future<void> signInWithGoogle(BuildContext context) async {
+  Future<dynamic> signInWithGoogle(BuildContext context) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
       GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -108,9 +122,11 @@ class AuthService {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
       final firebaseCredential = await auth.signInWithCredential(credential);
+      return firebaseCredential;
+
     } on FirebaseAuthException catch (e) {
+      return null;
       showSnackBar(context, e.message!); // Displaying the error message
     }
   }

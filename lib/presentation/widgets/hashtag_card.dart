@@ -75,6 +75,7 @@ class _HashtagCardState extends State<HashtagCard> {
                 ],
               ),
               child: ListView(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: [
                   Column(

@@ -33,9 +33,12 @@ class _AuthScreenState extends State<AuthScreen> {
           email: emailController.text,
           password: passwordController.text,
           context: context,
-        )
-        .then((value) => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const BottomNavScreen())));
+        ).then((value){
+          if(value!=null){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BottomNavScreen()));
+          }
+        });
+
   }
 
   @override
@@ -236,11 +239,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   onTap: () {
                     AuthService(FirebaseAuth.instance)
                         .signInWithGoogle(context)
-                        .then((value) => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const BottomNavScreen())));
+                    .then((value) => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                            const BottomNavScreen())));
                   },
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 5),

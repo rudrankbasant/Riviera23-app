@@ -31,6 +31,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
   int selectedPlace = 0;
   int selectedDay = 0;
+
+  int placeSelection = 0;
+  int daySelection = 0;
   bool defaultAppBar = true;
   String eventsSearchQuery = "";
   final user = AuthService(FirebaseAuth.instance).user;
@@ -44,11 +47,17 @@ class _EventsScreenState extends State<EventsScreen> {
     Navigator.of(context).pop();
   }
 
-  void _closeEndDrawer() {
-    setState(() {
-      selectedPlace = 0;
-      selectedDay = 0;
-    });
+  void _closeEndDrawer(bool applyFilter) {
+    if(applyFilter){
+      setState(() {
+        placeSelection = selectedPlace;
+        daySelection = selectedDay;
+      });
+    }else{
+      placeSelection = 0;
+      daySelection = 0;
+    }
+
     Navigator.of(context).pop();
   }
 
@@ -58,6 +67,8 @@ class _EventsScreenState extends State<EventsScreen> {
 
     selectedPlace = 0;
     selectedDay = 0;
+    placeSelection = 0;
+    daySelection = 0;
     defaultAppBar = true;
     eventsSearchQuery = "";
 
@@ -189,37 +200,34 @@ class _EventsScreenState extends State<EventsScreen> {
                 ),
           endDrawer: Drawer(
               backgroundColor: AppColors.primaryColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                _closeEndDrawer();
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.white,
-                              )),
-                          Text(
-                            "Event Filter",
-                            style: AppTheme.appTheme.textTheme.headline6,
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                _applyEndDrawer();
-                              },
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              ))
-                        ],
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              _closeEndDrawer(false);
+                            },
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            )),
+                        Text(
+                          "Event Filter",
+                          style: AppTheme.appTheme.textTheme.headline6,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              _closeEndDrawer(true);
+                            },
+                            child: Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            ))
+                      ],
                     ),
                   ),
                   const Padding(
@@ -232,21 +240,19 @@ class _EventsScreenState extends State<EventsScreen> {
                               fontWeight: FontWeight.w600,
                             ))),
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 200,
-                      child: ListView(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          buildDaysRadioListTile(0, "All"),
-                          buildDaysRadioListTile(1, "23 Feb 2023"),
-                          buildDaysRadioListTile(2, "24 Feb 2023"),
-                          buildDaysRadioListTile(3, "25 Feb 2023"),
-                          buildDaysRadioListTile(4, "26 Feb 2023"),
-                        ],
-                      ),
+                  SizedBox(
+                    height: 60,
+                    child: ListView(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        buildDaysRadioListTile(0, "All"),
+                        buildDaysRadioListTile(1, "23 Feb 2023"),
+                        buildDaysRadioListTile(2, "24 Feb 2023"),
+                        buildDaysRadioListTile(3, "25 Feb 2023"),
+                        buildDaysRadioListTile(4, "26 Feb 2023"),
+                      ],
                     ),
                   ),
                   const SizedBox(
@@ -288,7 +294,7 @@ class _EventsScreenState extends State<EventsScreen> {
               BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
                 if (state is EventsSuccess) {
                   List<EventModel> filteredEvents =
-                      runFilter(state.events, selectedPlace, selectedDay);
+                      runFilter(state.events, placeSelection, daySelection);
                   List<EventModel> searchedEvents =
                       runSearch(filteredEvents, eventsSearchQuery);
                   return ListView.builder(
@@ -325,7 +331,7 @@ class _EventsScreenState extends State<EventsScreen> {
                         }
                       }
                       List<EventModel> filteredFavEvents = runFilter(
-                          favouriteEvents, selectedPlace, selectedDay);
+                          favouriteEvents, placeSelection, daySelection);
                       List<EventModel> searchedFavEvents =
                           runSearch(filteredFavEvents, eventsSearchQuery);
                       return ListView.builder(
@@ -379,10 +385,15 @@ class _EventsScreenState extends State<EventsScreen> {
                 child: Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.height * 0.15,
-                    child: Image.network(
+                    child: FadeInImage(
+                      image: NetworkImage(event.imageUrl.toString()),
+                      placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  /*Image.network(
                       event.imageUrl.toString(),
                       fit: BoxFit.cover,
-                    )),
+                    )*/),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -531,7 +542,7 @@ class _EventsScreenState extends State<EventsScreen> {
         },
         child: Container(
           height: 40,
-          width: 90,
+          width: 110,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
@@ -542,7 +553,7 @@ class _EventsScreenState extends State<EventsScreen> {
               day,
               style: TextStyle(
                 color: (index == selectedDay) ? Colors.blue : Colors.white,
-                fontSize: 15,
+                fontSize: 13,
               ),
             ),
           ),

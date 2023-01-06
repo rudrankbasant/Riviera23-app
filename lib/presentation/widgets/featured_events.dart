@@ -44,15 +44,20 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             height: 250,
                             width: 200,
-                            child: Image.network(
-                              item.imageUrl.toString(),
+                           child: FadeInImage(
+                              image: NetworkImage(item.imageUrl.toString()),
+                              placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
                               fit: BoxFit.cover,
                             ),
+                           /* child: Image.network(
+                              item.imageUrl.toString(),
+                              fit: BoxFit.cover,
+                            )*/
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
@@ -63,7 +68,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(
