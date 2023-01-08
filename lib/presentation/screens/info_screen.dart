@@ -46,7 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                 )),
             bottom: const TabBar(
-              tabs: [Tab(text: "FAQ"), Tab(text: "Contact Us")],
+              tabs: [Tab(text: "Info"), Tab(text: "Contact Us")],
             ),
           ),
           body: TabBarView(

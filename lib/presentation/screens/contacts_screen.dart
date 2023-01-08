@@ -61,7 +61,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                                   .height *
                                               0.15,
                                           child: Image.network(
-                                            "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
+                                            teamMember.url.toString(),
                                             fit: BoxFit.cover,
                                           )),
                                     ),
