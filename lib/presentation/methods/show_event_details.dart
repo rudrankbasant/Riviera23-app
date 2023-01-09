@@ -56,7 +56,7 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Text(
-                        event.name.toString(),
+                        event.name.toString().toUpperCase(),
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 25,
@@ -64,148 +64,156 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                             fontFamily: GoogleFonts.sora.toString()),
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Stack(
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (rect) {
-                            return const LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.center,
-                              colors: [Colors.black, Colors.transparent],
-                            ).createShader(
-                                Rect.fromLTRB(0, 0, rect.width, rect.height));
-                          },
-                          blendMode: BlendMode.dstOut,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width,
-                              child: FadeInImage(image: NetworkImage(event.imageUrl.toString()), placeholder: NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"), fit: BoxFit.cover,),
-
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          SizedBox(
+                            height: 10,
                           ),
-                        ),
-                        Positioned(
-                          left: 0.0,
-                          bottom: 0.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (state is FavouriteSuccess) {
-                                var newList = favouritesIDs;
-                                favouritesIDs.contains(event.id)
-                                    ? newList.remove(event.id)
-                                    : newList.add(event.id.toString());
-                                FavouriteModel newFavouriteModel =
-                                    FavouriteModel(
-                                        uniqueUserId:
-                                            state.favouriteList.uniqueUserId,
-                                        favouriteEventIds: newList);
-                                BlocProvider.of<FavouriteCubit>(context)
-                                    .upDateFavourites(newFavouriteModel);
-                              }
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
-                              child: isFavourite
-                                  ? Icon(
-                                      Icons.favorite_rounded,
-                                      color: Colors.white,
-                                      size: 25,
-                                    )
-                                  : Icon(
-                                      Icons.favorite_outline,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
+                          Stack(
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (rect) {
+                                  return const LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.center,
+                                    colors: [Colors.black, Colors.transparent],
+                                  ).createShader(
+                                      Rect.fromLTRB(0, 0, rect.width, rect.height));
+                                },
+                                blendMode: BlendMode.dstOut,
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height * 0.4,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: FadeInImage(image: NetworkImage(event.imageUrl.toString()), placeholder: NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"), fit: BoxFit.cover,),
+
+                                ),
+                              ),
+                              Positioned(
+                                left: 0.0,
+                                bottom: 0.0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (state is FavouriteSuccess) {
+                                      var newList = favouritesIDs;
+                                      favouritesIDs.contains(event.id)
+                                          ? newList.remove(event.id)
+                                          : newList.add(event.id.toString());
+                                      FavouriteModel newFavouriteModel =
+                                      FavouriteModel(
+                                          uniqueUserId:
+                                          state.favouriteList.uniqueUserId,
+                                          favouriteEventIds: newList);
+                                      BlocProvider.of<FavouriteCubit>(context)
+                                          .upDateFavourites(newFavouriteModel);
+                                    }
+                                  },
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                      child: state is FavouriteLoading? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(color: Colors.white,)) :(isFavourite
+                                          ? Icon(
+                                        Icons.favorite_rounded,
+                                        color: Colors.white,
+                                        size: 25,
+                                      )
+                                          : Icon(
+                                        Icons.favorite_outline,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ))
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              "EVENT ON ${parseDate(event.start)}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 25,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        "EVENT ON ${parseDate(event.start)}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              "${parseTime(event.start)} at ${event.loc}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 14,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "ABOUT",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            child: Text(
+                              event.description.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "INSTRUCTIONS",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            child: Text(
+                              event.instructions.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        "${parseTime(event.start)} at ${event.loc}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 14,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Text(
-                        "ABOUT",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                      child: Text(
-                        event.description.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 15,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Text(
-                        "INSTRUCTIONS",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                      child: Text(
-                        event.instructions.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 15,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
-                    ),
+                    )
                   ],
                 ),
+
               );
             } else if (state is FavouriteFailed) {
               return Center(

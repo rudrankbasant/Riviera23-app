@@ -29,8 +29,8 @@ class CustomBottomNavBarItem extends StatelessWidget {
         children: <Widget>[
           index == 2
               ? (selectedIndex == index
-                  ? SizedBox(height: 2)
-                  : SizedBox(
+                  ? const SizedBox(height: 2)
+                  : const SizedBox(
                       height: 3,
                     ))
               : const SizedBox(height: 0),
@@ -71,7 +71,7 @@ class CustomBottomNavBarItem extends StatelessWidget {
                       fontFamily: index == 2
                           ? GoogleFonts.getFont('Bad Script').toString()
                           : GoogleFonts.getFont('Sora').fontFamily))
-              : SizedBox(
+              : const SizedBox(
                   height: 0,
                 ),
         ],

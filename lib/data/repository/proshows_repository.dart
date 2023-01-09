@@ -20,7 +20,7 @@ class ProShowsRepository {
       debugPrint(response.body);
       final json = jsonDecode(response.body) as List;
       final result = json.map((e) => EventModel.fromJson(e)).toList();
-      return result.where((element) => element.eventType == "proshow").toList();
+      return result.where((element) => element.eventType?.toLowerCase() == "proshow").toList();
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

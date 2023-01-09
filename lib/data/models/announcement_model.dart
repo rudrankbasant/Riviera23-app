@@ -14,12 +14,14 @@ class AnnouncementList {
 
 class Announcement {
   final int id;
+  final String date;
   final String heading;
   final String desc;
   final String? url;
 
   Announcement({
     required this.id,
+    required this.date,
     required this.heading,
     required this.desc,
     this.url,
@@ -28,6 +30,7 @@ class Announcement {
   factory Announcement.fromMap(Map<String, dynamic> map) {
     return Announcement(
       id: map['id'],
+      date: map['date'],
       heading: map['heading'],
       desc: map['desc'],
       url: map['url'],

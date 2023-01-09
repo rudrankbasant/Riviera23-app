@@ -387,7 +387,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     width: MediaQuery.of(context).size.height * 0.15,
                     child: FadeInImage(
                       image: NetworkImage(event.imageUrl.toString()),
-                      placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                      placeholder:  NetworkImage(event.imageUrl.toString()),
                       fit: BoxFit.cover,
                     ),
                   /*Image.network(
@@ -395,40 +395,50 @@ class _EventsScreenState extends State<EventsScreen> {
                       fit: BoxFit.cover,
                     )*/),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(event.name.toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.sora.toString())),
-                  Text(parseDate(event.start),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  Text(event.loc.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.normal,
-                      )),
-                  SizedBox(height: 10),
-                  Text(
-                    event.description.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.normal,
+              Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                    child: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(event.name.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: GoogleFonts.sora.toString())),
+                          Text(parseDate(event.start),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.normal,
+                              )),
+                          Text(event.loc.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.normal,
+                              )),
+                          SizedBox(height: 10),
+                          Text(
+                                event.description.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.fade,
+                            softWrap: false,
+
+                          ),
+                        ],
+                      ),
                     ),
-                    overflow: TextOverflow.fade,
-                  ),
-                ],
+                ),
               )
             ],
           ),

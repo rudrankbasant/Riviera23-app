@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/widgets/custom_dialog_box.dart';
 
-import '../presentation/methods/showSnackBar.dart';
+import '../presentation/methods/custom_flushbar.dart';
+import '../presentation/methods/snack_bar.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
@@ -85,6 +86,11 @@ class AuthService {
       }
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        showCustomFlushbar("No user found", "This email address has not been registered.", context);
+      } else if (e.code == 'wrong-password') {
+        showCustomFlushbar("Authentication Failed!", "Wrong Password provided for the current email.", context);
+      }
       showSnackBar(context, e.message!);
       return null;// Displaying the error message
     }
@@ -94,16 +100,8 @@ class AuthService {
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      //showSnackBar(context, 'Email verification sent!');
-      //CustomDialogBox(title: "Email Verification!",  descriptions: 'Email Verification Sent',text: 'Check your email for verification link in spam folder as well',);
-      Flushbar(
-        margin: const EdgeInsets.all(8),
-        borderRadius: BorderRadius.circular(10),
-        flushbarPosition: FlushbarPosition.TOP,
-        title:  "Email Verification Sent!",
-        message:  "Please check your inbox or spam folder for verification link",
-        duration:  const Duration(seconds: 3),
-      ).show(context);
+      showCustomFlushbar("Email Verification Sent!","Please check your inbox or spam folder for verification link", context );
+
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Display error message
     }
@@ -126,8 +124,9 @@ class AuthService {
       return firebaseCredential;
 
     } on FirebaseAuthException catch (e) {
-      return null;
       showSnackBar(context, e.message!); // Displaying the error message
+      return null;
+
     }
   }
 
@@ -208,4 +207,6 @@ class AuthService {
       return false;
     }
   }
+
+
 }

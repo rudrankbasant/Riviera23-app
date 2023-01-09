@@ -17,7 +17,7 @@ class SponsorsCubit extends Cubit<SponsorsState> {
 
       DocumentSnapshot timelineSnapshot = await firestore
           .collection('sponsors')
-          .doc('//giveid')
+          .doc('KacMT6fDwjQyvYWtU0EP')
           .get();
 
       Map<String, dynamic> data =

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
+import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/featured/featured_cubit.dart';
@@ -108,7 +109,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EventsScreen(0)));
+                              builder: (context) => BottomNavScreen(0)));
                     },
                     child: Text(
                       "See More",
@@ -146,7 +147,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 300,
               ),
               CircularProgressIndicator(),
             ],

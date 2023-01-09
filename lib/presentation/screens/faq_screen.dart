@@ -89,72 +89,83 @@ class _FAQScreenState extends State<FAQScreen> {
                           });
                     }
 
-                    return Text(
-                      "Loading Sponsors",
-                      style: TextStyle(color: AppColors.secondaryColor),
+                    return Center(
+                      child: Text(
+                        "Sponsors Will appear here",
+                        style: TextStyle(color: AppColors.secondaryColor),
+                      ),
                     );
                   },
                 ),
-                SizedBox(
-                  height: 16,
+                const SizedBox(
+                  height: 20,
                 ),
+                Text("FAQ",
+                    style: AppTheme.appTheme.textTheme.headline6),
                 BlocBuilder<FaqCubit, FaqState>(
                   builder: (context, state) {
                     if (state is FaqSuccess) {
+                      state.faqList.sort((a,b) => a.id.compareTo(b.id));
+                      var sortedFaqList = state.faqList;
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: state.faqList.length,
+                          itemCount: sortedFaqList.length,
                           itemBuilder: (context, position) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.cardBgColor,
-                              ),
-                              child: ExpansionTile(
-                                  collapsedIconColor: AppColors.secondaryColor,
-                                  iconColor: AppColors.secondaryColor,
-                                  backgroundColor: AppColors.cardBgColor,
-                                  title: Row(
+                            var faqQuestion = sortedFaqList[position];
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.cardBgColor,
+                                ),
+                                child: ExpansionTile(
+                                    collapsedIconColor: AppColors.secondaryColor,
+                                    iconColor: AppColors.secondaryColor,
+                                    backgroundColor: AppColors.cardBgColor,
+                                    title: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.circle,
+                                          color: AppColors.secondaryColor,
+                                          size: 10,
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            faqQuestion.question,
+                                            style: TextStyle(
+                                                color: AppColors.secondaryColor,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                     children: [
-                                      Icon(
-                                        Icons.circle,
-                                        color: AppColors.secondaryColor,
-                                        size: 10,
-                                      ),
-                                      SizedBox(
-                                        width: 7,
-                                      ),
-                                      Text(
-                                        "${state.faqList[position].question}",
-                                        style: TextStyle(
-                                            color: AppColors.secondaryColor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding:
-                                          EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.cardBgColor,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            20, 0, 0, 0),
-                                        child: Text(
-                                          state.faqList[position].answer,
-                                          style: TextStyle(
-                                              color: AppColors.secondaryColor,
-                                              fontWeight: FontWeight.w300),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.cardBgColor,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 0, 0, 0),
+                                          child: Text(
+                                            faqQuestion.answer,
+                                            style: TextStyle(
+                                                color: AppColors.secondaryColor,
+                                                fontWeight: FontWeight.w300),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 12,
-                                    )
-                                  ]),
+                                      const SizedBox(
+                                        height: 12,
+                                      )
+                                    ]),
+                              ),
                             );
                           });
                     }
@@ -163,7 +174,7 @@ class _FAQScreenState extends State<FAQScreen> {
                         style: TextStyle(color: AppColors.secondaryColor));
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
               ],

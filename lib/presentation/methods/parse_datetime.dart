@@ -5,7 +5,7 @@ String parseDate(String? datetime) {
     DateTime date = DateTime.parse(datetime);
     var formatter = DateFormat("dd MMM, yyyy");
     var formatted = formatter.format(date);
-    return formatted.toString();
+    return formatted.toString().toUpperCase();
   }
   return "Dates to be declared";
 }

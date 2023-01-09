@@ -66,37 +66,39 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
           const SizedBox(
             height: 5,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'Use ',
-                style: TextStyle(
-                  color: AppColors.secondaryColor,
-                  fontSize: 15,
-                  fontFamily: GoogleFonts.sora.toString(),
-                  fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            child: Container(
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Use ',
+                  style: TextStyle(
+                    color: AppColors.secondaryColor,
+                    fontSize: 15,
+                    fontFamily: GoogleFonts.sora.toString(),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: '#riviera23',
+                        style: TextStyle(
+                          color: AppColors.highlightColor,
+                          fontSize: 15,
+                          fontFamily: GoogleFonts.sora.toString(),
+                          fontWeight: FontWeight.bold,
+                        )),
+                    TextSpan(
+                        text:
+                            ' on your instagram to get featured on this timeline.',
+                        style: TextStyle(
+                          color: AppColors.secondaryColor,
+                          fontSize: 15,
+                          fontFamily: GoogleFonts.sora.toString(),
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ],
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: '#riviera23',
-                      style: TextStyle(
-                        color: AppColors.highlightColor,
-                        fontSize: 15,
-                        fontFamily: GoogleFonts.sora.toString(),
-                        fontWeight: FontWeight.bold,
-                      )),
-                  TextSpan(
-                      text:
-                          ' on your instagram to get featured on this timeline.',
-                      style: TextStyle(
-                        color: AppColors.secondaryColor,
-                        fontSize: 15,
-                        fontFamily: GoogleFonts.sora.toString(),
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
               ),
             ),
           ),

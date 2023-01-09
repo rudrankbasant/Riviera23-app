@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
+import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
 import 'package:riviera23/service/auth.dart';
 
@@ -72,16 +73,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fit: BoxFit.fill,
                                 image:
                                     NetworkImage(user.photoURL.toString())))),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(user.displayName.toString(),
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontFamily:
-                                    GoogleFonts.getFont("Sora").fontFamily)),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(user.displayName.toString(),
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                  fontFamily:
+                                      GoogleFonts.getFont("Sora").fontFamily)),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -110,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             GestureDetector(
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => EventsScreen(1)));
+                    MaterialPageRoute(builder: (context) => BottomNavScreen(1)));
               },
               child: ProfileInfo(
                   imgPath: "assets/favourite_icon.svg",

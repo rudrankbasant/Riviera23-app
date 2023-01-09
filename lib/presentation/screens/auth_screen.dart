@@ -35,7 +35,7 @@ class _AuthScreenState extends State<AuthScreen> {
           context: context,
         ).then((value){
           if(value!=null){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const BottomNavScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavScreen(null)));
           }
         });
 
@@ -243,7 +243,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                            const BottomNavScreen())));
+                            BottomNavScreen(null))));
                   },
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 5),

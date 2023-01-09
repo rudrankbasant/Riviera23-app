@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           // Status bar color
@@ -100,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CarouselWithDotsPage(imgList: imgList),
               SizedBox(height: 10),
-              FeaturedEvents(imgList: imgList)
+              FeaturedEvents(imgList: imgList),
+
             ],
           ),
         ),

@@ -116,6 +116,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
           child: CircularProgressIndicator(),
         );
       }
-    });
+    }
+    );
+
   }
 }

@@ -37,12 +37,14 @@ class _ContactScreenState extends State<ContactScreen> {
                 BlocBuilder<TeamCubit, TeamState>(
                   builder: (context, state) {
                     if (state is TeamSuccess) {
+                      state.teamList.sort((a, b) => a.id.compareTo(b.id));
+                      var sortedTeamList = state.teamList;
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: state.teamList.length,
+                          itemCount: sortedTeamList.length,
                           itemBuilder: (context, position) {
-                            var teamMember = state.teamList[position];
+                            var teamMember = sortedTeamList[position];
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: Card(
@@ -65,27 +67,29 @@ class _ContactScreenState extends State<ContactScreen> {
                                             fit: BoxFit.cover,
                                           )),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(teamMember.name.toString(),
-                                            style: TextStyle(
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(teamMember.name.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: GoogleFonts.sora
+                                                      .toString())),
+                                          Text(teamMember.designation,
+                                              style: const TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: GoogleFonts.sora
-                                                    .toString())),
-                                        Text(teamMember.designation,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.normal,
-                                            )),
-                                      ],
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.normal,
+                                              )),
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
@@ -108,12 +112,14 @@ class _ContactScreenState extends State<ContactScreen> {
                 BlocBuilder<ContactsCubit, ContactsState>(
                   builder: (context, state) {
                     if (state is ContactsSuccess) {
+                      state.contactsList.sort((a, b) => a.id.compareTo(b.id));
+                      var sortedContactList = state.contactsList;
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: state.contactsList.length,
+                          itemCount: sortedContactList.length,
                           itemBuilder: (context, position) {
-                            var contact = state.contactsList[position];
+                            var contact = sortedContactList[position];
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: Card(
