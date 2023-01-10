@@ -25,14 +25,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
+        automaticallyImplyLeading: false,
+        /*systemOverlayStyle: const SystemUiOverlayStyle(
           // Status bar color
           statusBarColor: Colors.transparent,
           // Status bar brightness (optional)
           statusBarIconBrightness: Brightness.dark,
           // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
-        ),
+        )*/
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
@@ -113,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             GestureDetector(
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => BottomNavScreen(1)));
+                    MaterialPageRoute(builder: (context) => EventsScreen(1)));
               },
               child: ProfileInfo(
                   imgPath: "assets/favourite_icon.svg",

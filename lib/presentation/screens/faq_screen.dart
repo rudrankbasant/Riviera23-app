@@ -38,51 +38,33 @@ class _FAQScreenState extends State<FAQScreen> {
                 BlocBuilder<SponsorsCubit, SponsorsState>(
                   builder: (context, state) {
                     if (state is SponsorsSuccess) {
+                      var priorList = state.sponsorsList.where((element) => element.prior==true).toList();
+                      priorList.sort((a, b) => a.id.compareTo(b.id));
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: state.sponsorsList.length,
+                          primary: false,
+                          itemCount: priorList.length,
                           itemBuilder: (context, position) {
-                            var sponsor = state.sponsorsList[position];
+                            var sponsor = priorList[position];
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: Card(
                                 color: AppColors.cardBgColor,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.2,
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.15,
-                                          child: Image.network(
-                                            sponsor.url.toString(),
-                                            fit: BoxFit.cover,
-                                          )),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(sponsor.name.toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: GoogleFonts.sora
-                                                    .toString())),
-                                      ],
-                                    )
-                                  ],
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: SizedBox(
+                                      height: MediaQuery.of(context)
+                                          .size
+                                          .height *
+                                          0.2,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width * 0.8,
+                                      child: Image.network(
+                                        sponsor.url.toString(),
+                                        fit: BoxFit.cover,
+                                      )),
                                 ),
                               ),
                             );
@@ -95,6 +77,57 @@ class _FAQScreenState extends State<FAQScreen> {
                         style: TextStyle(color: AppColors.secondaryColor),
                       ),
                     );
+                  },
+                ),
+                BlocBuilder<SponsorsCubit, SponsorsState>(
+                  builder: (context, state) {
+                    if (state is SponsorsSuccess) {
+                      print("mainlist: ${state.sponsorsList.toString()}");
+                      var regularList = state.sponsorsList.where((element) => element.prior==false).toList();
+                      regularList.sort((a, b) => a.id.compareTo(b.id));
+                      print("size of reg list: ${regularList.length}");
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: AppColors.cardBgColor
+                          ),
+                          child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                              itemCount: regularList.length,
+                              itemBuilder: (BuildContext ctx, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.2,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.2,
+                                    child: FadeInImage(
+                                      image: NetworkImage(regularList[index].url.toString()),
+                                      placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              }),
+                        ),
+                      );
+                    } else {
+                      return  SizedBox(height: 0);
+                    }
                   },
                 ),
                 const SizedBox(

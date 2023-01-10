@@ -14,6 +14,7 @@ import '../../cubit/favourites/favourite_cubit.dart';
 import '../../service/auth.dart';
 import '../widgets/carousel_with_dots_page.dart';
 import '../widgets/featured_events.dart';
+import '../widgets/on_going_events.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -56,14 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          // Status bar color
-          statusBarColor: Colors.transparent,
-          // Status bar brightness (optional)
-          statusBarIconBrightness: Brightness.dark,
-          // For Android (dark icons)
-          statusBarBrightness: Brightness.light, // For iOS (dark icons)
-        ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
@@ -95,14 +89,19 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         color: Theme.of(context).primaryColor,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CarouselWithDotsPage(imgList: imgList),
-              SizedBox(height: 10),
-              FeaturedEvents(imgList: imgList),
-
-            ],
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CarouselWithDotsPage(imgList: imgList),
+                SizedBox(height: 10),
+                FeaturedEvents(imgList: imgList),
+                SizedBox(height: 1),
+                OnGoingEvents()
+              ],
+            ),
           ),
         ),
       ),

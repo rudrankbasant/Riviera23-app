@@ -16,11 +16,13 @@ class Sponsor {
   final int id;
   final String name;
   final String? url;
+  final bool prior;
 
   Sponsor({
     required this.id,
     required this.name,
     this.url,
+    required this.prior
   });
 
   factory Sponsor.fromMap(Map<String, dynamic> map) {
@@ -28,6 +30,7 @@ class Sponsor {
       id: map['id'],
       name: map['name'],
       url: map['url'],
+      prior: map['prior']
     );
   }
 }

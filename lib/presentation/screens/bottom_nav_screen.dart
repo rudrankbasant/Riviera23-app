@@ -23,22 +23,28 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
-  final List<Widget> _fragments = <Widget>[
-    HomeScreen(),
-    EventsScreen(0),
-    HashtagsScreen(),
-    InfoScreen(),
-    ProfileScreen()
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _fragments = <Widget>[
+      HomeScreen(),
+      EventsScreen(widget.eventScreenIndex ?? 0),
+      HashtagsScreen(),
+      InfoScreen(),
+      ProfileScreen()
+    ];
+
+    if(widget.eventScreenIndex!=null){setState(() {
+      selectedIndex = 1;
+    });}
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: AppColors.primaryColor,
             resizeToAvoidBottomInset: false,
             body: Center(
-              child: widget.eventScreenIndex!=null? EventsScreen(widget.eventScreenIndex)  : _fragments[selectedIndex],
+              child: _fragments[selectedIndex],
             ),
             bottomNavigationBar: Container(
               color: Colors.transparent,

@@ -22,14 +22,7 @@ class _InfoScreenState extends State<InfoScreen> {
           backgroundColor: AppColors.primaryColor,
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              // Status bar color
-              statusBarColor: Colors.transparent,
-              // Status bar brightness (optional)
-              statusBarIconBrightness: Brightness.dark,
-              // For Android (dark icons)
-              statusBarBrightness: Brightness.light, // For iOS (dark icons)
-            ),
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: false,

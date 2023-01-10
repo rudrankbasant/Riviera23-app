@@ -1,8 +1,14 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:another_flushbar/flushbar.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/widgets/custom_dialog_box.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../presentation/methods/custom_flushbar.dart';
 import '../presentation/methods/snack_bar.dart';
@@ -130,66 +136,43 @@ class AuthService {
     }
   }
 
-  /*
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;*/
+  Future<dynamic> signInWithApple() async {
 
-  /* // Shared State for Widgets
-  Stream<User> user; // firebase user
-  Stream<Map<String, dynamic>> profile; // custom user data in Firestore
-  PublishSubject loading = PublishSubject();
-*/
-/*  // constructor
-  AuthService() {
-    user = Stream(_auth.authStateChanges());
+    // To prevent replay attacks with the credential returned from Apple, we
+    // include a nonce in the credential request. When signing in with
+    // Firebase, the nonce in the id token returned by Apple, is expected to
+    // match the sha256 hash of `rawNonce`.
 
-    profile = user.switchMap((User u) {
-      if (u != null) {
-        return _db
-            .collection('users')
-            .doc(u.uid)
-            .snapshots()
-            .map((snap) => snap.data);
-      } else {
-        return Observable.just({});
-      }
-    });
+    try {
+      final rawNonce = generateNonce();
+      final nonce = sha256ofString(rawNonce);
 
-  }*/
-/*
-  Future<FirebaseUser> googleSignIn() async {
-    // Start
-    loading.add(true);
+      // Request credential for the currently signed in Apple account.
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
 
-    // Step 1
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      // Create an `OAuthCredential` from the credential returned by Apple.
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
 
-    // Step 2
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    FirebaseUser user = await _auth.signInWithGoogle(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      // Sign in the user with Firebase. If the nonce we generated earlier does
+      // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+      UserCredential firebaseCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      return await firebaseCredential.user!.getIdToken(true);
 
-    // Step 3
-    updateUserData(user);
+    } catch (e) {
+      return null;
+    }
 
-    // Done
-    loading.add(false);
-    print("signed in " + user.displayName);
-    return user;
-  }*/
+  }
 
-  /*void updateUserData(FirebaseUser user) async {
-    DocumentReference ref = _db.collection('users').document(user.uid);
-
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now()
-    }, merge: true);
-  }*/
 
   Future<bool> signOut(BuildContext context) async {
     try {
@@ -207,6 +190,23 @@ class AuthService {
       return false;
     }
   }
+
+
+  String generateNonce([int length = 32]) {
+    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+
 
 
 }

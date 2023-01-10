@@ -4,34 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
-import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
-import '../../cubit/featured/featured_cubit.dart';
-import '../../cubit/featured/featured_state.dart';
+import '../../cubit/events/events_cubit.dart';
+import '../../cubit/events/events_state.dart';
+import '../../data/models/event_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
-import '../screens/events_screen.dart';
 
-class FeaturedEvents extends StatefulWidget {
-  List<String> imgList;
-
-  FeaturedEvents({required this.imgList});
-
+class OnGoingEvents extends StatefulWidget {
   @override
-  _FeaturedEventsState createState() => _FeaturedEventsState();
+  _OnGoingEventsState createState() => _OnGoingEventsState();
 }
 
-class _FeaturedEventsState extends State<FeaturedEvents> {
+class _OnGoingEventsState extends State<OnGoingEvents> {
   int _current = 0;
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
-      if (state is FeaturedSuccess) {
-        final List<Widget> imageSliders = state.featured
+    return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
+      if (state is EventsSuccess) {
+        List<EventModel> onGoingEvents =
+            state.events.where((element) => isGoingOn(element)).toList();
+        print("ongoing-- ${onGoingEvents.length}");
+        final List<Widget> imageSliders = onGoingEvents
             .map((item) => GestureDetector(
                   onTap: () {
                     showCustomBottomSheet(context, item);
@@ -48,11 +44,16 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                           SizedBox(
                             height: 250,
                             width: 200,
-                           child: FadeInImage(
+                            child: FadeInImage(
                               image: NetworkImage(item.imageUrl.toString()),
-                              placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                              placeholder: const NetworkImage(
+                                  "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
                               fit: BoxFit.cover,
                             ),
+                            /* child: Image.network(
+                              item.imageUrl.toString(),
+                              fit: BoxFit.cover,
+                            )*/
                           ),
                           const SizedBox(
                             height: 10,
@@ -90,7 +91,6 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   ),
                 ))
             .toList();
-
         return Column(
           children: [
             Padding(
@@ -98,7 +98,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("FEATURED EVENTS",
+                  Text("ONGOING EVENTS",
                       style: AppTheme.appTheme.textTheme.headline6),
                 ],
               ),
@@ -107,7 +107,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
               items: imageSliders,
               options: CarouselOptions(
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 5),
+                  autoPlayInterval: const Duration(seconds: 3),
                   enlargeCenterPage: false,
                   aspectRatio: 1 / 1,
                   viewportFraction: 0.5,
@@ -119,22 +119,29 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
             ),
           ],
         );
-      } else if (state is FeaturedError) {
+      } else if (state is EventsError) {
         return const Center(
           child: Text("Error! Couldn't load."),
         );
       } else {
-        return Center(
-          child: Column(
-            children: const [
-              SizedBox(
-                height: 300,
-              ),
-              CircularProgressIndicator(),
-            ],
-          ),
-        );
+        return Container();
       }
     });
+  }
+
+  bool isGoingOn(EventModel element) {
+    var currentDateTime = DateTime.now();
+    if (element.start != null && element.end != null) {
+      var startDateTime = DateTime.parse(element.start.toString());
+      var endDateTime = DateTime.parse(element.end.toString());
+      if (currentDateTime.isAfter(startDateTime) &&
+          currentDateTime.isBefore(endDateTime)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return false;
   }
 }

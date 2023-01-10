@@ -43,9 +43,6 @@ class _EventsScreenState extends State<EventsScreen> {
     _scaffoldKey.currentState!.openEndDrawer();
   }
 
-  void _applyEndDrawer() {
-    Navigator.of(context).pop();
-  }
 
   void _closeEndDrawer(bool applyFilter) {
     if(applyFilter){
@@ -92,7 +89,8 @@ class _EventsScreenState extends State<EventsScreen> {
           resizeToAvoidBottomInset: false,
           appBar: defaultAppBar
               ? AppBar(
-                  systemOverlayStyle: const SystemUiOverlayStyle(
+            automaticallyImplyLeading: false,
+                  /*systemOverlayStyle: const SystemUiOverlayStyle(
                     // Status bar color
                     statusBarColor: Colors.transparent,
                     // Status bar brightness (optional)
@@ -100,7 +98,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     // For Android (dark icons)
                     statusBarBrightness:
                         Brightness.light, // For iOS (dark icons)
-                  ),
+                  )*/
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   centerTitle: false,
@@ -152,7 +150,8 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                 )
               : AppBar(
-                  systemOverlayStyle: const SystemUiOverlayStyle(
+            automaticallyImplyLeading: false,
+                  /*systemOverlayStyle: const SystemUiOverlayStyle(
                     // Status bar color
                     statusBarColor: Colors.transparent,
                     // Status bar brightness (optional)
@@ -160,7 +159,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     // For Android (dark icons)
                     statusBarBrightness:
                         Brightness.light, // For iOS (dark icons)
-                  ),
+                  )*/
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   titleSpacing: 0.0,
