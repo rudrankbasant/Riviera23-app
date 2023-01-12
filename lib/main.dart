@@ -1,4 +1,4 @@
-
+import 'dart:io' show Platform;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,7 +14,7 @@ import 'package:riviera23/presentation/router/app_router.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
-import 'dart:io' show Platform;
+
 import 'cubit/events/events_cubit.dart';
 import 'cubit/featured/featured_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
@@ -32,23 +32,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
-
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  await FirebaseMessaging.instance
-      .setForegroundNotificationPresentationOptions(
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
     badge: true,
     sound: true,
   );
-
 
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
@@ -67,13 +62,12 @@ Future<void> main() async {
       importance: Importance.max,
     );
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -98,12 +92,9 @@ Future<void> main() async {
     });
   }
 
-
-
   print('User granted permission: ${settings.authorizationStatus}');
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
 
   //Setting SysemUIOverlay
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -113,7 +104,8 @@ Future<void> main() async {
   ));
 
 //Setting SystmeUIMode
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top]);
   runApp(MyApp());
 }
 

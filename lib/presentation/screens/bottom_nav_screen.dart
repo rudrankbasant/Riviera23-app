@@ -10,7 +10,6 @@ import 'home_screen.dart';
 import 'info_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
-
   int? eventScreenIndex;
 
   BottomNavScreen(this.eventScreenIndex);
@@ -24,7 +23,6 @@ class BottomNavScreen extends StatefulWidget {
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
 
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> _fragments = <Widget>[
@@ -35,9 +33,11 @@ class _BottomNavState extends State<BottomNavScreen> {
       ProfileScreen()
     ];
 
-    if(widget.eventScreenIndex!=null){setState(() {
-      selectedIndex = 1;
-    });}
+    if (widget.eventScreenIndex != null) {
+      setState(() {
+        selectedIndex = 1;
+      });
+    }
 
     return SafeArea(
         child: Scaffold(

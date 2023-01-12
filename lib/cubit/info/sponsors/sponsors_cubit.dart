@@ -21,13 +21,12 @@ class SponsorsCubit extends Cubit<SponsorsState> {
           .get();
 
       Map<String, dynamic> data =
-      timelineSnapshot.data() as Map<String, dynamic>;
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
       SponsorsList sponsorsListModel = SponsorsList.fromMap(data);
 
-      emit(SponsorsSuccess(
-          sponsorsList: sponsorsListModel.sponsorsList));
+      emit(SponsorsSuccess(sponsorsList: sponsorsListModel.sponsorsList));
     } catch (e) {
       emit(SponsorsFailed(error: e.toString()));
     }

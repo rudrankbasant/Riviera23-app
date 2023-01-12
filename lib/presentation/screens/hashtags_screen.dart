@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/Hashtag/Hashtag_state.dart';
@@ -122,8 +123,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                               caption: state.hashtags[itemIndex].caption,
                               imgUrl: state.hashtags[itemIndex].mediaUrl,
                               color: colorsList[itemIndex % 2],
-                              likeCount:
-                                  state.hashtags[itemIndex].likeCount,
+                              likeCount: state.hashtags[itemIndex].likeCount,
                               commentCount:
                                   state.hashtags[itemIndex].commentsCount,
                             ),
@@ -139,7 +139,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               }
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 200),
                   child: SpinKitThreeBounce(
                     color: AppColors.secondaryColor,
                     size: 30,
@@ -154,9 +154,13 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
   }
 
   void _launchURL(_url) async {
+    final Uri _uri = Uri.parse(_url);
     try {
-      await canLaunchUrl(_url);
-      await launchUrl(_url);
-    } catch (e) {}
+      await canLaunchUrl(_uri)
+          ? await launchUrl(_url)
+          : throw 'Could not launch $_uri';
+    } catch (e) {
+      showCustomFlushbar("Can't Open Link", "The link may be null or may have some issues.", context);
+    }
   }
 }

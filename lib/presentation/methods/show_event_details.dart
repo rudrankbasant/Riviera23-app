@@ -79,15 +79,21 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.center,
                                     colors: [Colors.black, Colors.transparent],
-                                  ).createShader(
-                                      Rect.fromLTRB(0, 0, rect.width, rect.height));
+                                  ).createShader(Rect.fromLTRB(
+                                      0, 0, rect.width, rect.height));
                                 },
                                 blendMode: BlendMode.dstOut,
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height * 0.4,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.4,
                                   width: MediaQuery.of(context).size.width,
-                                  child: FadeInImage(image: NetworkImage(event.imageUrl.toString()), placeholder: NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"), fit: BoxFit.cover,),
-
+                                  child: FadeInImage(
+                                    image:
+                                        NetworkImage(event.imageUrl.toString()),
+                                    placeholder: NetworkImage(
+                                        "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               Positioned(
@@ -101,28 +107,35 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                                           ? newList.remove(event.id)
                                           : newList.add(event.id.toString());
                                       FavouriteModel newFavouriteModel =
-                                      FavouriteModel(
-                                          uniqueUserId:
-                                          state.favouriteList.uniqueUserId,
-                                          favouriteEventIds: newList);
+                                          FavouriteModel(
+                                              uniqueUserId: state
+                                                  .favouriteList.uniqueUserId,
+                                              favouriteEventIds: newList);
                                       BlocProvider.of<FavouriteCubit>(context)
                                           .upDateFavourites(newFavouriteModel);
                                     }
                                   },
                                   child: Padding(
-                                      padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
-                                      child: state is FavouriteLoading? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(color: Colors.white,)) :(isFavourite
-                                          ? Icon(
-                                        Icons.favorite_rounded,
-                                        color: Colors.white,
-                                        size: 25,
-                                      )
-                                          : Icon(
-                                        Icons.favorite_outline,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ))
-                                  ),
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                      child: state is FavouriteLoading
+                                          ? SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                              ))
+                                          : (isFavourite
+                                              ? Icon(
+                                                  Icons.favorite_rounded,
+                                                  color: Colors.white,
+                                                  size: 25,
+                                                )
+                                              : Icon(
+                                                  Icons.favorite_outline,
+                                                  color: Colors.white,
+                                                  size: 25,
+                                                ))),
                                 ),
                               ),
                             ],
@@ -213,7 +226,6 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                     )
                   ],
                 ),
-
               );
             } else if (state is FavouriteFailed) {
               return Center(

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_state.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
@@ -117,8 +118,18 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
           child: Text("Error! Couldn't load."),
         );
       } else {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 200,
+              ),
+              SpinKitThreeBounce(
+                color: AppColors.secondaryColor,
+                size: 30,
+              ),
+            ],
+          ),
         );
       }
     });

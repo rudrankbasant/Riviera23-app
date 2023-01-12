@@ -30,15 +30,16 @@ class _AuthScreenState extends State<AuthScreen> {
   void loginUser() {
     AuthService(FirebaseAuth.instance)
         .loginWithEmail(
-          email: emailController.text,
-          password: passwordController.text,
-          context: context,
-        ).then((value){
-          if(value!=null){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavScreen(null)));
-          }
-        });
-
+      email: emailController.text,
+      password: passwordController.text,
+      context: context,
+    )
+        .then((value) {
+      if (value != null) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => BottomNavScreen(null)));
+      }
+    });
   }
 
   @override
@@ -61,252 +62,253 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                ),
-                Image.asset("assets/riviera_icon.png"),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text("WELCOME TO RIVIERA'23",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: GoogleFonts.sora.toString(),
-                      )),
-                ),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        label: Text(
-                          "Email",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(7)),
-                        ),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1),
-                            borderRadius: BorderRadius.all(Radius.circular(7))),
-                        hintText: 'Email',
-                      ),
-                    )),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      controller: passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        label: Text(
-                          "Password",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(7)),
-                        ),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1),
-                            borderRadius: BorderRadius.all(Radius.circular(7))),
-                        hintText: 'Password',
-                      ),
-                    )),
-                Visibility(
-                  visible: showConfirmPassword,
-                  child: Padding(
+            Expanded(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                  Image.asset("assets/riviera_icon.png"),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text("WELCOME TO RIVIERA'23",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: GoogleFonts.sora.toString(),
+                        )),
+                  ),
+                  Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                       child: TextField(
                         style: const TextStyle(color: Colors.white),
-                        controller: cpasswordController,
-                        keyboardType: TextInputType.visiblePassword,
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           label: Text(
-                            "Confirm Password",
+                            "Email",
                             style: TextStyle(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1),
+                            borderSide: BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.white, width: 1),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(7))),
-                          hintText: 'Confirm Password',
+                              borderRadius: BorderRadius.all(Radius.circular(7))),
+                          hintText: 'Email',
                         ),
                       )),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (emailController.text.trim().isNotEmpty &&
-                        passwordController.text.trim().isNotEmpty) {
-                      if (showConfirmPassword) {
-                        if (cpasswordController.text.trim().isNotEmpty) {
-                          if (passwordController.text.trim() ==
-                              cpasswordController.text.trim()) {
-                            signUpUser();
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                      child: TextField(
+                        style: const TextStyle(color: Colors.white),
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: const InputDecoration(
+                          label: Text(
+                            "Password",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 1),
+                              borderRadius: BorderRadius.all(Radius.circular(7))),
+                          hintText: 'Password',
+                        ),
+                      )),
+                  Visibility(
+                    visible: showConfirmPassword,
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        child: TextField(
+                          style: const TextStyle(color: Colors.white),
+                          controller: cpasswordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: const InputDecoration(
+                            label: Text(
+                              "Confirm Password",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 1),
+                              borderRadius: BorderRadius.all(Radius.circular(7)),
+                            ),
+                            border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.white, width: 1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7))),
+                            hintText: 'Confirm Password',
+                          ),
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (emailController.text.trim().isNotEmpty &&
+                          passwordController.text.trim().isNotEmpty) {
+                        if (showConfirmPassword) {
+                          if (cpasswordController.text.trim().isNotEmpty) {
+                            if (passwordController.text.trim() ==
+                                cpasswordController.text.trim()) {
+                              signUpUser();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Passwords do not match"),
+                                ),
+                              );
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Passwords do not match"),
+                                content: Text("Please enter confirm password"),
                               ),
                             );
                           }
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Please enter confirm password"),
-                            ),
-                          );
+                          loginUser();
                         }
                       } else {
-                        loginUser();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Please enter email and password"),
+                          ),
+                        );
                       }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Please enter email and password"),
-                        ),
-                      );
-                    }
-                  },
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: Color(0xff466FFF),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              showConfirmPassword
-                                  ? Text(
-                                      "Sign Up",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    )
-                                  : Text(
-                                      "Sign In",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                            ],
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: const Color(0xff466FFF),
                           ),
-                        ),
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                  child: Row(children: <Widget>[
-                    Expanded(
-                        child: Divider(
-                      color: Colors.grey,
-                    )),
-                    Text("OR",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                showConfirmPassword
+                                    ? const Text(
+                                        "Sign Up",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : const Text(
+                                        "Sign In",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          ),
                         )),
-                    Expanded(
-                        child: Divider(
-                      color: Colors.grey,
-                    )),
-                  ]),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    AuthService(FirebaseAuth.instance)
-                        .signInWithGoogle(context)
-                    .then((value) => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                            BottomNavScreen(null))));
-                  },
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset("assets/google_logo.svg"),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              const Text(
-                                "Continue with Google",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                    child: Row(children: const <Widget>[
+                      Expanded(
+                          child: Divider(
+                        color: Colors.grey,
                       )),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7),
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset("assets/apple_logo.svg"),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              const Text(
-                                "Continue with Apple",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      Text("OR",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          )),
+                      Expanded(
+                          child: Divider(
+                        color: Colors.grey,
                       )),
-                ),
-              ],
+                    ]),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      AuthService(FirebaseAuth.instance)
+                          .signInWithGoogle(context)
+                          .then((value) => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BottomNavScreen(null))));
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset("assets/google_logo.svg"),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Continue with Google",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset("assets/apple_logo.svg"),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Continue with Apple",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             ),
+
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -314,7 +316,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 });
               },
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -327,14 +329,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           showConfirmPassword
-                              ? Text(
+                              ? const Text(
                                   "Already have an account? Login",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 )
-                              : Text(
+                              : const Text(
                                   "Don't have an account? Sign Up",
                                   style: TextStyle(
                                     color: Colors.white,

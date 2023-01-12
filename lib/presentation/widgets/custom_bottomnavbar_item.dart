@@ -42,11 +42,14 @@ class CustomBottomNavBarItem extends StatelessWidget {
                         height: 50,
                         width: 120,
                         fit: BoxFit.scaleDown)
-                    : Image.asset(imgPath,
-                        color: AppColors.secondaryColor,
-                        height: 40,
-                        width: 90,
-                        fit: BoxFit.scaleDown))
+                    : Padding(
+                      padding: const EdgeInsets.only(top: 7),
+                      child: Image.asset(imgPath,
+                          color: AppColors.secondaryColor,
+                          height: 40,
+                          width: 90,
+                          fit: BoxFit.scaleDown),
+                    ))
                 : (selectedIndex == index
                     ? SvgPicture.asset(imgPath,
                         color: AppColors.highlightColor,

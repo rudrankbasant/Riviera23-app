@@ -2,16 +2,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
-import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/featured/featured_cubit.dart';
 import '../../cubit/featured/featured_state.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
-import '../screens/events_screen.dart';
 
 class FeaturedEvents extends StatefulWidget {
   List<String> imgList;
@@ -48,9 +47,10 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                           SizedBox(
                             height: 250,
                             width: 200,
-                           child: FadeInImage(
+                            child: FadeInImage(
                               image: NetworkImage(item.imageUrl.toString()),
-                              placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                              placeholder: const NetworkImage(
+                                  "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -64,6 +64,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                                 color: AppColors.highlightColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(
                             height: 5,
@@ -109,7 +110,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 5),
                   enlargeCenterPage: false,
-                  aspectRatio: 1 / 1,
+                  aspectRatio: 1.2,
                   viewportFraction: 0.5,
                   onPageChanged: (index, reason) {
                     setState(() {
@@ -126,11 +127,14 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
       } else {
         return Center(
           child: Column(
-            children: const [
-              SizedBox(
+            children: [
+              const SizedBox(
                 height: 300,
               ),
-              CircularProgressIndicator(),
+              SpinKitThreeBounce(
+                color: AppColors.secondaryColor,
+                size: 30,
+              ),
             ],
           ),
         );

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../presentation/methods/snack_bar.dart';
 
@@ -14,8 +13,8 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthLoading());
 
   FirebaseAuth _auth = FirebaseAuth.instance;
-  User get user => _auth.currentUser!;
 
+  User get user => _auth.currentUser!;
 
   void checkAlreadySignedIn() async {
     try {
@@ -32,7 +31,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-
   void signUpWithEmail({
     required String email,
     required String password,
@@ -44,19 +42,19 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       await sendEmailVerification(context);
-
     } on FirebaseAuthException catch (e) {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
-        showCustomFlushbar("Weak Password!", "Please type in a stronger password", context);
+        showCustomFlushbar(
+            "Weak Password!", "Please type in a stronger password", context);
       } else if (e.code == 'email-already-in-use') {
-        showCustomFlushbar("Account Already Exists", "This email is already in use, please login instead.", context);
+        showCustomFlushbar("Account Already Exists",
+            "This email is already in use, please login instead.", context);
       }
       showSnackBar(
           context, e.message!); // Displaying the usual firebase error message
     }
   }
-
 
   // EMAIL LOGIN
   void loginWithEmail({
@@ -65,7 +63,7 @@ class AuthCubit extends Cubit<AuthState> {
     required BuildContext context,
   }) async {
     try {
-      UserCredential userCredential =await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -78,26 +76,28 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        showCustomFlushbar("No user found", "This email address has not been registered.", context);
+        showCustomFlushbar("No user found",
+            "This email address has not been registered.", context);
       } else if (e.code == 'wrong-password') {
-        showCustomFlushbar("Authentication Failed!", "Wrong Password provided for the current email.", context);
+        showCustomFlushbar("Authentication Failed!",
+            "Wrong Password provided for the current email.", context);
       }
       showSnackBar(context, e.message!);
-      emit(NotSignedInState());// Displaying the error message
+      emit(NotSignedInState()); // Displaying the error message
     }
   }
 
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      showCustomFlushbar("Email Verification Sent!","Please check your inbox or spam folder for verification link", context );
-
+      showCustomFlushbar(
+          "Email Verification Sent!",
+          "Please check your inbox or spam folder for verification link",
+          context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Display error message
     }
   }
-
-
 
   Future<dynamic> signInWithGoogle(BuildContext context) async {
     try {
@@ -107,22 +107,18 @@ class AuthCubit extends Cubit<AuthState> {
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
       final GoogleSignInAuthentication googleAuth =
-      await googleSignInAccount!.authentication;
+          await googleSignInAccount!.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       final firebaseCredential = await auth.signInWithCredential(credential);
       return firebaseCredential;
-
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
       return null;
-
     }
   }
-
-
 
   Future<bool> signOut(BuildContext context) async {
     try {
@@ -140,7 +136,4 @@ class AuthCubit extends Cubit<AuthState> {
       return false;
     }
   }
-
-
-
 }

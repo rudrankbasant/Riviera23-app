@@ -49,12 +49,15 @@ class ProfileInfo extends StatelessWidget {
               )
           ),
           isButton
-              ? ElevatedButton(
-                  onPressed: () {
+              ? GestureDetector(
+                  onTap: () {
                     onPressed!();
                   },
-                  child: SvgPicture.asset('assets/right_arrow_icon.svg',
-                      height: 20, width: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: SvgPicture.asset('assets/right_arrow_icon.svg',
+                        height: 20, width: 20),
+                  ),
                 )
               : Container(),
         ],

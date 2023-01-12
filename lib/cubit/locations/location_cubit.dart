@@ -21,7 +21,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           .get();
 
       Map<String, dynamic> data =
-      timelineSnapshot.data() as Map<String, dynamic>;
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
       AnnouncementList announcementsListModel = AnnouncementList.fromMap(data);
