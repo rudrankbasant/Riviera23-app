@@ -26,7 +26,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
       if (state is EventsSuccess) {
         List<EventModel> onGoingEvents =
             state.events.where((element) => isGoingOn(element)).toList();
-        print("ongoing-- ${onGoingEvents.length}");
+        //print("ongoing-- ${onGoingEvents.length}");
         final List<Widget> imageSliders = onGoingEvents
             .map((item) => GestureDetector(
                   onTap: () {
@@ -50,10 +50,6 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                                   "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
                               fit: BoxFit.cover,
                             ),
-                            /* child: Image.network(
-                              item.imageUrl.toString(),
-                              fit: BoxFit.cover,
-                            )*/
                           ),
                           const SizedBox(
                             height: 10,
@@ -65,6 +61,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                                 color: AppColors.highlightColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
+                            overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(
                             height: 5,
@@ -103,20 +100,34 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 ],
               ),
             ),
-            CarouselSlider(
-              items: imageSliders,
-              options: CarouselOptions(
-                  autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  enlargeCenterPage: false,
-                  aspectRatio: 1 / 1,
-                  viewportFraction: 0.5,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  }),
-            ),
+            onGoingEvents.isEmpty
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
+                      child: Text(
+                        "On-Going Events will be shown here",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  )
+                : CarouselSlider(
+                    items: imageSliders,
+                    options: CarouselOptions(
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        enlargeCenterPage: false,
+                        aspectRatio: 1 / 1,
+                        viewportFraction: 0.5,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }),
+                  ),
           ],
         );
       } else if (state is EventsError) {

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,14 +42,13 @@ class _EventsScreenState extends State<EventsScreen> {
     _scaffoldKey.currentState!.openEndDrawer();
   }
 
-
   void _closeEndDrawer(bool applyFilter) {
-    if(applyFilter){
+    if (applyFilter) {
       setState(() {
         placeSelection = selectedPlace;
         daySelection = selectedDay;
       });
-    }else{
+    } else {
       placeSelection = 0;
       daySelection = 0;
     }
@@ -89,7 +87,7 @@ class _EventsScreenState extends State<EventsScreen> {
           resizeToAvoidBottomInset: false,
           appBar: defaultAppBar
               ? AppBar(
-            automaticallyImplyLeading: false,
+                  automaticallyImplyLeading: false,
                   /*systemOverlayStyle: const SystemUiOverlayStyle(
                     // Status bar color
                     statusBarColor: Colors.transparent,
@@ -150,16 +148,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                 )
               : AppBar(
-            automaticallyImplyLeading: false,
-                  /*systemOverlayStyle: const SystemUiOverlayStyle(
-                    // Status bar color
-                    statusBarColor: Colors.transparent,
-                    // Status bar brightness (optional)
-                    statusBarIconBrightness: Brightness.dark,
-                    // For Android (dark icons)
-                    statusBarBrightness:
-                        Brightness.light, // For iOS (dark icons)
-                  )*/
+                  automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   titleSpacing: 0.0,
@@ -382,61 +371,55 @@ class _EventsScreenState extends State<EventsScreen> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    width: MediaQuery.of(context).size.height * 0.15,
-                    child: FadeInImage(
-                      image: NetworkImage(event.imageUrl.toString()),
-                      placeholder:  NetworkImage(event.imageUrl.toString()),
-                      fit: BoxFit.cover,
-                    ),
-                  /*Image.network(
-                      event.imageUrl.toString(),
-                      fit: BoxFit.cover,
-                    )*/),
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.height * 0.15,
+                  child: FadeInImage(
+                    image: NetworkImage(event.imageUrl.toString()),
+                    placeholder: NetworkImage(event.imageUrl.toString()),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               Expanded(
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.2,
-                    child: Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(event.name.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: GoogleFonts.sora.toString())),
-                          Text(parseDate(event.start),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.normal,
-                              )),
-                          Text(event.loc.toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.normal,
-                              )),
-                          SizedBox(height: 10),
-                          Text(
-                                event.description.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13.0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                maxLines: 3,
-                                overflow: TextOverflow.fade,
-                            softWrap: false,
-
-                          ),
-                        ],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(event.name.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.sora.toString())),
+                      Text(parseDate(event.start),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text(event.loc.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      SizedBox(height: 10),
+                      Text(
+                        event.description.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
                       ),
-                    ),
+                    ],
+                  ),
                 ),
               )
             ],

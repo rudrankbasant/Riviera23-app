@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
@@ -21,8 +20,7 @@ class _FAQScreenState extends State<FAQScreen> {
         BlocProvider(
           create: (context) => FaqCubit(),
         ),
-        BlocProvider(
-            create: (context) => SponsorsCubit() )
+        BlocProvider(create: (context) => SponsorsCubit())
       ],
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
@@ -33,12 +31,13 @@ class _FAQScreenState extends State<FAQScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Sponsors",
-                    style: AppTheme.appTheme.textTheme.headline6),
+                Text("Sponsors", style: AppTheme.appTheme.textTheme.headline6),
                 BlocBuilder<SponsorsCubit, SponsorsState>(
                   builder: (context, state) {
                     if (state is SponsorsSuccess) {
-                      var priorList = state.sponsorsList.where((element) => element.prior==true).toList();
+                      var priorList = state.sponsorsList
+                          .where((element) => element.prior == true)
+                          .toList();
                       priorList.sort((a, b) => a.id.compareTo(b.id));
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -54,13 +53,11 @@ class _FAQScreenState extends State<FAQScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: SizedBox(
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .height *
-                                          0.2,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width * 0.8,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
                                       child: Image.network(
                                         sponsor.url.toString(),
                                         fit: BoxFit.cover,
@@ -83,7 +80,9 @@ class _FAQScreenState extends State<FAQScreen> {
                   builder: (context, state) {
                     if (state is SponsorsSuccess) {
                       print("mainlist: ${state.sponsorsList.toString()}");
-                      var regularList = state.sponsorsList.where((element) => element.prior==false).toList();
+                      var regularList = state.sponsorsList
+                          .where((element) => element.prior == false)
+                          .toList();
                       regularList.sort((a, b) => a.id.compareTo(b.id));
                       print("size of reg list: ${regularList.length}");
 
@@ -91,14 +90,14 @@ class _FAQScreenState extends State<FAQScreen> {
                         padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: AppColors.cardBgColor
-                          ),
+                              borderRadius: BorderRadius.circular(5),
+                              color: AppColors.cardBgColor),
                           child: GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
                               itemCount: regularList.length,
                               itemBuilder: (BuildContext ctx, index) {
                                 return Padding(
@@ -107,17 +106,15 @@ class _FAQScreenState extends State<FAQScreen> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    height: MediaQuery.of(context)
-                                        .size
-                                        .width *
-                                        0.2,
-                                    width: MediaQuery.of(context)
-                                        .size
-                                        .width *
-                                        0.2,
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.2,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.2,
                                     child: FadeInImage(
-                                      image: NetworkImage(regularList[index].url.toString()),
-                                      placeholder: const NetworkImage("https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                                      image: NetworkImage(
+                                          regularList[index].url.toString()),
+                                      placeholder: const NetworkImage(
+                                          "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -126,19 +123,18 @@ class _FAQScreenState extends State<FAQScreen> {
                         ),
                       );
                     } else {
-                      return  SizedBox(height: 0);
+                      return SizedBox(height: 0);
                     }
                   },
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Text("FAQ",
-                    style: AppTheme.appTheme.textTheme.headline6),
+                Text("FAQ", style: AppTheme.appTheme.textTheme.headline6),
                 BlocBuilder<FaqCubit, FaqState>(
                   builder: (context, state) {
                     if (state is FaqSuccess) {
-                      state.faqList.sort((a,b) => a.id.compareTo(b.id));
+                      state.faqList.sort((a, b) => a.id.compareTo(b.id));
                       var sortedFaqList = state.faqList;
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -153,7 +149,8 @@ class _FAQScreenState extends State<FAQScreen> {
                                   color: AppColors.cardBgColor,
                                 ),
                                 child: ExpansionTile(
-                                    collapsedIconColor: AppColors.secondaryColor,
+                                    collapsedIconColor:
+                                        AppColors.secondaryColor,
                                     iconColor: AppColors.secondaryColor,
                                     backgroundColor: AppColors.cardBgColor,
                                     title: Row(
@@ -179,7 +176,8 @@ class _FAQScreenState extends State<FAQScreen> {
                                     children: [
                                       Container(
                                         alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 10, 10, 10),
                                         decoration: BoxDecoration(
                                           color: AppColors.cardBgColor,
                                         ),
@@ -203,8 +201,10 @@ class _FAQScreenState extends State<FAQScreen> {
                           });
                     }
 
-                    return Text("Loading FAQ",
-                        style: TextStyle(color: AppColors.secondaryColor));
+                    return Center(
+                      child: Text("Loading FAQs...",
+                          style: TextStyle(color: AppColors.secondaryColor)),
+                    );
                   },
                 ),
                 const SizedBox(

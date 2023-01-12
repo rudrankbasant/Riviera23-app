@@ -23,11 +23,10 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
       Map<String, dynamic> data =
           timelineSnapshot.data() as Map<String, dynamic>;
 
-      debugPrint(data.toString());
+      debugPrint("this is data" + data.toString());
       AnnouncementList announcementsListModel = AnnouncementList.fromMap(data);
 
-      emit(AnnouncementsSuccess(
-          announcementsList: announcementsListModel.announcementList));
+      emit(AnnouncementsSuccess(announcementsList: announcementsListModel.announcementList));
     } catch (e) {
       emit(AnnouncementsFailed(error: e.toString()));
     }

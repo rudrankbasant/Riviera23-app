@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
 import 'package:riviera23/presentation/screens/home_screen.dart';

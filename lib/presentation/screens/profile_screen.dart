@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
-import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
 import 'package:riviera23/service/auth.dart';
 
@@ -148,8 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   GoogleFonts.getFont("Sora").fontFamily)),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       AuthService(FirebaseAuth.instance)
                           .signOut(context)
                           .then((isSuccess) {
@@ -161,7 +159,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }
                       });
                     },
-                    child: Icon(Icons.chevron_right),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: SvgPicture.asset('assets/right_arrow_icon.svg' , height: 20, width: 20),
+                    ),
                   ),
                 ],
               ),

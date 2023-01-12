@@ -18,19 +18,11 @@ class Sponsor {
   final String? url;
   final bool prior;
 
-  Sponsor({
-    required this.id,
-    required this.name,
-    this.url,
-    required this.prior
-  });
+  Sponsor(
+      {required this.id, required this.name, this.url, required this.prior});
 
   factory Sponsor.fromMap(Map<String, dynamic> map) {
     return Sponsor(
-      id: map['id'],
-      name: map['name'],
-      url: map['url'],
-      prior: map['prior']
-    );
+        id: map['id'], name: map['name'], url: map['url'], prior: map['prior']);
   }
 }

@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:riviera23/presentation/widgets/custom_dialog_box.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../presentation/methods/custom_flushbar.dart';
@@ -80,7 +77,7 @@ class AuthService {
     required BuildContext context,
   }) async {
     try {
-      UserCredential userCredential =await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -93,12 +90,14 @@ class AuthService {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        showCustomFlushbar("No user found", "This email address has not been registered.", context);
+        showCustomFlushbar("No user found",
+            "This email address has not been registered.", context);
       } else if (e.code == 'wrong-password') {
-        showCustomFlushbar("Authentication Failed!", "Wrong Password provided for the current email.", context);
+        showCustomFlushbar("Authentication Failed!",
+            "Wrong Password provided for the current email.", context);
       }
       showSnackBar(context, e.message!);
-      return null;// Displaying the error message
+      return null; // Displaying the error message
     }
   }
 
@@ -106,8 +105,10 @@ class AuthService {
   Future<void> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
-      showCustomFlushbar("Email Verification Sent!","Please check your inbox or spam folder for verification link", context );
-
+      showCustomFlushbar(
+          "Email Verification Sent!",
+          "Please check your inbox or spam folder for verification link",
+          context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Display error message
     }
@@ -128,16 +129,13 @@ class AuthService {
       );
       final firebaseCredential = await auth.signInWithCredential(credential);
       return firebaseCredential;
-
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Displaying the error message
       return null;
-
     }
   }
 
   Future<dynamic> signInWithApple() async {
-
     // To prevent replay attacks with the credential returned from Apple, we
     // include a nonce in the credential request. When signing in with
     // Firebase, the nonce in the id token returned by Apple, is expected to
@@ -164,15 +162,13 @@ class AuthService {
 
       // Sign in the user with Firebase. If the nonce we generated earlier does
       // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-      UserCredential firebaseCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      UserCredential firebaseCredential =
+          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       return await firebaseCredential.user!.getIdToken(true);
-
     } catch (e) {
       return null;
     }
-
   }
-
 
   Future<bool> signOut(BuildContext context) async {
     try {
@@ -191,22 +187,17 @@ class AuthService {
     }
   }
 
-
   String generateNonce([int length = 32]) {
-    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
     return List.generate(length, (_) => charset[random.nextInt(charset.length)])
         .join();
   }
-
 
   String sha256ofString(String input) {
     final bytes = utf8.encode(input);
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
-
-
-
-
 }
