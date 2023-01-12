@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 isButton: false),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context,
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => EventsScreen(1)));
               },
               child: ProfileInfo(
