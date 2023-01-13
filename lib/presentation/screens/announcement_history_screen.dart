@@ -139,11 +139,12 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                                                                         .desc
                                                                         .toString(),
                                                                 overflow: TextOverflow.ellipsis,
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                   color: Colors.grey,
                                                                   fontSize: 15.0,
                                                                   fontWeight:
                                                                   FontWeight.normal,
+                                                                  fontFamily: GoogleFonts.sora.toString()
                                                                 )),
                                                           ),
                                                         ],

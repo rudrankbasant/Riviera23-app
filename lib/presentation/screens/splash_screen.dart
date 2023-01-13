@@ -43,9 +43,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 Center(
                   child: Container(
-                    child: Image.asset(
-                      'assets/riviera_icon.png',
-                      fit: BoxFit.contain,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
+                      child: Image.asset(
+                        'assets/riviera_icon.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),

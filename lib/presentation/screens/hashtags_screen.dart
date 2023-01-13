@@ -38,7 +38,10 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
       resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
-          Image.asset("assets/riviera_icon.png"),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(45, 45, 45, 10),
+            child: Image.asset("assets/riviera_icon.png"),
+          ),
           Container(
             width: double.infinity,
             child: RichText(
@@ -103,6 +106,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               ),
             ),
           ),
+          SizedBox(height: 30,),
           BlocBuilder<HashtagCubit, HashtagState>(
             builder: (context, state) {
               if (state is HashtagSuccess) {

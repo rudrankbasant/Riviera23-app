@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +71,10 @@ class _AuthScreenState extends State<AuthScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                  Image.asset("assets/riviera_icon.png"),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(45, 45, 45, 30),
+                    child: Image.asset("assets/riviera_icon.png"),
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: Text("WELCOME TO RIVIERA'23",
@@ -105,6 +110,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                       child: TextField(
+                        obscureText: true,
                         style: const TextStyle(color: Colors.white),
                         controller: passwordController,
                         keyboardType: TextInputType.visiblePassword,
@@ -129,6 +135,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                         child: TextField(
+                          obscureText: true,
                           style: const TextStyle(color: Colors.white),
                           controller: cpasswordController,
                           keyboardType: TextInputType.visiblePassword,
@@ -274,7 +281,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         )),
                   ),
-                  GestureDetector(
+                  Platform.isAndroid ? Container() :GestureDetector(
                     onTap: () {},
                     child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),

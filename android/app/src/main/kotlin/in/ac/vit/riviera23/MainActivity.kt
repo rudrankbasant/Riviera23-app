@@ -1,4 +1,4 @@
-package in.ac.vit.riviera23
+package `in`.ac.vit.riviera23
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -30,11 +30,14 @@ class _InfoScreenState extends State<InfoScreen> {
                 // you can forcefully translate values left side using Transform
                 transform: Matrix4.translationValues(10.0, 2.0, 0.0),
                 child: Container(
-                  child: Image.asset(
-                    'assets/riviera_icon.png',
-                    height: 40,
-                    width: 90,
-                    fit: BoxFit.contain,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Image.asset(
+                      'assets/riviera_icon.png',
+                      height: 40,
+                      width: 90,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 )),
             bottom: const TabBar(
