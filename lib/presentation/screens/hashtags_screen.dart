@@ -39,7 +39,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(45, 45, 45, 30),
+            padding: const EdgeInsets.fromLTRB(45, 45, 45, 10),
             child: Image.asset("assets/riviera_icon.png"),
           ),
           Container(
