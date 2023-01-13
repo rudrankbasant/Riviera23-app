@@ -105,11 +105,14 @@ class _EventsScreenState extends State<EventsScreen> {
                       // you can forcefully translate values left side using Transform
                       transform: Matrix4.translationValues(10.0, 2.0, 0.0),
                       child: Container(
-                        child: Image.asset(
-                          'assets/riviera_icon.png',
-                          height: 40,
-                          width: 90,
-                          fit: BoxFit.contain,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Image.asset(
+                            'assets/riviera_icon.png',
+                            height: 40,
+                            width: 90,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       )),
                   actions: [
@@ -318,10 +321,16 @@ class _EventsScreenState extends State<EventsScreen> {
                           }
                         }
                       }
-                      List<EventModel> filteredFavEvents = runFilter(
-                          favouriteEvents, placeSelection, daySelection);
-                      List<EventModel> searchedFavEvents =
-                          runSearch(filteredFavEvents, eventsSearchQuery);
+                      if(favouriteEvents.isEmpty){
+                        return const Center(
+                          child: Text(
+                            "Add some favourites by liking an event!",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                      List<EventModel> filteredFavEvents = runFilter(favouriteEvents, placeSelection, daySelection);
+                      List<EventModel> searchedFavEvents = runSearch(filteredFavEvents, eventsSearchQuery);
                       return ListView.builder(
                         itemCount: searchedFavEvents.length,
                         itemBuilder: (context, index) {
@@ -407,17 +416,15 @@ class _EventsScreenState extends State<EventsScreen> {
                             fontWeight: FontWeight.normal,
                           )),
                       SizedBox(height: 10),
-                      Text(
-                        event.description.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.fade,
-                        softWrap: false,
-                      ),
+                      Expanded(
+                          child: Text(event.description.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.normal,
+                                overflow: TextOverflow.fade,
+                              ),
+                              softWrap: true)),
                     ],
                   ),
                 ),

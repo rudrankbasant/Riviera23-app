@@ -40,11 +40,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // you can forcefully translate values left side using Transform
             transform: Matrix4.translationValues(10.0, 2.0, 0.0),
             child: Container(
-              child: Image.asset(
-                'assets/riviera_icon.png',
-                height: 40,
-                width: 90,
-                fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Image.asset(
+                  'assets/riviera_icon.png',
+                  height: 40,
+                  width: 90,
+                  fit: BoxFit.contain,
+                ),
               ),
             )),
       ),
@@ -117,7 +120,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: ProfileInfo(
                   imgPath: "assets/favourite_icon.svg",
                   infoText: "Favorite Events",
-                  isButton: true),
+                  isButton: true,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EventsScreen(1)));
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),

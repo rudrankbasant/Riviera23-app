@@ -65,11 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
             // you can forcefully translate values left side using Transform
             transform: Matrix4.translationValues(10.0, 2.0, 0.0),
             child: Container(
-              child: Image.asset(
-                'assets/riviera_icon.png',
-                height: 40,
-                width: 90,
-                fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Image.asset(
+                  'assets/riviera_icon.png',
+                  height: 40,
+                  width: 90,
+                  fit: BoxFit.contain,
+                ),
               ),
             )),
         actions: [
@@ -95,9 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 CarouselWithDotsPage(imgList: imgList),
-                SizedBox(height: 10),
+                SizedBox(height: 30),
                 FeaturedEvents(imgList: imgList),
-                SizedBox(height: 1),
+                SizedBox(height: 0),
                 OnGoingEvents()
               ],
             ),

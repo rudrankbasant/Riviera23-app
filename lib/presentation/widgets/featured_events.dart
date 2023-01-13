@@ -11,6 +11,7 @@ import '../../cubit/featured/featured_cubit.dart';
 import '../../cubit/featured/featured_state.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
+import '../screens/events_screen.dart';
 
 class FeaturedEvents extends StatefulWidget {
   List<String> imgList;
@@ -95,12 +96,16 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("FEATURED EVENTS",
                       style: AppTheme.appTheme.textTheme.headline6),
+                  GestureDetector(
+                    onTap:(){ Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => EventsScreen(0)));},
+                      child: Text("See more", style: TextStyle(color: AppColors.highlightColor)))
                 ],
               ),
             ),
@@ -110,7 +115,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 5),
                   enlargeCenterPage: false,
-                  aspectRatio: 1.2,
+                  aspectRatio: 1/1,
                   viewportFraction: 0.5,
                   onPageChanged: (index, reason) {
                     setState(() {

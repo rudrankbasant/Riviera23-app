@@ -51,7 +51,8 @@ class _BottomNavState extends State<BottomNavScreen> {
               height: MediaQuery.of(context).size.height * 0.075,
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
+                  InkWell(
+                    radius: 10,
                     onTap: () {
                       setState(() {
                         selectedIndex = 0;
@@ -64,7 +65,8 @@ class _BottomNavState extends State<BottomNavScreen> {
                       selectedIndex: selectedIndex,
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
+                    radius: 10,
                     onTap: () {
                       setState(() {
                         selectedIndex = 1;
@@ -78,7 +80,8 @@ class _BottomNavState extends State<BottomNavScreen> {
                     ),
                   ),
                   Expanded(
-                    child: GestureDetector(
+                    child: InkWell(
+                      radius: 10,
                       onTap: () {
                         setState(() {
                           selectedIndex = 2;
@@ -96,7 +99,8 @@ class _BottomNavState extends State<BottomNavScreen> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
+                    radius: 10,
                     onTap: () {
                       setState(() {
                         selectedIndex = 3;
@@ -109,7 +113,8 @@ class _BottomNavState extends State<BottomNavScreen> {
                       selectedIndex: selectedIndex,
                     ),
                   ),
-                  GestureDetector(
+                  InkWell(
+                    radius: 10,
                     onTap: () {
                       setState(() {
                         selectedIndex = 4;
