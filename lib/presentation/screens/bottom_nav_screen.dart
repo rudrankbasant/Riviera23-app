@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:riviera23/presentation/methods/gdsc_dialog.dart';
 import 'package:riviera23/presentation/screens/profile_screen.dart';
 import 'package:riviera23/presentation/widgets/custom_bottomnavbar_item.dart';
 import 'package:riviera23/utils/app_colors.dart';
@@ -22,7 +23,7 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
-
+  int tapCount  = 0;
   @override
   Widget build(BuildContext context) {
     final List<Widget> _fragments = <Widget>[
@@ -83,6 +84,9 @@ class _BottomNavState extends State<BottomNavScreen> {
                     child: InkWell(
                       radius: 10,
                       onTap: () {
+                        if(selectedIndex == 2 ){
+                          showCreatorDialog(context);
+                        }
                         setState(() {
                           selectedIndex = 2;
                         });
