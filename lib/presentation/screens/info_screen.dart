@@ -41,6 +41,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                 )),
             bottom: const TabBar(
+              indicatorColor: Colors.white,
               tabs: [Tab(text: "Info"), Tab(text: "Contact Us")],
             ),
           ),

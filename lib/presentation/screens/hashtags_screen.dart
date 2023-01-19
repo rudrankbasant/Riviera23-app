@@ -160,10 +160,14 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
   void _launchURL(_url) async {
     final Uri _uri = Uri.parse(_url);
     try {
-      await canLaunchUrl(_uri)
-          ? await launchUrl(_url)
-          : throw 'Could not launch $_uri';
+      // await canLaunchUrl(_uri)
+      //     ? await launchUrl(_url)
+      //     : throw 'Could not launch $_uri';
+      await canLaunchUrl(_uri);
+      await launchUrl(_uri);
+      
     } catch (e) {
+      print(e.toString());
       showCustomFlushbar("Can't Open Link", "The link may be null or may have some issues.", context);
     }
   }
