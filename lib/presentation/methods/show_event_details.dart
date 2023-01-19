@@ -12,7 +12,6 @@ import 'package:riviera23/utils/map_utils.dart';
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
-import '../screens/navigation_screen.dart';
 
 void showCustomBottomSheet(
     BuildContext context, EventModel event, Venue venue) {
@@ -80,10 +79,8 @@ void showCustomBottomSheet(
                                       MediaQuery.of(context).size.height * 0.4,
                                   width: MediaQuery.of(context).size.width,
                                   child: FadeInImage(
-                                    image:
-                                        NetworkImage(event.imageUrl.toString()),
-                                    placeholder: NetworkImage(
-                                        "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                                    image: NetworkImage(event.imageUrl.toString()),
+                                    placeholder: const AssetImage("assets/app_icon.png"),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -225,8 +222,7 @@ void showCustomBottomSheet(
                           ),
                           InkWell(
                             onTap: () {
-                              _getCurrentLocation().then((position) =>MapUtils.openMap(position,venue.latitude, venue.longitude, context) );
-
+                              MapUtils.openMap(venue.latitude, venue.longitude, context);
                             },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),

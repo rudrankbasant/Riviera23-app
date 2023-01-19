@@ -51,8 +51,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                             width: 200,
                             child: FadeInImage(
                               image: NetworkImage(item.imageUrl.toString()),
-                              placeholder: const NetworkImage(
-                                  "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                              placeholder: const AssetImage("assets/app_icon.png"),
                               fit: BoxFit.cover,
                             ),
                           ),

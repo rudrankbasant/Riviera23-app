@@ -7,9 +7,9 @@ import '../presentation/methods/custom_flushbar.dart';
 class MapUtils{
   MapUtils._();
 
-  static Future<void> openMap(Position? position, double latitude, double longitude, BuildContext context) async {
-    if (position != null) {
-      final String googleUrl = "google.navigation:q=$latitude,$longitude&mode=d";
+  static Future<void> openMap(double latitude, double longitude, BuildContext context) async {
+
+      final String googleUrl = "google.navigation:q=$latitude,$longitude&mode=w";
       /*final String googleUrl = 'https://www.google.com/maps/dir/?api=1&origin=${position
           .latitude},${position
           .longitude}&destination=$latitude,$longitude&travelmode=walking';*/
@@ -30,6 +30,6 @@ class MapUtils{
         );
       }
     }
-  }
+
 
 }

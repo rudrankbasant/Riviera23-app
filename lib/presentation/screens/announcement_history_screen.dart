@@ -208,7 +208,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
     final Uri _uri = Uri.parse(_url);
     try {
       await canLaunchUrl(_uri)
-          ? await launchUrl(_url)
+          ? await launchUrl(_uri)
           : throw 'Could not launch $_uri';
     } catch (e) {
       print(e.toString());

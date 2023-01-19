@@ -3,17 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
+import 'package:riviera23/cubit/venue/venue_cubit.dart';
 import 'package:riviera23/data/models/event_model.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_theme.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
+import '../../data/models/venue_model.dart';
 import '../../service/auth.dart';
 import '../../utils/app_colors.dart';
+import '../methods/get_venue.dart';
 import '../methods/parse_datetime.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -28,15 +32,16 @@ class EventsScreen extends StatefulWidget {
 class _EventsScreenState extends State<EventsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int selectedPlace = 0;
-  int selectedDay = 0;
+  List<String> selectedPlaces = [];
+  List<String> selectedDays = [];
 
-  int placeSelection = 0;
-  int daySelection = 0;
+
+
+  List<String> placeSelections = [];
+  List<String> daySelections = [];
+
   bool defaultAppBar = true;
   String eventsSearchQuery = "";
-  final user = AuthService(FirebaseAuth.instance).user;
-  var isFavourite = false;
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
@@ -45,12 +50,14 @@ class _EventsScreenState extends State<EventsScreen> {
   void _closeEndDrawer(bool applyFilter) {
     if (applyFilter) {
       setState(() {
-        placeSelection = selectedPlace;
-        daySelection = selectedDay;
+        placeSelections = selectedPlaces;
+        daySelections = selectedDays;
       });
     } else {
-      placeSelection = 0;
-      daySelection = 0;
+      placeSelections = [];
+      daySelections = [];
+      selectedPlaces = [];
+      selectedDays = [];
     }
 
     Navigator.of(context).pop();
@@ -60,10 +67,10 @@ class _EventsScreenState extends State<EventsScreen> {
   void initState() {
     super.initState();
 
-    selectedPlace = 0;
-    selectedDay = 0;
-    placeSelection = 0;
-    daySelection = 0;
+    selectedPlaces = [];
+    selectedDays = [];
+    placeSelections = [];
+    daySelections = [];
     defaultAppBar = true;
     eventsSearchQuery = "";
 
@@ -88,15 +95,6 @@ class _EventsScreenState extends State<EventsScreen> {
           appBar: defaultAppBar
               ? AppBar(
                   automaticallyImplyLeading: false,
-                  /*systemOverlayStyle: const SystemUiOverlayStyle(
-                    // Status bar color
-                    statusBarColor: Colors.transparent,
-                    // Status bar brightness (optional)
-                    statusBarIconBrightness: Brightness.dark,
-                    // For Android (dark icons)
-                    statusBarBrightness:
-                        Brightness.light, // For iOS (dark icons)
-                  )*/
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   centerTitle: false,
@@ -140,6 +138,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     ),
                   ],
                   bottom: const TabBar(
+                    indicatorColor: Colors.white,
                     tabs: [
                       Tab(
                         text: "All Events",
@@ -163,8 +162,15 @@ class _EventsScreenState extends State<EventsScreen> {
                       });
                     },
                     decoration: InputDecoration(
-                        hintText: "Search",
-                        hintStyle: TextStyle(color: AppColors.secondaryColor)),
+                      hintText: "Search",
+                      hintStyle: TextStyle(color: AppColors.secondaryColor),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
                     cursorColor: Colors.white,
                     style: TextStyle(color: Colors.white),
                   ),
@@ -179,6 +185,7 @@ class _EventsScreenState extends State<EventsScreen> {
                         icon: Icon(Icons.close))
                   ],
                   bottom: const TabBar(
+                    indicatorColor: Colors.white,
                     tabs: [
                       Tab(
                         text: "All Events",
@@ -221,15 +228,36 @@ class _EventsScreenState extends State<EventsScreen> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 0, 10),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
                     child: SizedBox(
-                        child: Text("Event Day",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Event Dates",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            Visibility(
+                              visible: selectedDays.isNotEmpty,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    selectedDays = [];
+                                  });
+                                },
+                                child: Text("Clear All",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        )),
                   ),
                   SizedBox(
                     height: 60,
@@ -238,70 +266,103 @@ class _EventsScreenState extends State<EventsScreen> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       children: [
-                        buildDaysRadioListTile(0, "All"),
-                        buildDaysRadioListTile(1, "23 Feb 2023"),
-                        buildDaysRadioListTile(2, "24 Feb 2023"),
-                        buildDaysRadioListTile(3, "25 Feb 2023"),
-                        buildDaysRadioListTile(4, "26 Feb 2023"),
+                        buildDaysRadioListTile(0, "23 FEB, 2023"),
+                        buildDaysRadioListTile(1, "24 FEB, 2023"),
+                        buildDaysRadioListTile(2, "25 FEB, 2023"),
+                        buildDaysRadioListTile(3, "26 FEB, 2023"),
                       ],
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 0, 10),
+                   Padding(
+                    padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
                     child: SizedBox(
-                        child: Text("Places",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Venues",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                            Visibility(
+                              visible: selectedPlaces.isNotEmpty,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    selectedPlaces = [];
+                                  });
+                                },
+                                child: Text("Clear All",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ),
+                            ),
+
+                          ],
+                        )),
                   ),
                   Theme(
                     data: Theme.of(context).copyWith(
                         unselectedWidgetColor: Colors.white,
                         disabledColor: Colors.blue),
-                    child: Column(
-                      children: [
-                        buildPlacesRadioListTile(0, "All"),
-                        buildPlacesRadioListTile(1, "Outdoor Stadium"),
-                        buildPlacesRadioListTile(2, "Kalpana Chawla Ground"),
-                        buildPlacesRadioListTile(3, "SJT"),
-                        buildPlacesRadioListTile(4, "Main Building"),
-                        buildPlacesRadioListTile(5, "Woodys"),
-                        buildPlacesRadioListTile(6, "Foodys"),
-                        buildPlacesRadioListTile(7, "Greenos"),
-                        buildPlacesRadioListTile(8, "Technology Tower (TT)"),
-                        buildPlacesRadioListTile(9, "MGB"),
-                      ],
-                    ),
-                  ),
+                    child: BlocBuilder<VenueCubit, VenueState>(
+                        builder: (context, venueState) {
+                      if (venueState is VenueSuccess) {
+                        List<Venue> allVenues = venueState.venuesList;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: allVenues.length,
+                          itemBuilder: (context, index) {
+                            return buildPlacesCheckBoxListTile(
+                                index, allVenues[index].venue_name);
+                          },
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
+                  )
                 ],
               )),
           body: TabBarView(
             children: [
               BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
                 if (state is EventsSuccess) {
-                  List<EventModel> filteredEvents =
-                      runFilter(state.events, placeSelection, daySelection);
-                  List<EventModel> searchedEvents =
-                      runSearch(filteredEvents, eventsSearchQuery);
-                  return ListView.builder(
-                    itemCount: searchedEvents.length,
-                    itemBuilder: (context, index) {
-                      EventModel event = searchedEvents[index];
-                      return buildEventCard(context, event);
-                    },
-                  );
+
+                  return BlocBuilder<VenueCubit, VenueState>(
+                      builder: (context, venueState) {
+                    if (venueState is VenueSuccess) {
+                      print("Venue Success");
+                      List<Venue> allVenues = venueState.venuesList;
+                      List<EventModel> filteredEvents = runFilter(state.events, allVenues, placeSelections, daySelections);
+                      List<EventModel> searchedEvents = runSearch(filteredEvents, eventsSearchQuery);
+                      return ListView.builder(
+                        itemCount: searchedEvents.length,
+                        itemBuilder: (context, index) {
+                          EventModel event = searchedEvents[index];
+                          return buildEventCard(context, event, allVenues);
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  });
                 } else if (state is EventsError) {
                   return const Center(
                     child: Text("Error! Couldn't load."),
                   );
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
                   );
                 }
               }),
@@ -321,7 +382,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           }
                         }
                       }
-                      if(favouriteEvents.isEmpty){
+                      if (favouriteEvents.isEmpty) {
                         return const Center(
                           child: Text(
                             "Add some favourites by liking an event!",
@@ -329,15 +390,28 @@ class _EventsScreenState extends State<EventsScreen> {
                           ),
                         );
                       }
-                      List<EventModel> filteredFavEvents = runFilter(favouriteEvents, placeSelection, daySelection);
-                      List<EventModel> searchedFavEvents = runSearch(filteredFavEvents, eventsSearchQuery);
-                      return ListView.builder(
-                        itemCount: searchedFavEvents.length,
-                        itemBuilder: (context, index) {
-                          EventModel event = searchedFavEvents[index];
-                          return buildEventCard(context, event);
-                        },
-                      );
+
+
+                      return BlocBuilder<VenueCubit, VenueState>(
+                          builder: (context, venueState) {
+                        if (venueState is VenueSuccess) {
+                          print("Venue Success");
+                          List<Venue> allVenues = venueState.venuesList;
+                          List<EventModel> filteredFavEvents = runFilter(
+                              favouriteEvents, allVenues, placeSelections, daySelections);
+                          List<EventModel> searchedFavEvents =
+                          runSearch(filteredFavEvents, eventsSearchQuery);
+                          return ListView.builder(
+                            itemCount: searchedFavEvents.length,
+                            itemBuilder: (context, index) {
+                              EventModel event = searchedFavEvents[index];
+                              return buildEventCard(context, event, allVenues);
+                            },
+                          );
+                        } else {
+                          return Container();
+                        }
+                      });
                     } else if (state is FavouriteFailed) {
                       return const Center(
                         child: Text(
@@ -347,7 +421,7 @@ class _EventsScreenState extends State<EventsScreen> {
                       );
                     } else {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(color: Colors.white),
                       );
                     }
                   });
@@ -357,7 +431,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   );
                 } else {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(color: Colors.white),
                   );
                 }
               })
@@ -366,10 +440,11 @@ class _EventsScreenState extends State<EventsScreen> {
         ));
   }
 
-  GestureDetector buildEventCard(BuildContext context, EventModel event) {
+  GestureDetector buildEventCard(
+      BuildContext context, EventModel event, List<Venue> allVenues) {
     return GestureDetector(
       onTap: () {
-        showCustomBottomSheet(context, event);
+        showCustomBottomSheet(context,event, getVenue(allVenues, event));
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -384,7 +459,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   width: MediaQuery.of(context).size.height * 0.15,
                   child: FadeInImage(
                     image: NetworkImage(event.imageUrl.toString()),
-                    placeholder: NetworkImage(event.imageUrl.toString()),
+                    placeholder: const AssetImage("assets/app_icon.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -403,16 +478,12 @@ class _EventsScreenState extends State<EventsScreen> {
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               fontFamily: GoogleFonts.sora.toString())),
-                      Text(parseDate(event.start),
+                      getDurationDate(event),
+                      Text(
+                          "${getVenue(allVenues, event).venue_name} (${event.loc.toString()})",
                           style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.normal,
-                          )),
-                      Text(event.loc.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
+                            color: Colors.grey,
+                            fontSize: 13.0,
                             fontWeight: FontWeight.normal,
                           )),
                       SizedBox(height: 10),
@@ -436,6 +507,24 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
+  Text getDurationDate(EventModel event) {
+    if (event.start == event.end) {
+      return Text(parseDate(event.start),
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 13.0,
+            fontWeight: FontWeight.normal,
+          ));
+    } else {
+      return Text(parseDate(event.start) + " - " + parseDate(event.end),
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 13.0,
+            fontWeight: FontWeight.normal,
+          ));
+    }
+  }
+
   List<EventModel> runSearch(List<EventModel> events, String? query) {
     List<EventModel> searchedEvents = [];
     if (query != null) {
@@ -450,44 +539,32 @@ class _EventsScreenState extends State<EventsScreen> {
     return searchedEvents;
   }
 
-  List<EventModel> runFilter(List<EventModel> events, int place, int day) {
-    List<String> places = [
-      "All",
-      "Outdoor Stadium",
-      "Kalpana Chawla Ground",
-      "SJT",
-      "Main Building",
-      "Woodys",
-      "Foodys",
-      "Greenos",
-      "Technology Tower (TT)",
-      "MGB"
-    ];
+  List<EventModel> runFilter(List<EventModel> events, List<Venue> allVenues, List<String> places, List<String> dates) {
 
     List<EventModel> filteredEvents = events;
 
-    if (place != 0 && day == 0) {
+    if (places.isNotEmpty && dates.isEmpty) {
       filteredEvents = [];
       for (EventModel event in events) {
-        if (event.loc == places[place]) {
+        if (places.contains(getVenue(allVenues, event).venue_name)) {
           filteredEvents.add(event);
         }
       }
     }
-    if (place == 0 && day != 0) {
+    if (places.isEmpty && dates.isNotEmpty) {
       filteredEvents = [];
       for (EventModel event in events) {
-        if (getDayofWeek(event.start) == getEventDay(day)) {
+        if (dates.contains(parseDate(event.start))) {
           filteredEvents.add(event);
         }
       }
     }
-    if (place != 0 && day != 0) {
+    if (places.isNotEmpty && dates.isNotEmpty) {
       filteredEvents = [];
       for (EventModel event in events) {
-        if (getDayofWeek(event.start) == getEventDay(day) &&
-            event.loc == places[place]) {
-          filteredEvents.add(event);
+        if (dates.contains(parseDate(event.start)) &&
+            places.contains(getVenue(allVenues, event).venue_name)) {
+            filteredEvents.add(event);
         }
       }
     }
@@ -495,40 +572,9 @@ class _EventsScreenState extends State<EventsScreen> {
     return filteredEvents;
   }
 
-  getEventDay(int day) {
-    switch (day) {
-      case 1:
-        return "thursday";
-      case 2:
-        return "friday";
-      case 3:
-        return "saturday";
-      case 4:
-        return "sunday";
-      default:
-        return "none";
-    }
-  }
 
-  String getDayofWeek(String? datetime) {
-    if (datetime != null) {
-      DateTime date = DateTime.parse(datetime);
-      return DateFormat('EEEE').format(date).toLowerCase();
-    }
-    return "none";
-  }
 
-  RadioListTile<int> buildPlacesRadioListTile(int index, String place) {
-    return RadioListTile(
-        value: index,
-        groupValue: selectedPlace,
-        onChanged: (value) {
-          setState(() {
-            selectedPlace = value as int;
-          });
-        },
-        title: Text(place));
-  }
+
 
   Padding buildDaysRadioListTile(int index, String day) {
     return Padding(
@@ -536,7 +582,11 @@ class _EventsScreenState extends State<EventsScreen> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            selectedDay = index;
+            if (selectedDays.contains(day)) {
+              selectedDays.remove(day);
+            } else {
+              selectedDays.add(day);
+            }
           });
         },
         child: Container(
@@ -545,13 +595,13 @@ class _EventsScreenState extends State<EventsScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-                color: (index == selectedDay) ? Colors.blue : Colors.white),
+                color: (selectedDays.contains(day)) ? AppColors.highlightColor : Colors.white),
           ),
           child: Center(
             child: Text(
               day,
               style: TextStyle(
-                color: (index == selectedDay) ? Colors.blue : Colors.white,
+                color: (selectedDays.contains(day)) ? AppColors.highlightColor : Colors.white,
                 fontSize: 13,
               ),
             ),
@@ -560,4 +610,26 @@ class _EventsScreenState extends State<EventsScreen> {
       ),
     );
   }
+
+  CheckboxListTile buildPlacesCheckBoxListTile(int index, String place) {
+    return CheckboxListTile(
+        controlAffinity: ListTileControlAffinity.leading,
+        checkColor: AppColors.highlightColor,
+        activeColor: AppColors.primaryColor,
+        selectedTileColor: AppColors.secondaryColor,
+        checkboxShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(2.0),),
+        value: selectedPlaces.contains(place),
+        onChanged: (value) {
+          setState(() {
+            if (selectedPlaces.contains(place)){
+              selectedPlaces.remove(place);
+            } else {
+              selectedPlaces.add(place);
+            }
+          });
+        },
+        title: Text(place));
+  }
+
 }
