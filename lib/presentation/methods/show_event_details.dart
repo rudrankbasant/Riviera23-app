@@ -1,15 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:riviera23/utils/map_utils.dart';
 
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
+import '../../data/models/venue_model.dart';
+import '../screens/navigation_screen.dart';
 
-void showCustomBottomSheet(BuildContext context, EventModel event) {
+void showCustomBottomSheet(
+    BuildContext context, EventModel event, Venue venue) {
   List<String> favouritesIDs = [];
   var isFavourite = false;
   showModalBottomSheet(
@@ -51,26 +57,12 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        event.name.toString().toUpperCase(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
-                            color: AppColors.secondaryColor,
-                            fontFamily: GoogleFonts.sora.toString()),
-                      ),
+                      height: 20,
                     ),
                     Expanded(
                       child: ListView(
                         shrinkWrap: true,
                         children: [
-                          SizedBox(
-                            height: 10,
-                          ),
                           Stack(
                             children: [
                               ShaderMask(
@@ -116,10 +108,10 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                                     }
                                   },
                                   child: Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(20, 0, 0, 10),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 0, 0, 10),
                                       child: state is FavouriteLoading
-                                          ? SizedBox(
+                                          ? const SizedBox(
                                               height: 25,
                                               width: 25,
                                               child: CircularProgressIndicator(
@@ -146,7 +138,7 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
-                              "EVENT ON ${parseDate(event.start)}",
+                              event.name.toString().toUpperCase(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 25,
@@ -156,16 +148,9 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              "${parseTime(event.start)} at ${event.loc}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 14,
-                                  color: AppColors.secondaryColor,
-                                  fontFamily: GoogleFonts.sora.toString()),
-                            ),
+                            child: getDurationDateTime(event),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Padding(
@@ -179,7 +164,7 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Padding(
@@ -199,7 +184,7 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                           Padding(
                             padding: const EdgeInsets.only(left: 30.0),
                             child: Text(
-                              "INSTRUCTIONS",
+                              "ORGANIZER",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20,
@@ -213,13 +198,78 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                             child: Text(
-                              event.instructions.toString(),
+                              event.organizingBody.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
                                   color: AppColors.secondaryColor,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "VENUE",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _getCurrentLocation().then((position) =>MapUtils.openMap(position,venue.latitude, venue.longitude, context) );
+
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: AppColors.highlightColor),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/maps_icon.svg",
+                                        color: AppColors.highlightColor,
+                                      ),
+                                      Expanded(
+                                          child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 10, 0),
+                                        child: Text(
+                                          "${venue.venue_name} (${event.loc.toString()})",
+                                          style: TextStyle(
+                                            color: AppColors.highlightColor,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      )),
+                                      Icon(
+                                        Icons.directions,
+                                        color: AppColors.highlightColor,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                         ],
                       ),
@@ -228,16 +278,55 @@ void showCustomBottomSheet(BuildContext context, EventModel event) {
                 ),
               );
             } else if (state is FavouriteFailed) {
-              return Center(
+              return const Center(
                 child: Text(
                   "Error Loading",
                   style: TextStyle(color: Colors.white),
                 ),
               );
             } else {
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.white),
               );
             }
           }));
 }
+
+Text getDurationDateTime(EventModel event) {
+  if (event.start == event.end) {
+    return Text(
+      "${parseDate(event.start)} at ${parseTime(event.start)}",
+      style: TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 14,
+          color: AppColors.secondaryColor,
+          fontFamily: GoogleFonts.sora.toString()),
+    );
+  } else {
+    return Text(
+      "${parseDate(event.start)} at ${parseTime(event.start)} to ${parseDate(event.end)} at ${parseTime(event.end)}",
+      style: TextStyle(
+          fontWeight: FontWeight.w300,
+          fontSize: 14,
+          color: AppColors.secondaryColor,
+          fontFamily: GoogleFonts.sora.toString()),
+    );
+  }
+}
+
+Future<Position> _getCurrentLocation() async {
+
+  LocationPermission permission;
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Permission Not Granted');
+    }
+  }
+
+  Position res = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  print("position found $res");
+  return res;
+}
+

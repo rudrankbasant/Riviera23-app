@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/data/models/venue_model.dart';
+import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
@@ -14,9 +17,9 @@ import '../methods/show_event_details.dart';
 import '../screens/events_screen.dart';
 
 class FeaturedEvents extends StatefulWidget {
-  List<String> imgList;
+  List<Venue> allVenues;
 
-  FeaturedEvents({required this.imgList});
+  FeaturedEvents({required this.allVenues});
 
   @override
   _FeaturedEventsState createState() => _FeaturedEventsState();
@@ -27,14 +30,12 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
       if (state is FeaturedSuccess) {
         final List<Widget> imageSliders = state.featured
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item);
+                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -127,7 +128,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
         );
       } else if (state is FeaturedError) {
         return const Center(
-          child: Text("Error! Couldn't load."),
+          child: Text("Error! Couldn't load.", style: TextStyle(color: Colors.white),),
         );
       } else {
         return Center(

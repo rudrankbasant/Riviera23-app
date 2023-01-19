@@ -2,17 +2,23 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
+import '../../data/models/venue_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
 
 class OnGoingEvents extends StatefulWidget {
+  List<Venue> allVenues;
+
+  OnGoingEvents({required this.allVenues,});
   @override
   _OnGoingEventsState createState() => _OnGoingEventsState();
 }
@@ -26,11 +32,10 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
       if (state is EventsSuccess) {
         List<EventModel> onGoingEvents =
             state.events.where((element) => isGoingOn(element)).toList();
-        //print("ongoing-- ${onGoingEvents.length}");
         final List<Widget> imageSliders = onGoingEvents
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item);
+                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),

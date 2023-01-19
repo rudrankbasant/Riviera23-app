@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:riviera23/cubit/featured/featured_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
@@ -10,6 +11,8 @@ import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/favourites/favourite_cubit.dart';
+import '../../cubit/venue/venue_cubit.dart';
+import '../../data/models/venue_model.dart';
 import '../../service/auth.dart';
 import '../widgets/carousel_with_dots_page.dart';
 import '../widgets/featured_events.dart';
@@ -21,14 +24,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> imgList = [
-    'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcXEqlEubvX7ovdwnaxhky3TMmJETxGRQ6hymMjC0hr6iClwzAL0t6Vf2KWp-IFjVPXrE&usqp=CAU',
-    'https://yt3.ggpht.com/kfw_1eOpjdYASmlAnSPa7XmXrYpaKjuW4k7_oB-hD5ljRSlT7yThew72ZxgW1UrAJ1e8vX1G=s900-c-k-c0x00ffffff-no-rj',
-    'https://res.cloudinary.com/dwzmsvp7f/image/fetch/q_75,f_auto,w_800/https%3A%2F%2Fmedia.insider.in%2Fimage%2Fupload%2Fc_crop%2Cg_custom%2Fv1657448440%2Fkqvmc4uvv9ye2c4zppin.jpg',
-  ];
+
+
 
   @override
   void initState() {
@@ -62,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         titleSpacing: 0.0,
         title: Transform(
-            // you can forcefully translate values left side using Transform
+          // you can forcefully translate values left side using Transform
             transform: Matrix4.translationValues(10.0, 2.0, 0.0),
             child: Container(
               child: Padding(
@@ -90,23 +87,58 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Container(
-        color: Theme.of(context).primaryColor,
+        color: Theme
+            .of(context)
+            .primaryColor,
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CarouselWithDotsPage(imgList: imgList),
-                SizedBox(height: 30),
-                FeaturedEvents(imgList: imgList),
-                SizedBox(height: 0),
-                OnGoingEvents()
-              ],
-            ),
+              child: BlocBuilder<VenueCubit, VenueState>(builder: (context, venueState) {
+                if (venueState is VenueSuccess) {
+                  print("Venue Success");
+                  List<Venue> allVenues = venueState.venuesList;
+                  return Column(
+                    children: [
+                      CarouselWithDotsPage(allVenues: allVenues,),
+                      SizedBox(height: 30),
+                      FeaturedEvents(allVenues: allVenues,),
+                      SizedBox(height: 0),
+                      OnGoingEvents(allVenues: allVenues,)
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              })
           ),
         ),
-      ),
-    );
+      ),);
   }
+
+  /*void _getCurrentLocation() async {
+
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Permission Not Granted');
+      }
+    } else {
+      throw Exception('Error');
+    }
+
+    Position res = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print("position found $res");
+    setState(() {
+      position = res;
+    });
+  }*/
 }

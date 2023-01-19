@@ -24,7 +24,6 @@ class FavouriteCubit extends Cubit<FavouriteState> {
           Map<String, dynamic> data =
               timelineSnapshot.data() as Map<String, dynamic>;
           debugPrint(user.uid + data.toString());
-          debugPrint("---here debug--${FavouriteModel.fromMap(data)}");
           FavouriteModel userFavourites = FavouriteModel.fromMap(data);
           emit(FavouriteSuccess(favouriteList: userFavourites));
         } else {
@@ -52,7 +51,6 @@ class FavouriteCubit extends Cubit<FavouriteState> {
           .set(favouriteModel.toMap())
           .then((_) => print('Added'))
           .catchError((error) => print('Add failed: $error'));
-      print("-----here-----");
       //loadFavourites(user);
       emit(FavouriteSuccess(favouriteList: favouriteModel));
     } catch (e) {

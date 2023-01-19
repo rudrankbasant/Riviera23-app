@@ -18,6 +18,7 @@ import 'package:riviera23/utils/app_theme.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/featured/featured_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
+import 'cubit/venue/venue_cubit.dart';
 import 'data/repository/events_repository.dart';
 import 'data/repository/featured_repository.dart';
 import 'data/repository/proshows_repository.dart';
@@ -126,9 +127,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => FeaturedCubit(FeaturedRepository()),
         ),
-        BlocProvider(
-          create: (context) => AnnouncementsCubit(),
-        ),
+        BlocProvider(create: (context) => AnnouncementsCubit()),
+        BlocProvider(create: (context) => VenueCubit()),
         BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
         BlocProvider(create: (context) => FavouriteCubit())
       ],
