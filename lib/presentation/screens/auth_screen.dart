@@ -282,7 +282,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         )),
                   ),
                   Platform.isAndroid ? Container() :GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      AuthService(FirebaseAuth.instance)
+                          .signInWithApple(context)
+                          .then((value) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BottomNavScreen(null))));
+                    },
                     child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                         child: Container(

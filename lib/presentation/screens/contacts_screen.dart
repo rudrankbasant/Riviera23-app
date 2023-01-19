@@ -62,8 +62,10 @@ class _ContactScreenState extends State<ContactScreen> {
                                                   .size
                                                   .height *
                                               0.15,
-                                          child: Image.network(
-                                            teamMember.url.toString(),
+                                          child: FadeInImage(
+                                            image: NetworkImage(
+                                                teamMember.url.toString()),
+                                            placeholder: const AssetImage("assets/app_icon.png"),
                                             fit: BoxFit.cover,
                                           )),
                                     ),

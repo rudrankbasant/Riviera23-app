@@ -2,15 +2,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_state.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
-class CarouselWithDotsPage extends StatefulWidget {
-  List<String> imgList;
+import '../../data/models/venue_model.dart';
+import '../methods/get_venue.dart';
 
-  CarouselWithDotsPage({required this.imgList});
+class CarouselWithDotsPage extends StatefulWidget {
+  List<Venue> allVenues;
+  CarouselWithDotsPage({required this.allVenues});
 
   @override
   _CarouselWithDotsPageState createState() => _CarouselWithDotsPageState();
@@ -22,21 +25,34 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     return BlocBuilder<ProShowsCubit, ProShowsState>(builder: (context, state) {
       if (state is ProShowsSuccess) {
+        if(state.proShows.isEmpty){
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
+              child: Text(
+                'Pro-Shows will be updated soon',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          );
+        }
         final List<Widget> imageSliders = state.proShows
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item);
+                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
                   },
                   child: Stack(
                     children: [
                       Container(
                         child: FadeInImage(
                           image: NetworkImage(item.imageUrl.toString()),
-                          placeholder: const NetworkImage(
-                              "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                          placeholder: const AssetImage("assets/app_icon.png"),
                           fit: BoxFit.cover,
                           width: width,
                         ),
@@ -115,7 +131,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
         );
       } else if (state is ProShowsError) {
         return const Center(
-          child: Text("Error! Couldn't load."),
+          child: Text("Error! Couldn't load.", style: TextStyle(color: Colors.white)),
         );
       } else {
         return Center(

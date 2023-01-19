@@ -58,8 +58,10 @@ class _FAQScreenState extends State<FAQScreen> {
                                               0.2,
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: Image.network(
-                                        sponsor.url.toString(),
+                                      child: FadeInImage(
+                                        image: NetworkImage(
+                                            sponsor.url.toString()),
+                                        placeholder: const AssetImage("assets/app_icon.png"),
                                         fit: BoxFit.cover,
                                       )),
                                 ),
@@ -113,8 +115,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                     child: FadeInImage(
                                       image: NetworkImage(
                                           regularList[index].url.toString()),
-                                      placeholder: const NetworkImage(
-                                          "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg"),
+                                      placeholder: const AssetImage("assets/app_icon.png"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

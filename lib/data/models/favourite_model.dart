@@ -10,7 +10,6 @@ class FavouriteModel {
   });
 
   factory FavouriteModel.fromMap(Map<String, dynamic> map) {
-    debugPrint("mapping started");
     return FavouriteModel(
       uniqueUserId: map['uniqueUserId'],
       favouriteEventIds: map['favouriteEventIds'].cast<String>(),

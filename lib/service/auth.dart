@@ -35,7 +35,17 @@ class AuthService {
     try {
       if (FirebaseAuth.instance.currentUser != null) {
         print("User is signed in");
-        return true;
+        print(user.providerData[0].providerId);
+        if (user.providerData[0].providerId == 'password') {
+          if (!user.emailVerified) {
+            await _auth.signOut();
+            return false;
+          }else{
+            return true;
+          }
+        }else{
+          return true;
+        }
       } else {
         print("User is not signed in");
         return false;
@@ -135,7 +145,7 @@ class AuthService {
     }
   }
 
-  Future<dynamic> signInWithApple() async {
+  Future<dynamic> signInWithApple(BuildContext context) async {
     // To prevent replay attacks with the credential returned from Apple, we
     // include a nonce in the credential request. When signing in with
     // Firebase, the nonce in the id token returned by Apple, is expected to
@@ -165,7 +175,8 @@ class AuthService {
       UserCredential firebaseCredential =
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       return await firebaseCredential.user!.getIdToken(true);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
       return null;
     }
   }
