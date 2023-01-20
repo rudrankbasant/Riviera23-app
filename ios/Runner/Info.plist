@@ -69,6 +69,9 @@
 	<string>UIStatusBarStyleDarkContent</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>google.navigation</string>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
 		<string>instagram</string>
 		<string>https</string>
 		<string>http</string>
