@@ -13,8 +13,9 @@ class MapUtils{
       /*final String googleUrl = 'https://www.google.com/maps/dir/?api=1&origin=${position
           .latitude},${position
           .longitude}&destination=$latitude,$longitude&travelmode=walking';*/
-      // final String appleUrl = 'https://maps.apple.com/?ll=$latitude,$longitude';
-    final String appleUrl = 'http://maps.apple.com/?daddr=\($latitude),\($longitude)';
+      //  final String appleUrl = 'https://maps.apple.com/?q=$latitude,$longitude';
+    //final String appleUrl = 'http://maps.apple.com/?saddr=&daddr=$latitude,$longitude';
+      final String appleUrl = 'maps://?saddr=&daddr=$latitude,$longitude';
       final Uri googleuri = Uri.parse(googleUrl);
       final Uri appleUri = Uri.parse(appleUrl);
 
@@ -26,7 +27,12 @@ class MapUtils{
         }
         
       } else if (await canLaunchUrl(appleUri)) {
-        await launchUrl(appleUri);
+        try{
+          await launchUrl(appleUri);
+        }catch(e){
+          print(e.toString());
+        }
+        
       } else {
         showCustomFlushbar(
           'Error',
