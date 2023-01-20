@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:riviera23/presentation/methods/gdsc_dialog.dart';
@@ -24,6 +26,18 @@ class BottomNavScreen extends StatefulWidget {
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
   int tapCount  = 0;
+  late Timer _timer;
+  void _startOperation() {
+    _timer = Timer(const Duration(milliseconds: 4000), () {
+      showCreatorDialog(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final List<Widget> _fragments = <Widget>[
@@ -83,10 +97,15 @@ class _BottomNavState extends State<BottomNavScreen> {
                   Expanded(
                     child: InkWell(
                       radius: 10,
+                      onTapDown: (_) {
+                        _startOperation();
+                        
+                        
+                      },
+                      onTapUp: (_){
+                        _timer.cancel();
+                      },
                       onTap: () {
-                        if(selectedIndex == 2 ){
-                          showCreatorDialog(context);
-                        }
                         setState(() {
                           selectedIndex = 2;
                         });
