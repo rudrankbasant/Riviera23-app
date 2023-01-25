@@ -23,7 +23,8 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
-  int tapCount  = 0;
+  int tapCount = 0;
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _fragments = <Widget>[
@@ -84,7 +85,7 @@ class _BottomNavState extends State<BottomNavScreen> {
                     child: InkWell(
                       radius: 10,
                       onTap: () {
-                        if(selectedIndex == 2 ){
+                        if (selectedIndex == 2) {
                           showCreatorDialog(context);
                         }
                         setState(() {

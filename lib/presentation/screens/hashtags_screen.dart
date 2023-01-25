@@ -106,7 +106,9 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               ),
             ),
           ),
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           BlocBuilder<HashtagCubit, HashtagState>(
             builder: (context, state) {
               if (state is HashtagSuccess) {
@@ -165,10 +167,10 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
       //     : throw 'Could not launch $_uri';
       await canLaunchUrl(_uri);
       await launchUrl(_uri);
-      
     } catch (e) {
       print(e.toString());
-      showCustomFlushbar("Can't Open Link", "The link may be null or may have some issues.", context);
+      showCustomFlushbar("Can't Open Link",
+          "The link may be null or may have some issues.", context);
     }
   }
 }

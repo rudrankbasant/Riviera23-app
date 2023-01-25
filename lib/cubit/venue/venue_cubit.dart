@@ -16,9 +16,7 @@ class VenueCubit extends Cubit<VenueState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      QuerySnapshot querySnapshot = await firestore
-          .collection('places')
-          .get();
+      QuerySnapshot querySnapshot = await firestore.collection('places').get();
 
       debugPrint(querySnapshot.toString());
       VenueList venueListModel = VenueList.fromsSnapshots(querySnapshot.docs);

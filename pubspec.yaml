@@ -50,13 +50,10 @@ dependencies:
   flutter_signin_button: ^2.0.0
   flutter_spinkit: ^5.1.0
   flutter_svg: ^1.1.6
-  geolocator: ^9.0.2
   google_fonts: ^3.0.1
-  google_maps_flutter: ^2.2.3
   google_sign_in: ^5.4.2
   http: ^0.13.5
   intl: ^0.18.0
-  location: ^4.4.0
   rxdart: ^0.27.7
   shared_preferences: ^2.0.15
   sign_in_with_apple: ^4.3.0

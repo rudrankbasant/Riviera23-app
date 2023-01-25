@@ -57,8 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           leadtoGetStarted
               ? Align(
-                  alignment: Alignment.bottomCenter, child: getStarted(context)
-                )
+                  alignment: Alignment.bottomCenter, child: getStarted(context))
               : const Align(
                   alignment: Alignment.bottomCenter,
                   child: VitLogo(),

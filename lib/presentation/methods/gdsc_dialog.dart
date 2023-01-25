@@ -17,7 +17,9 @@ void showCreatorDialog(BuildContext context) {
           height: MediaQuery.of(context).size.height * 0.3,
           width: MediaQuery.of(context).size.width * 0.8,
           margin: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10)),
           child: Material(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -30,13 +32,20 @@ void showCreatorDialog(BuildContext context) {
                     Text(
                       'Made with ',
                       style: GoogleFonts.sora(
-                          color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
                     ),
-                    const Icon(Icons.favorite, color: Colors.red,),
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
                     Text(
                       ' by',
                       style: GoogleFonts.sora(
-                          color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20),
                     ),
                   ],
                 ),

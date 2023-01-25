@@ -62,90 +62,139 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                             children: [
                               Container(
                                 width: 5,
-                                height: ((heightOfNotification+5) * groupedData.value.length) + 36,
+                                height: ((heightOfNotification + 5) *
+                                        groupedData.value.length) +
+                                    36,
                                 decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                    color: position==0 ?Colors.deepOrangeAccent : Colors.blue,
-                                    shape: BoxShape.rectangle,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
+                                  color: position == 0
+                                      ? Colors.deepOrangeAccent
+                                      : Colors.blue,
+                                  shape: BoxShape.rectangle,
                                 ),
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 8, 0, 8),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 0, 0, 10),
                                         child: Text(
                                           groupedData.key,
                                           style: TextStyle(
-                                              color: position==0?Colors.deepOrangeAccent : Colors.blue,
+                                              color: position == 0
+                                                  ? Colors.deepOrangeAccent
+                                                  : Colors.blue,
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ),
                                       Flexible(
                                         fit: FlexFit.loose,
                                         child: ListView.builder(
-                                          physics: NeverScrollableScrollPhysics(),
-                                          primary: false,
-                                          shrinkWrap: true,
-                                            itemCount: groupedList[position].value.length,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            primary: false,
+                                            shrinkWrap: true,
+                                            itemCount: groupedList[position]
+                                                .value
+                                                .length,
                                             itemBuilder: (context, itemIndex) {
-                                              groupedList[position].value.sort((a, b) => b.date.compareTo(a.date));
+                                              groupedList[position].value.sort(
+                                                  (a, b) =>
+                                                      b.date.compareTo(a.date));
                                               return GestureDetector(
-                                                onTap: (){
-                                                  showAnnouncememt(groupedList[position].value[itemIndex]);
+                                                onTap: () {
+                                                  showAnnouncememt(
+                                                      groupedList[position]
+                                                          .value[itemIndex]);
                                                 },
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 5, 0, 0),
                                                   child: Container(
                                                     decoration: BoxDecoration(
-                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        color: AppColors.cardBgColor,
-                                                        shape: BoxShape.rectangle),
-                                                    height: heightOfNotification,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    5)),
+                                                        color: AppColors
+                                                            .cardBgColor,
+                                                        shape:
+                                                            BoxShape.rectangle),
+                                                    height:
+                                                        heightOfNotification,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
                                                       child: Column(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        mainAxisSize: MainAxisSize.min,
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         children: [
                                                           Text(
-                                                              groupedList[position]
-                                                                  .value[itemIndex]
+                                                              groupedList[
+                                                                      position]
+                                                                  .value[
+                                                                      itemIndex]
                                                                   .heading
                                                                   .toString(),
-                                                              overflow: TextOverflow.ellipsis,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 20.0,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      20.0,
                                                                   fontWeight:
-                                                                  FontWeight.bold,
-                                                                  fontFamily: GoogleFonts
-                                                                      .sora
-                                                                      .toString())
-                                                          ),
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      GoogleFonts
+                                                                          .sora
+                                                                          .toString())),
                                                           Padding(
-                                                            padding: const EdgeInsets.only(top: 5.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 5.0),
                                                             child: Text(
-                                                                    groupedList[position]
-                                                                        .value[itemIndex]
-                                                                        .desc
-                                                                        .toString(),
-                                                                overflow: TextOverflow.ellipsis,
+                                                                groupedList[position]
+                                                                    .value[
+                                                                        itemIndex]
+                                                                    .desc
+                                                                    .toString(),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 style: TextStyle(
-                                                                  color: Colors.grey,
-                                                                  fontSize: 15.0,
-                                                                  fontWeight:
-                                                                  FontWeight.normal,
-                                                                  fontFamily: GoogleFonts.sora.toString()
-                                                                )),
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        15.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                    fontFamily:
+                                                                        GoogleFonts
+                                                                            .sora
+                                                                            .toString())),
                                                           ),
                                                         ],
                                                       ),
@@ -166,7 +215,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                     ],
                   );
                 });
-          }else{
+          } else {
             return Center(
                 child: Text("Loading Announcement History ...",
                     style: TextStyle(color: AppColors.secondaryColor)));
@@ -182,19 +231,35 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: AppColors.cardBgColor,
-            title: Text(announcement.heading, style: TextStyle(color: Colors.white,fontSize: 20, fontWeight: FontWeight.w600),),
-            content: Text(announcement.desc, style: TextStyle(color: Colors.white),),
+            title: Text(
+              announcement.heading,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+            ),
+            content: Text(
+              announcement.desc,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
-              announcement.url!=null && announcement.url!=""?
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _launchURL(announcement.url);
-                  },
-                  child: const Text("Open link", style: TextStyle(color: Colors.blue),),
-                ):Container(),
+              announcement.url != null && announcement.url != ""
+                  ? TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _launchURL(announcement.url);
+                      },
+                      child: const Text(
+                        "Open link",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    )
+                  : Container(),
               TextButton(
-                child: Text("Close", style: TextStyle(color: Colors.red),),
+                child: Text(
+                  "Close",
+                  style: TextStyle(color: Colors.red),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -212,7 +277,8 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
           : throw 'Could not launch $_uri';
     } catch (e) {
       print(e.toString());
-      showCustomFlushbar("Can't Open Link", "The link may be null or may have some issues.", context);
+      showCustomFlushbar("Can't Open Link",
+          "The link may be null or may have some issues.", context);
     }
   }
 }

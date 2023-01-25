@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/venue_model.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
@@ -35,7 +34,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
         final List<Widget> imageSliders = state.featured
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
+                    showCustomBottomSheet(
+                        context, item, getVenue(widget.allVenues, item));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -51,7 +51,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                             width: 200,
                             child: FadeInImage(
                               image: NetworkImage(item.imageUrl.toString()),
-                              placeholder: const AssetImage("assets/app_icon.png"),
+                              placeholder:
+                                  const AssetImage("assets/app_icon.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -103,9 +104,14 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   Text("FEATURED EVENTS",
                       style: AppTheme.appTheme.textTheme.headline6),
                   GestureDetector(
-                    onTap:(){ Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EventsScreen(0)));},
-                      child: Text("See more", style: TextStyle(color: AppColors.highlightColor)))
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EventsScreen(0)));
+                      },
+                      child: Text("See more",
+                          style: TextStyle(color: AppColors.highlightColor)))
                 ],
               ),
             ),
@@ -115,7 +121,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   autoPlay: true,
                   autoPlayInterval: const Duration(seconds: 5),
                   enlargeCenterPage: false,
-                  aspectRatio: 1/1,
+                  aspectRatio: 1 / 1,
                   viewportFraction: 0.5,
                   onPageChanged: (index, reason) {
                     setState(() {
@@ -127,7 +133,10 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
         );
       } else if (state is FeaturedError) {
         return const Center(
-          child: Text("Error! Couldn't load.", style: TextStyle(color: Colors.white),),
+          child: Text(
+            "Error! Couldn't load.",
+            style: TextStyle(color: Colors.white),
+          ),
         );
       } else {
         return Center(

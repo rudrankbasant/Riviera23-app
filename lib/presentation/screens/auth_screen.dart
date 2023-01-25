@@ -97,13 +97,15 @@ class _AuthScreenState extends State<AuthScreen> {
                             style: TextStyle(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.white, width: 1),
-                              borderRadius: BorderRadius.all(Radius.circular(7))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(7))),
                           hintText: 'Email',
                         ),
                       )),
@@ -120,13 +122,15 @@ class _AuthScreenState extends State<AuthScreen> {
                             style: TextStyle(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
                             borderRadius: BorderRadius.all(Radius.circular(7)),
                           ),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.white, width: 1),
-                              borderRadius: BorderRadius.all(Radius.circular(7))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(7))),
                           hintText: 'Password',
                         ),
                       )),
@@ -147,7 +151,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Colors.white, width: 1),
-                              borderRadius: BorderRadius.all(Radius.circular(7)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(7)),
                             ),
                             border: OutlineInputBorder(
                                 borderSide:
@@ -250,7 +255,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           .then((value) => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BottomNavScreen(null))));
+                                  builder: (context) =>
+                                      BottomNavScreen(null))));
                     },
                     child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
@@ -281,48 +287,50 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         )),
                   ),
-                  Platform.isAndroid ? Container() :GestureDetector(
-                    onTap: () {
-                      AuthService(FirebaseAuth.instance)
-                          .signInWithApple(context)
-                          .then((value) => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomNavScreen(null))));
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            color: Colors.white,
-                          ),
+                  Platform.isAndroid
+                      ? Container()
+                      : GestureDetector(
+                          onTap: () {
+                            AuthService(FirebaseAuth.instance)
+                                .signInWithApple(context)
+                                .then((value) => Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BottomNavScreen(null))));
+                          },
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset("assets/apple_logo.svg"),
-                                const SizedBox(
-                                  width: 10,
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+                                  color: Colors.white,
                                 ),
-                                const Text(
-                                  "Continue with Apple",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset("assets/apple_logo.svg"),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Text(
+                                        "Continue with Apple",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        )),
-                  ),
+                              )),
+                        ),
                 ],
               ),
             ),
-
             GestureDetector(
               onTap: () {
                 setState(() {

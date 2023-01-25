@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/cubit/venue/venue_cubit.dart';
 import 'package:riviera23/data/models/event_model.dart';
@@ -34,8 +32,6 @@ class _EventsScreenState extends State<EventsScreen> {
 
   List<String> selectedPlaces = [];
   List<String> selectedDays = [];
-
-
 
   List<String> placeSelections = [];
   List<String> daySelections = [];
@@ -232,32 +228,32 @@ class _EventsScreenState extends State<EventsScreen> {
                     padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
                     child: SizedBox(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Event Dates",
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Event Dates",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                        Visibility(
+                          visible: selectedDays.isNotEmpty,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedDays = [];
+                              });
+                            },
+                            child: Text("Clear All",
                                 style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 )),
-                            Visibility(
-                              visible: selectedDays.isNotEmpty,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedDays = [];
-                                  });
-                                },
-                                child: Text("Clear All",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        )),
+                          ),
+                        ),
+                      ],
+                    )),
                   ),
                   SizedBox(
                     height: 60,
@@ -276,37 +272,36 @@ class _EventsScreenState extends State<EventsScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                   Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
                     child: SizedBox(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Venues",
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Venues",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                        Visibility(
+                          visible: selectedPlaces.isNotEmpty,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedPlaces = [];
+                              });
+                            },
+                            child: Text("Clear All",
                                 style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 )),
-                            Visibility(
-                              visible: selectedPlaces.isNotEmpty,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedPlaces = [];
-                                  });
-                                },
-                                child: Text("Clear All",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            ),
-
-                          ],
-                        )),
+                          ),
+                        ),
+                      ],
+                    )),
                   ),
                   Theme(
                     data: Theme.of(context).copyWith(
@@ -335,14 +330,15 @@ class _EventsScreenState extends State<EventsScreen> {
             children: [
               BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
                 if (state is EventsSuccess) {
-
                   return BlocBuilder<VenueCubit, VenueState>(
                       builder: (context, venueState) {
                     if (venueState is VenueSuccess) {
                       print("Venue Success");
                       List<Venue> allVenues = venueState.venuesList;
-                      List<EventModel> filteredEvents = runFilter(state.events, allVenues, placeSelections, daySelections);
-                      List<EventModel> searchedEvents = runSearch(filteredEvents, eventsSearchQuery);
+                      List<EventModel> filteredEvents = runFilter(state.events,
+                          allVenues, placeSelections, daySelections);
+                      List<EventModel> searchedEvents =
+                          runSearch(filteredEvents, eventsSearchQuery);
                       return ListView.builder(
                         itemCount: searchedEvents.length,
                         itemBuilder: (context, index) {
@@ -391,16 +387,18 @@ class _EventsScreenState extends State<EventsScreen> {
                         );
                       }
 
-
                       return BlocBuilder<VenueCubit, VenueState>(
                           builder: (context, venueState) {
                         if (venueState is VenueSuccess) {
                           print("Venue Success");
                           List<Venue> allVenues = venueState.venuesList;
                           List<EventModel> filteredFavEvents = runFilter(
-                              favouriteEvents, allVenues, placeSelections, daySelections);
+                              favouriteEvents,
+                              allVenues,
+                              placeSelections,
+                              daySelections);
                           List<EventModel> searchedFavEvents =
-                          runSearch(filteredFavEvents, eventsSearchQuery);
+                              runSearch(filteredFavEvents, eventsSearchQuery);
                           return ListView.builder(
                             itemCount: searchedFavEvents.length,
                             itemBuilder: (context, index) {
@@ -444,7 +442,7 @@ class _EventsScreenState extends State<EventsScreen> {
       BuildContext context, EventModel event, List<Venue> allVenues) {
     return GestureDetector(
       onTap: () {
-        showCustomBottomSheet(context,event, getVenue(allVenues, event));
+        showCustomBottomSheet(context, event, getVenue(allVenues, event));
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -480,7 +478,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               fontFamily: GoogleFonts.sora.toString())),
                       getDurationDate(event),
                       Text(
-                          "${getVenue(allVenues, event).venue_name} (${event.loc.toString()})",
+                          "${event.loc.toString()} ",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
@@ -508,7 +506,7 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Text getDurationDate(EventModel event) {
-    if (event.start == event.end) {
+    if (parseDate(event.start) == parseDate(event.end)) {
       return Text(parseDate(event.start),
           style: const TextStyle(
             color: Colors.grey,
@@ -540,13 +538,16 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   List<EventModel> runFilter(List<EventModel> events, List<Venue> allVenues, List<String> places, List<String> dates) {
-
     List<EventModel> filteredEvents = events;
 
     if (places.isNotEmpty && dates.isEmpty) {
       filteredEvents = [];
       for (EventModel event in events) {
+        /*print("all places selected:");
+        print(places);*/
+        //print("checking places contains: ${getVenue(allVenues, event).venue_name} and ${event.loc.toString()}");
         if (places.contains(getVenue(allVenues, event).venue_name)) {
+          //print("checking places contains: ${getVenue(allVenues, event).venue_name}");
           filteredEvents.add(event);
         }
       }
@@ -564,17 +565,13 @@ class _EventsScreenState extends State<EventsScreen> {
       for (EventModel event in events) {
         if (dates.contains(parseDate(event.start)) &&
             places.contains(getVenue(allVenues, event).venue_name)) {
-            filteredEvents.add(event);
+          filteredEvents.add(event);
         }
       }
     }
 
     return filteredEvents;
   }
-
-
-
-
 
   Padding buildDaysRadioListTile(int index, String day) {
     return Padding(
@@ -595,13 +592,17 @@ class _EventsScreenState extends State<EventsScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-                color: (selectedDays.contains(day)) ? AppColors.highlightColor : Colors.white),
+                color: (selectedDays.contains(day))
+                    ? AppColors.highlightColor
+                    : Colors.white),
           ),
           child: Center(
             child: Text(
               day,
               style: TextStyle(
-                color: (selectedDays.contains(day)) ? AppColors.highlightColor : Colors.white,
+                color: (selectedDays.contains(day))
+                    ? AppColors.highlightColor
+                    : Colors.white,
                 fontSize: 13,
               ),
             ),
@@ -618,11 +619,12 @@ class _EventsScreenState extends State<EventsScreen> {
         activeColor: AppColors.primaryColor,
         selectedTileColor: AppColors.secondaryColor,
         checkboxShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(2.0),),
+          borderRadius: BorderRadius.circular(2.0),
+        ),
         value: selectedPlaces.contains(place),
         onChanged: (value) {
           setState(() {
-            if (selectedPlaces.contains(place)){
+            if (selectedPlaces.contains(place)) {
               selectedPlaces.remove(place);
             } else {
               selectedPlaces.add(place);
@@ -631,5 +633,4 @@ class _EventsScreenState extends State<EventsScreen> {
         },
         title: Text(place));
   }
-
 }
