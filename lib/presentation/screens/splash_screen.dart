@@ -73,12 +73,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (isLoggedIn) {
       Timer(
-          Duration(seconds: 3),
+          Duration(seconds: 2),
           () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => BottomNavScreen(null))));
     } else {
       Timer(
-          Duration(seconds: 3),
+          Duration(seconds: 2),
           () => setState(() {
                 leadtoGetStarted = true;
               }));

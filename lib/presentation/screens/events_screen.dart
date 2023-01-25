@@ -471,14 +471,11 @@ class _EventsScreenState extends State<EventsScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(event.name.toString(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.sora.toString())),
+                          style: GoogleFonts.sora(
+                              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
                       getDurationDate(event),
                       Text(
-                          "${event.loc.toString()} ",
+                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0"? "Free" : "\u{20B9}${event.total_cost}"}",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,

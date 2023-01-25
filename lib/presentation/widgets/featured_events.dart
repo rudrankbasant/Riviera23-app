@@ -46,10 +46,11 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 250,
-                            width: 200,
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
                             child: FadeInImage(
+                              height: 250,
+                              width: 200,
                               image: NetworkImage(item.imageUrl.toString()),
                               placeholder:
                                   const AssetImage("assets/app_icon.png"),
@@ -61,11 +62,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                           ),
                           Text(
                             item.name.toString(),
-                            style: TextStyle(
-                                fontFamily: GoogleFonts.sora.toString(),
-                                color: AppColors.highlightColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                            style: GoogleFonts.sora(
+                                color: AppColors.highlightColor, fontWeight: FontWeight.w800, fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(

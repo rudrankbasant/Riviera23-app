@@ -118,7 +118,7 @@ class _FAQScreenState extends State<FAQScreen> {
                                           regularList[index].url.toString()),
                                       placeholder: const AssetImage(
                                           "assets/app_icon.png"),
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
                                 );

@@ -172,7 +172,7 @@ void showCustomBottomSheet(
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
-                                  color: AppColors.secondaryColor,
+                                  color: Colors.grey,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
@@ -200,7 +200,7 @@ void showCustomBottomSheet(
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
-                                  color: AppColors.secondaryColor,
+                                  color: Colors.grey,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
@@ -228,7 +228,7 @@ void showCustomBottomSheet(
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
-                                  color: AppColors.secondaryColor,
+                                  color: Colors.grey,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
@@ -277,7 +277,7 @@ void showCustomBottomSheet(
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 0, 10, 0),
                                         child: Text(
-                                          "${event.loc.toString()}",
+                                          event.loc.toString(),
                                           style: TextStyle(
                                             color: AppColors.highlightColor,
                                             fontSize: 15,
@@ -325,7 +325,7 @@ Text getDurationDateTime(EventModel event) {
       style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 14,
-          color: AppColors.secondaryColor,
+          color: Colors.grey,
           fontFamily: GoogleFonts.sora.toString()),
     );
   } else {
@@ -334,7 +334,7 @@ Text getDurationDateTime(EventModel event) {
       style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 14,
-          color: AppColors.secondaryColor,
+          color: Colors.grey,
           fontFamily: GoogleFonts.sora.toString()),
     );
   }

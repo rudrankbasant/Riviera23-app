@@ -48,21 +48,13 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               textAlign: TextAlign.center,
               text: TextSpan(
                 text: '#riviera23',
-                style: TextStyle(
-                  color: AppColors.highlightColor,
-                  fontSize: 23,
-                  fontFamily: GoogleFonts.sora.toString(),
-                  fontWeight: FontWeight.bold,
-                ),
+                style: GoogleFonts.sora(
+                    color: AppColors.highlightColor, fontWeight: FontWeight.w500, fontSize: 23),
                 children: <TextSpan>[
                   TextSpan(
                       text: ' photowall',
-                      style: TextStyle(
-                        color: AppColors.secondaryColor,
-                        fontSize: 23,
-                        fontFamily: GoogleFonts.sora.toString(),
-                        fontWeight: FontWeight.bold,
-                      )),
+                      style: GoogleFonts.sora(
+                          color: Colors.white, fontWeight: FontWeight.w500, fontSize: 23)),
                 ],
               ),
             ),
@@ -77,30 +69,18 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text: 'Use ',
-                  style: TextStyle(
-                    color: AppColors.secondaryColor,
-                    fontSize: 15,
-                    fontFamily: GoogleFonts.sora.toString(),
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: GoogleFonts.sora(
+                      color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15),
                   children: <TextSpan>[
                     TextSpan(
                         text: '#riviera23',
-                        style: TextStyle(
-                          color: AppColors.highlightColor,
-                          fontSize: 15,
-                          fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,
-                        )),
+                        style: GoogleFonts.sora(
+                            color: AppColors.highlightColor, fontWeight: FontWeight.w500, fontSize: 15)),
                     TextSpan(
                         text:
-                            ' on your instagram to get featured on this timeline.',
-                        style: TextStyle(
-                          color: AppColors.secondaryColor,
-                          fontSize: 15,
-                          fontFamily: GoogleFonts.sora.toString(),
-                          fontWeight: FontWeight.bold,
-                        )),
+                            ' on your Instagram to get featured on this timeline.',
+                        style: GoogleFonts.sora(
+                            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15)),
                   ],
                 ),
               ),
