@@ -63,14 +63,16 @@ class _AuthScreenState extends State<AuthScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              height: 10
+            ),
+            SingleChildScrollView(
+              child: Column(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(45, 45, 45, 30),
                     child: Image.asset("assets/riviera_icon.png"),
@@ -330,47 +332,47 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    showConfirmPassword = !showConfirmPassword;
-                  });
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(color: Colors.white),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            showConfirmPassword
-                                ? const Text(
-                                    "Already have an account? Login",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  )
-                                : const Text(
-                                    "Don't have an account? Sign Up",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  showConfirmPassword = !showConfirmPassword;
+                });
+              },
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(color: Colors.white),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          showConfirmPassword
+                              ? const Text(
+                                  "Already have an account? Login",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                          ],
-                        ),
+                                )
+                              : const Text(
+                                  "Don't have an account? Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                        ],
                       ),
-                    )),
-              ),
-            ],
-          ),
+                    ),
+                  )),
+            ),
+          ],
         ),
       ),
     );
