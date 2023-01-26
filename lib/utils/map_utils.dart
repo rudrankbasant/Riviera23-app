@@ -21,16 +21,16 @@ class MapUtils{
       //  final String appleUrl = 'https://maps.apple.com/?q=$latitude,$longitude';
     //final String appleUrl = 'http://maps.apple.com/?saddr=&daddr=$latitude,$longitude';
       final String appleUrl = 'maps://?saddr=&daddr=$latitude,$longitude';
-      final Uri googleuri = Uri.parse(googleUrl2);
+      final Uri googleuri = Uri.parse(googleUrl);
       //final Uri googleUriForIos=Uri.parse("comgooglemaps://?center=$latitude,$longitude");
       final Uri googleUriForIos=Uri.parse("comgooglemaps://?saddr=&daddr=$latitude,$longitude&directionsmode=driving");
       final Uri appleUri = Uri.parse(appleUrl);
 
       if (await canLaunchUrl(googleuri)) {
         try{
-          print("using maps_launcer package");
-          MapsLauncher.launchCoordinates(latitude, longitude);
-          //await launchUrl(googleuri);
+          /*print("using maps_launcer package");
+          MapsLauncher.launchCoordinates(latitude, longitude);*/
+          await launchUrl(googleuri);
         }catch(e){
           print(e.toString());
         }
