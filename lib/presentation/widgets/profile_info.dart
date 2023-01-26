@@ -26,28 +26,27 @@ class ProfileInfo extends StatelessWidget {
         children: [
           Expanded(
               child: Row(
-                children: [
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      width: 50.0,
-                      height: 50.0,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgPicture.asset(imgPath)),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.05,
+            children: [
+              Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  width: 50.0,
+                  height: 50.0,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
                   ),
-                  Flexible(
-                    child: Text(infoText,
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
-                  ),
-                ],
-              )
-          ),
+                  child: SvgPicture.asset(imgPath)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+              Flexible(
+                child: Text(infoText,
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
+              ),
+            ],
+          )),
           isButton
               ? GestureDetector(
                   onTap: () {

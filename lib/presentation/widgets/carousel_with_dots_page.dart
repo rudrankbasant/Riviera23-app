@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_state.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
@@ -13,6 +12,7 @@ import '../methods/get_venue.dart';
 
 class CarouselWithDotsPage extends StatefulWidget {
   List<Venue> allVenues;
+
   CarouselWithDotsPage({required this.allVenues});
 
   @override
@@ -27,7 +27,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
     double width = MediaQuery.of(context).size.width;
     return BlocBuilder<ProShowsCubit, ProShowsState>(builder: (context, state) {
       if (state is ProShowsSuccess) {
-        if(state.proShows.isEmpty){
+        if (state.proShows.isEmpty) {
           return const Center(
             child: Padding(
               padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
@@ -45,7 +45,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
         final List<Widget> imageSliders = state.proShows
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
+                    showCustomBottomSheet(
+                        context, item, getVenue(widget.allVenues, item));
                   },
                   child: Stack(
                     children: [
@@ -131,7 +132,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
         );
       } else if (state is ProShowsError) {
         return const Center(
-          child: Text("Error! Couldn't load.", style: TextStyle(color: Colors.white)),
+          child: Text("Error! Couldn't load.",
+              style: TextStyle(color: Colors.white)),
         );
       } else {
         return Center(

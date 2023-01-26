@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class VenueList{
+class VenueList {
   final List<Venue> allVenues;
 
   VenueList({
@@ -37,7 +37,6 @@ class Venue {
     required this.latitude,
     required this.longitude,
   });
-
 
   factory Venue.fromSnaps(Map<String, dynamic> data) {
     print("Venue.fromSnaps started $data");

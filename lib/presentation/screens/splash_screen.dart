@@ -57,8 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           leadtoGetStarted
               ? Align(
-                  alignment: Alignment.bottomCenter, child: getStarted(context)
-                )
+                  alignment: Alignment.bottomCenter, child: getStarted(context))
               : const Align(
                   alignment: Alignment.bottomCenter,
                   child: VitLogo(),
@@ -74,12 +73,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (isLoggedIn) {
       Timer(
-          Duration(seconds: 3),
+          Duration(seconds: 2),
           () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => BottomNavScreen(null))));
     } else {
       Timer(
-          Duration(seconds: 3),
+          Duration(seconds: 2),
           () => setState(() {
                 leadtoGetStarted = true;
               }));

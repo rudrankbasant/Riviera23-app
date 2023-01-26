@@ -11,11 +11,7 @@ String parseDate(String? datetime) {
     var date = dateTime.toLocal();
      var formatter = DateFormat("dd MMM, yyyy");
     var formatted = formatter.format(date);
-    return formatted;
-    
-    //
-    
-    
+    return formatted.toUpperCase();
   }
   return "Dates to be declared";
 }

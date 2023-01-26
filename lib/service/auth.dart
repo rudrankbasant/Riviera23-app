@@ -40,10 +40,10 @@ class AuthService {
           if (!user.emailVerified) {
             await _auth.signOut();
             return false;
-          }else{
+          } else {
             return true;
           }
-        }else{
+        } else {
           return true;
         }
       } else {

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:riviera23/cubit/featured/featured_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
@@ -24,9 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
-
   @override
   void initState() {
     super.initState();
@@ -59,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         titleSpacing: 0.0,
         title: Transform(
-          // you can forcefully translate values left side using Transform
+            // you can forcefully translate values left side using Transform
             transform: Matrix4.translationValues(10.0, 2.0, 0.0),
             child: Container(
               child: Padding(
@@ -87,58 +83,38 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Container(
-        color: Theme
-            .of(context)
-            .primaryColor,
+        color: Theme.of(context).primaryColor,
         child: Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          child: SingleChildScrollView(
-              child: BlocBuilder<VenueCubit, VenueState>(builder: (context, venueState) {
-                if (venueState is VenueSuccess) {
-                  print("Venue Success");
-                  List<Venue> allVenues = venueState.venuesList;
-                  return Column(
-                    children: [
-                      CarouselWithDotsPage(allVenues: allVenues,),
-                      SizedBox(height: 30),
-                      FeaturedEvents(allVenues: allVenues,),
-                      SizedBox(height: 0),
-                      OnGoingEvents(allVenues: allVenues,)
-                    ],
-                  );
-                } else {
-                  return Container();
-                }
-              })
-          ),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(child:
+              BlocBuilder<VenueCubit, VenueState>(
+                  builder: (context, venueState) {
+            if (venueState is VenueSuccess) {
+              print("Venue Success");
+              List<Venue> allVenues = venueState.venuesList;
+              return Column(
+                children: [
+                  CarouselWithDotsPage(
+                    allVenues: allVenues,
+                  ),
+                  SizedBox(height: 30),
+                  FeaturedEvents(
+                    allVenues: allVenues,
+                  ),
+                  SizedBox(height: 0),
+                  OnGoingEvents(
+                    allVenues: allVenues,
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
+          })),
         ),
-      ),);
+      ),
+    );
   }
 
-  /*void _getCurrentLocation() async {
-
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Permission Not Granted');
-      }
-    } else {
-      throw Exception('Error');
-    }
-
-    Position res = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print("position found $res");
-    setState(() {
-      position = res;
-    });
-  }*/
 }

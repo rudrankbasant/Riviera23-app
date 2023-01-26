@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
@@ -18,7 +17,10 @@ import '../methods/show_event_details.dart';
 class OnGoingEvents extends StatefulWidget {
   List<Venue> allVenues;
 
-  OnGoingEvents({required this.allVenues,});
+  OnGoingEvents({
+    required this.allVenues,
+  });
+
   @override
   _OnGoingEventsState createState() => _OnGoingEventsState();
 }
@@ -35,7 +37,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
         final List<Widget> imageSliders = onGoingEvents
             .map((item) => GestureDetector(
                   onTap: () {
-                    showCustomBottomSheet(context, item, getVenue(widget.allVenues, item));
+                    showCustomBottomSheet(
+                        context, item, getVenue(widget.allVenues, item));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
@@ -46,12 +49,14 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 250,
-                            width: 200,
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
                             child: FadeInImage(
+                              height: 250,
+                              width: 200,
                               image: NetworkImage(item.imageUrl.toString()),
-                              placeholder: const AssetImage("assets/app_icon.png"),
+                              placeholder:
+                              const AssetImage("assets/app_icon.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -60,11 +65,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                           ),
                           Text(
                             item.name.toString(),
-                            style: TextStyle(
-                                fontFamily: GoogleFonts.sora.toString(),
-                                color: AppColors.highlightColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                            style: GoogleFonts.sora(
+                                color: AppColors.highlightColor, fontWeight: FontWeight.w700, fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(

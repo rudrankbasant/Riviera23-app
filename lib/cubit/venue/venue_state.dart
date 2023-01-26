@@ -23,4 +23,3 @@ class VenueFailed extends VenueState {
 
   VenueFailed({required this.error});
 }
-

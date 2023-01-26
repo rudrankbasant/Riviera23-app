@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
@@ -79,8 +78,10 @@ void showCustomBottomSheet(
                                       MediaQuery.of(context).size.height * 0.4,
                                   width: MediaQuery.of(context).size.width,
                                   child: FadeInImage(
-                                    image: NetworkImage(event.imageUrl.toString()),
-                                    placeholder: const AssetImage("assets/app_icon.png"),
+                                    image:
+                                        NetworkImage(event.imageUrl.toString()),
+                                    placeholder:
+                                        const AssetImage("assets/app_icon.png"),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -171,7 +172,7 @@ void showCustomBottomSheet(
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
-                                  color: AppColors.secondaryColor,
+                                  color: Colors.grey,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
@@ -199,7 +200,35 @@ void showCustomBottomSheet(
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
+                                  color: Colors.grey,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "Registration Amount",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
                                   color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            child: Text(
+                              event.total_cost.toString() == "0"? "Free" : "\u{20B9}${event.total_cost}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 15,
+                                  color: Colors.grey,
                                   fontFamily: GoogleFonts.sora.toString()),
                             ),
                           ),
@@ -222,7 +251,8 @@ void showCustomBottomSheet(
                           ),
                           InkWell(
                             onTap: () {
-                              MapUtils.openMap(venue.latitude, venue.longitude, context);
+                              MapUtils.openMap(
+                                  venue.latitude, venue.longitude, context);
                             },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -247,7 +277,7 @@ void showCustomBottomSheet(
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 0, 10, 0),
                                         child: Text(
-                                          "${venue.venue_name} (${event.loc.toString()})",
+                                          event.loc.toString(),
                                           style: TextStyle(
                                             color: AppColors.highlightColor,
                                             fontSize: 15,
@@ -289,40 +319,24 @@ void showCustomBottomSheet(
 }
 
 Text getDurationDateTime(EventModel event) {
-  if (event.start == event.end) {
+  if (parseDate(event.start) == parseDate(event.end)) {
     return Text(
-      "${parseDate(event.start)} at ${parseTime(event.start)}",
+      "${parseDate(event.start)} ${parseTime(event.start)} - ${parseTime(event.end)}",
       style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 14,
-          color: AppColors.secondaryColor,
+          color: Colors.grey,
           fontFamily: GoogleFonts.sora.toString()),
     );
   } else {
     return Text(
-      "${parseDate(event.start)} at ${parseTime(event.start)} to ${parseDate(event.end)} at ${parseTime(event.end)}",
+      "${parseDate(event.start)} ${parseTime(event.start)} - ${parseDate(event.end)} ${parseTime(event.end)}",
       style: TextStyle(
           fontWeight: FontWeight.w300,
           fontSize: 14,
-          color: AppColors.secondaryColor,
+          color: Colors.grey,
           fontFamily: GoogleFonts.sora.toString()),
     );
   }
-}
-
-Future<Position> _getCurrentLocation() async {
-
-  LocationPermission permission;
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Permission Not Granted');
-    }
-  }
-
-  Position res = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-  print("position found $res");
-  return res;
 }
 

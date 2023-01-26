@@ -61,8 +61,9 @@ class _FAQScreenState extends State<FAQScreen> {
                                       child: FadeInImage(
                                         image: NetworkImage(
                                             sponsor.url.toString()),
-                                        placeholder: const AssetImage("assets/app_icon.png"),
-                                        fit: BoxFit.cover,
+                                        placeholder: const AssetImage(
+                                            "assets/app_icon.png"),
+                                        fit: BoxFit.fitWidth,
                                       )),
                                 ),
                               ),
@@ -115,8 +116,9 @@ class _FAQScreenState extends State<FAQScreen> {
                                     child: FadeInImage(
                                       image: NetworkImage(
                                           regularList[index].url.toString()),
-                                      placeholder: const AssetImage("assets/app_icon.png"),
-                                      fit: BoxFit.cover,
+                                      placeholder: const AssetImage(
+                                          "assets/app_icon.png"),
+                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
                                 );

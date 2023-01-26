@@ -118,9 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => EventsScreen(1)));
               },
               child: ProfileInfo(
-                  imgPath: "assets/favourite_icon.svg",
-                  infoText: "Favorite Events",
-                  isButton: true,
+                imgPath: "assets/favourite_icon.svg",
+                infoText: "Favorite Events",
+                isButton: true,
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => EventsScreen(1)));
@@ -169,7 +169,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20),
-                      child: SvgPicture.asset('assets/right_arrow_icon.svg' , height: 20, width: 20),
+                      child: SvgPicture.asset('assets/right_arrow_icon.svg',
+                          height: 20, width: 20),
                     ),
                   ),
                 ],
