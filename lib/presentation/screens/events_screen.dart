@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -505,10 +504,12 @@ class _EventsScreenState extends State<EventsScreen> {
                     children: [
                       Text(event.name.toString(),
                           style: GoogleFonts.sora(
-                              color: Colors.white, fontWeight: FontWeight.w700, fontSize: 20)),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20)),
                       getDurationDate(event),
                       Text(
-                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0"? "Free" : "\u{20B9}${event.total_cost}"}",
+                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0" ? "Free" : "\u{20B9}${event.total_cost}"}",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
@@ -567,7 +568,8 @@ class _EventsScreenState extends State<EventsScreen> {
     return searchedEvents;
   }
 
-  List<EventModel> runFilter(List<EventModel> events, List<Venue> allVenues, List<String> places, List<String> dates) {
+  List<EventModel> runFilter(List<EventModel> events, List<Venue> allVenues,
+      List<String> places, List<String> dates) {
     List<EventModel> filteredEvents = events;
 
     if (places.isNotEmpty && dates.isEmpty) {

@@ -1,5 +1,3 @@
-
-
 class FavouriteModel {
   final String uniqueUserId;
   final List<String> favouriteEventIds;

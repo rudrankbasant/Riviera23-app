@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
@@ -17,6 +16,7 @@ import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/featured/featured_cubit.dart';
@@ -117,7 +117,6 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -145,7 +144,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Riviera23',
         theme: AppTheme.appTheme,
-        home:  SplashScreen(),
+        home: SplashScreen(),
         onGenerateRoute: AppRouter().onGenerateRoute,
       ),
     );
@@ -162,14 +161,14 @@ getDataUpdate() async {
   prefs.setString("remote_app_version", RemoteVersions.app_version_number);
 
   //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
-  prefs.setInt("remote_announcement", RemoteVersions.announcement_version_number);
+  prefs.setInt(
+      "remote_announcement", RemoteVersions.announcement_version_number);
   prefs.setInt("remote_contacts", RemoteVersions.contacts_version_number);
   prefs.setInt("remote_faq", RemoteVersions.faq_version_number);
   prefs.setInt("remote_fav", RemoteVersions.favorites_version_number);
   prefs.setInt("remote_places", RemoteVersions.places_version_number);
   prefs.setInt("remote_sponsors", RemoteVersions.sponsors_version_number);
   prefs.setInt("remote_team", RemoteVersions.team_version_number);
-
 }
 
 Future<DataVersion> getRemoteVersion() async {
@@ -181,17 +180,23 @@ Future<DataVersion> getRemoteVersion() async {
         .doc('Si44DbMWkgcwGVcKcW54')
         .get();
 
-    Map<String, dynamic> data =
-    timelineSnapshot.data() as Map<String, dynamic>;
+    Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
 
     debugPrint("this is version data" + data.toString());
     DataVersion dataVersion = DataVersion.fromMap(data);
 
     return dataVersion;
-
   } catch (e) {
     print(e.toString());
-    return DataVersion(app_version_number: "",announcement_version_number: -1, contacts_version_number: -1, faq_version_number: -1, favorites_version_number: -1, places_version_number: -1, sponsors_version_number: -1, team_version_number: -1);
+    return DataVersion(
+        app_version_number: "",
+        announcement_version_number: -1,
+        contacts_version_number: -1,
+        faq_version_number: -1,
+        favorites_version_number: -1,
+        places_version_number: -1,
+        sponsors_version_number: -1,
+        team_version_number: -1);
   }
 }
 
@@ -199,13 +204,3 @@ Future<void> setAppStarted() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('appStarted', true);
 }
-
-
-
-
-
-
-
-
-
-

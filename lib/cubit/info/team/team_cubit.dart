@@ -17,8 +17,10 @@ class TeamCubit extends Cubit<TeamState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      DocumentSnapshot timelineSnapshot =
-          await firestore.collection('team').doc('ADZSQgGgJMVbSOEfxgwQ').get(GetOptions(source: serverORcache));
+      DocumentSnapshot timelineSnapshot = await firestore
+          .collection('team')
+          .doc('ADZSQgGgJMVbSOEfxgwQ')
+          .get(GetOptions(source: serverORcache));
       Map<String, dynamic> data =
           timelineSnapshot.data() as Map<String, dynamic>;
 
@@ -31,30 +33,28 @@ class TeamCubit extends Cubit<TeamState> {
     }
   }
 
-
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? remoteTeamVersion = prefs.getInt("remote_team");
     int? localTeamVersion = prefs.getInt("local_team");
 
-    if(remoteTeamVersion!=null){
-      if(localTeamVersion!=null){
-        if(remoteTeamVersion==localTeamVersion){
+    if (remoteTeamVersion != null) {
+      if (localTeamVersion != null) {
+        if (remoteTeamVersion == localTeamVersion) {
           print("Teams serverORCache is set to cache");
           return Source.cache;
-        }else{
+        } else {
           print("Teams was not up to date, serverORCache is set to server");
           prefs.setInt("local_team", remoteTeamVersion);
           return Source.server;
         }
-      }else{
+      } else {
         print("local_team was not even set up, serverORCache is set to server");
         prefs.setInt("local_team", remoteTeamVersion);
         return Source.server;
       }
-    }else{
+    } else {
       return Source.server;
     }
-
   }
 }

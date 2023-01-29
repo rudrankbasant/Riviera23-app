@@ -18,8 +18,10 @@ class FaqCubit extends Cubit<FaqState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      DocumentSnapshot timelineSnapshot =
-          await firestore.collection('faqs').doc('rtYbV3P8UboH8HWhZAGC').get(GetOptions(source: serverORcache));
+      DocumentSnapshot timelineSnapshot = await firestore
+          .collection('faqs')
+          .doc('rtYbV3P8UboH8HWhZAGC')
+          .get(GetOptions(source: serverORcache));
       Map<String, dynamic> data =
           timelineSnapshot.data() as Map<String, dynamic>;
 
@@ -37,24 +39,23 @@ class FaqCubit extends Cubit<FaqState> {
     int? remoteFAQVersion = prefs.getInt("remote_faq");
     int? localFAQVersion = prefs.getInt("local_faq");
 
-    if(remoteFAQVersion!=null){
-      if(localFAQVersion!=null){
-        if(remoteFAQVersion==localFAQVersion){
+    if (remoteFAQVersion != null) {
+      if (localFAQVersion != null) {
+        if (remoteFAQVersion == localFAQVersion) {
           print("FAQs serverORCache is set to cache");
           return Source.cache;
-        }else{
+        } else {
           print("FAQs was not up to date, serverORCache is set to server");
           prefs.setInt("local_faq", remoteFAQVersion);
           return Source.server;
         }
-      }else{
+      } else {
         print("local_faq was not even set up, serverORCache is set to server");
         prefs.setInt("local_faq", remoteFAQVersion);
         return Source.server;
       }
-    }else{
+    } else {
       return Source.server;
     }
-
   }
 }

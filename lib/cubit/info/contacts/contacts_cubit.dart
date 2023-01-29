@@ -36,30 +36,29 @@ class ContactsCubit extends Cubit<ContactsState> {
     }
   }
 
-
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? remoteContactVersion = prefs.getInt("remote_contacts");
     int? localContactVersion = prefs.getInt("local_contacts");
 
-    if(remoteContactVersion!=null){
-      if(localContactVersion!=null){
-        if(remoteContactVersion==localContactVersion){
+    if (remoteContactVersion != null) {
+      if (localContactVersion != null) {
+        if (remoteContactVersion == localContactVersion) {
           print("Contacts serverORCache is set to cache");
           return Source.cache;
-        }else{
+        } else {
           print("Contacts was not up to date, serverORCache is set to server");
           prefs.setInt("local_contacts", remoteContactVersion);
           return Source.server;
         }
-      }else{
-        print("local_contacts was not even set up, serverORCache is set to server");
+      } else {
+        print(
+            "local_contacts was not even set up, serverORCache is set to server");
         prefs.setInt("local_contacts", remoteContactVersion);
         return Source.server;
       }
-    }else{
+    } else {
       return Source.server;
     }
-
   }
 }

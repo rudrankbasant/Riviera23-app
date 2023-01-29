@@ -1,8 +1,8 @@
 import 'dart:io' show Platform;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -92,51 +92,48 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Container(
-          color: Theme.of(context).primaryColor,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(child:
-                BlocBuilder<VenueCubit, VenueState>(
-                    builder: (context, venueState) {
-              if (venueState is VenueSuccess) {
-
-                List<Venue> allVenues = venueState.venuesList;
-                return Column(
-                  children: [
-                    CarouselWithDotsPage(
-                      allVenues: allVenues,
-                    ),
-                    SizedBox(height: 30),
-                    FeaturedEvents(
-                      allVenues: allVenues,
-                    ),
-                    SizedBox(height: 0),
-                    OnGoingEvents(
-                      allVenues: allVenues,
-                    )
-                  ],
-                );
-              } else {
-                return Container();
-              }
-            })),
-          ),
+        color: Theme.of(context).primaryColor,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(child:
+              BlocBuilder<VenueCubit, VenueState>(
+                  builder: (context, venueState) {
+            if (venueState is VenueSuccess) {
+              List<Venue> allVenues = venueState.venuesList;
+              return Column(
+                children: [
+                  CarouselWithDotsPage(
+                    allVenues: allVenues,
+                  ),
+                  SizedBox(height: 30),
+                  FeaturedEvents(
+                    allVenues: allVenues,
+                  ),
+                  SizedBox(height: 0),
+                  OnGoingEvents(
+                    allVenues: allVenues,
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
+          })),
         ),
-
+      ),
     );
   }
 }
 
-const APP_STORE_URL =
-    'https://apps.apple.com/in/app/riviera-23/id1665459606';
+const APP_STORE_URL = 'https://apps.apple.com/in/app/riviera-23/id1665459606';
 const PLAY_STORE_URL =
     'https://play.google.com/store/apps/details?id=in.ac.vit.riviera23';
 
 void checkForAppUpdate(BuildContext context) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? appStarted = prefs.getBool('appStarted');
-  if (appStarted==true) {
+  if (appStarted == true) {
     _notifyForAppUpdate(context);
     prefs.setBool('appStarted', false);
   }
@@ -157,18 +154,19 @@ void _notifyForAppUpdate(BuildContext context) async {
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? RemoteVersionApp = prefs.getString('remote_app_version');
-  if(RemoteVersionApp!=null && RemoteVersionApp!=""){
+  if (RemoteVersionApp != null && RemoteVersionApp != "") {
     double localVersion = double.parse(version.trim().replaceAll(".", ""));
-    double latestVersion = double.parse(RemoteVersionApp.trim().replaceAll(".", ""));
+    double latestVersion =
+        double.parse(RemoteVersionApp.trim().replaceAll(".", ""));
 
     print("Local Version: $localVersion");
     print("Latest Version: $latestVersion");
-    if (latestVersion> localVersion) {
+    if (latestVersion > localVersion) {
       _showVersionDialog(context);
     }
   }
-
 }
+
 _showVersionDialog(context) async {
   await showDialog<String>(
     context: context,
@@ -181,48 +179,54 @@ _showVersionDialog(context) async {
       String btnLabel = "Update Now";
       return Platform.isIOS
           ? CupertinoAlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            onPressed: (){
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              btnLabelCancel,
-            ),
-          ),
-          CupertinoDialogAction(
-            onPressed: (){
-              _launchURL(APP_STORE_URL, context);
-            },
-            child: Text(
-              btnLabel,
-            ),
-          ),
-        ],
-      )
+              title: Text(title),
+              content: Text(message),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    btnLabelCancel,
+                  ),
+                ),
+                CupertinoDialogAction(
+                  onPressed: () {
+                    _launchURL(APP_STORE_URL, context);
+                  },
+                  child: Text(
+                    btnLabel,
+                  ),
+                ),
+              ],
+            )
           : AlertDialog(
-        title: Text(
-          title,
-          style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w400),
-        ),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: Text(btnLabelCancel, style: TextStyle(color: Colors.grey),),
-            onPressed:(){
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: Text(btnLabel, style: TextStyle(color: Colors.black)),
-            onPressed:(){
-              _launchURL(PLAY_STORE_URL, context);
-            },
-          ),
-        ],
-      );
+              title: Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400),
+              ),
+              content: Text(message),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    btnLabelCancel,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(btnLabel, style: TextStyle(color: Colors.black)),
+                  onPressed: () {
+                    _launchURL(PLAY_STORE_URL, context);
+                  },
+                ),
+              ],
+            );
     },
   );
 }

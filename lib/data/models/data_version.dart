@@ -8,8 +8,6 @@ class DataVersion {
   final int sponsors_version_number;
   final int team_version_number;
 
-
-
   DataVersion({
     required this.app_version_number,
     required this.announcement_version_number,

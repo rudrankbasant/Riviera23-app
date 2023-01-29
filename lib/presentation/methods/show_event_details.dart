@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -224,7 +223,9 @@ void showCustomBottomSheet(
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                             child: Text(
-                              event.total_cost.toString() == "0"? "Free" : "\u{20B9}${event.total_cost}",
+                              event.total_cost.toString() == "0"
+                                  ? "Free"
+                                  : "\u{20B9}${event.total_cost}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
@@ -339,4 +340,3 @@ Text getDurationDateTime(EventModel event) {
     );
   }
 }
-

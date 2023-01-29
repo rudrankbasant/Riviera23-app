@@ -1,15 +1,14 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../cubit/announcements/announcements_cubit.dart';
 import '../../data/models/announcement_model.dart';
 import '../methods/custom_flushbar.dart';
-import '../methods/launch_url.dart';
 
 class AnnouncementHistoryScreen extends StatefulWidget {
   @override
@@ -21,10 +20,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     var top = false;
-    var heightOfNotification = MediaQuery
-        .of(context)
-        .size
-        .height * 0.1;
+    var heightOfNotification = MediaQuery.of(context).size.height * 0.1;
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
@@ -66,7 +62,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                               Container(
                                 width: 5,
                                 height: ((heightOfNotification + 5) *
-                                    groupedData.value.length) +
+                                        groupedData.value.length) +
                                     36,
                                 decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
@@ -80,11 +76,11 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                               Flexible(
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                                      const EdgeInsets.fromLTRB(20, 8, 0, 8),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Padding(
@@ -103,7 +99,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                                         fit: FlexFit.loose,
                                         child: ListView.builder(
                                             physics:
-                                            NeverScrollableScrollPhysics(),
+                                                NeverScrollableScrollPhysics(),
                                             primary: false,
                                             shrinkWrap: true,
                                             itemCount: groupedList[position]
@@ -111,7 +107,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                                                 .length,
                                             itemBuilder: (context, itemIndex) {
                                               groupedList[position].value.sort(
-                                                      (a, b) =>
+                                                  (a, b) =>
                                                       b.date.compareTo(a.date));
                                               return GestureDetector(
                                                 onTap: () {
@@ -121,83 +117,83 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                                                 },
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 5, 0, 0),
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 5, 0, 0),
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                        const BorderRadius
-                                                            .all(
-                                                            Radius.circular(
-                                                                5)),
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    5)),
                                                         color: AppColors
                                                             .cardBgColor,
                                                         shape:
-                                                        BoxShape.rectangle),
+                                                            BoxShape.rectangle),
                                                     height:
-                                                    heightOfNotification,
+                                                        heightOfNotification,
                                                     child: Padding(
                                                       padding:
-                                                      const EdgeInsets.all(
-                                                          10.0),
+                                                          const EdgeInsets.all(
+                                                              10.0),
                                                       child: Column(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         mainAxisSize:
-                                                        MainAxisSize.min,
+                                                            MainAxisSize.min,
                                                         children: [
                                                           Text(
                                                               groupedList[
-                                                              position]
+                                                                      position]
                                                                   .value[
-                                                              itemIndex]
+                                                                      itemIndex]
                                                                   .heading
                                                                   .toString(),
                                                               overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize:
-                                                                  20.0,
+                                                                      20.0,
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                   fontFamily:
-                                                                  GoogleFonts
-                                                                      .sora
-                                                                      .toString())),
+                                                                      GoogleFonts
+                                                                          .sora
+                                                                          .toString())),
                                                           Padding(
                                                             padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                top: 5.0),
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 5.0),
                                                             child: Text(
                                                                 groupedList[position]
                                                                     .value[
-                                                                itemIndex]
+                                                                        itemIndex]
                                                                     .desc
                                                                     .toString(),
                                                                 overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .grey,
                                                                     fontSize:
-                                                                    15.0,
+                                                                        15.0,
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
+                                                                        FontWeight
+                                                                            .normal,
                                                                     fontFamily:
-                                                                    GoogleFonts
-                                                                        .sora
-                                                                        .toString())),
+                                                                        GoogleFonts
+                                                                            .sora
+                                                                            .toString())),
                                                           ),
                                                         ],
                                                       ),
@@ -248,16 +244,15 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
             actions: [
               announcement.url != null && announcement.url != ""
                   ? TextButton(
-                onPressed: () {
-
-                  Navigator.pop(context);
-                  _launchURL(announcement.url, context);
-                },
-                child: const Text(
-                  "Open link",
-                  style: TextStyle(color: Colors.blue),
-                ),
-              )
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _launchURL(announcement.url, context);
+                      },
+                      child: const Text(
+                        "Open link",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    )
                   : Container(),
               TextButton(
                 child: Text(
@@ -272,9 +267,6 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
           );
         });
   }
-
-
-
 }
 
 void _launchURL(_url, BuildContext context) async {

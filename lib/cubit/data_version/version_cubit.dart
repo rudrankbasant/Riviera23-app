@@ -1,15 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riviera23/data/models/data_version.dart';
 
 part './version_state.dart';
 
 class VersionCubit extends Cubit<VersionState> {
-
   VersionCubit() : super(VersionLoading()) {
-   // getRemoteVersion();
+    // getRemoteVersion();
   }
 
   void getRemoteVersion() async {

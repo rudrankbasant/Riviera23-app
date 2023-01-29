@@ -14,13 +14,14 @@ class VenueCubit extends Cubit<VenueState> {
   }
 
   void loadVenue() async {
-
     Source serverORcache = await _getSourceValue();
 
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      QuerySnapshot querySnapshot = await firestore.collection('places').get(GetOptions(source: serverORcache));
+      QuerySnapshot querySnapshot = await firestore
+          .collection('places')
+          .get(GetOptions(source: serverORcache));
 
       debugPrint(querySnapshot.toString());
       VenueList venueListModel = VenueList.fromsSnapshots(querySnapshot.docs);
@@ -31,30 +32,29 @@ class VenueCubit extends Cubit<VenueState> {
     }
   }
 
-
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int? remotePlacesVersion = prefs.getInt("remote_places");
     int? localPlacesVersion = prefs.getInt("local_places");
 
-    if(remotePlacesVersion!=null){
-      if(localPlacesVersion!=null){
-        if(remotePlacesVersion==localPlacesVersion){
+    if (remotePlacesVersion != null) {
+      if (localPlacesVersion != null) {
+        if (remotePlacesVersion == localPlacesVersion) {
           print("Places serverORCache is set to cache");
           return Source.cache;
-        }else{
+        } else {
           print("Places was not up to date, serverORCache is set to server");
           prefs.setInt("local_places", remotePlacesVersion);
           return Source.server;
         }
-      }else{
-        print("local_places was not even set up, serverORCache is set to server");
+      } else {
+        print(
+            "local_places was not even set up, serverORCache is set to server");
         prefs.setInt("local_places", remotePlacesVersion);
         return Source.server;
       }
-    }else{
+    } else {
       return Source.server;
     }
-
   }
 }

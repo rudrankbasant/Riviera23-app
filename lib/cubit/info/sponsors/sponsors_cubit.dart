@@ -36,29 +36,28 @@ class SponsorsCubit extends Cubit<SponsorsState> {
   }
 }
 
-
 Future<Source> _getSourceValue() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   int? remoteSponsorVersion = prefs.getInt("remote_sponsors");
   int? localSponsorVersion = prefs.getInt("local_sponsors");
 
-  if(remoteSponsorVersion!=null){
-    if(localSponsorVersion!=null){
-      if(remoteSponsorVersion==localSponsorVersion){
+  if (remoteSponsorVersion != null) {
+    if (localSponsorVersion != null) {
+      if (remoteSponsorVersion == localSponsorVersion) {
         print("Sponsors serverORCache is set to cache");
         return Source.cache;
-      }else{
+      } else {
         print("Sponsors was not up to date, serverORCache is set to server");
         prefs.setInt("local_sponsors", remoteSponsorVersion);
         return Source.server;
       }
-    }else{
-      print("local_sponsors was not even set up, serverORCache is set to server");
+    } else {
+      print(
+          "local_sponsors was not even set up, serverORCache is set to server");
       prefs.setInt("local_sponsors", remoteSponsorVersion);
       return Source.server;
     }
-  }else{
+  } else {
     return Source.server;
   }
-
 }

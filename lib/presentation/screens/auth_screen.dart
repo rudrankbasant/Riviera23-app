@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,13 +65,10 @@ class _AuthScreenState extends State<AuthScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              height: 10
-            ),
+            SizedBox(height: 10),
             SingleChildScrollView(
               child: Column(
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.fromLTRB(45, 45, 45, 30),
                     child: Image.asset("assets/riviera_icon.png"),
