@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
@@ -194,10 +195,10 @@ class _EventsScreenState extends State<EventsScreen> {
                 ),
           endDrawer: Drawer(
               backgroundColor: AppColors.primaryColor,
-              child: ListView(
+              child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 12.5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -224,105 +225,123 @@ class _EventsScreenState extends State<EventsScreen> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
-                    child: SizedBox(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Event Dates",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(25, 12.5, 15, 10),
+                            child: SizedBox(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Event Dates",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                                Visibility(
+                                  visible: selectedDays.isNotEmpty,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedDays = [];
+                                      });
+                                    },
+                                    child: Text("Clear All",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                  ),
+                                ),
+                              ],
                             )),
-                        Visibility(
-                          visible: selectedDays.isNotEmpty,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedDays = [];
-                              });
-                            },
-                            child: Text("Clear All",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                )),
                           ),
-                        ),
-                      ],
-                    )),
-                  ),
-                  SizedBox(
-                    height: 60,
-                    child: ListView(
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        buildDaysRadioListTile(0, "23 FEB, 2023"),
-                        buildDaysRadioListTile(1, "24 FEB, 2023"),
-                        buildDaysRadioListTile(2, "25 FEB, 2023"),
-                        buildDaysRadioListTile(3, "26 FEB, 2023"),
-                      ],
+                          SizedBox(
+                            height: 60,
+                            child: ListView(
+                              physics: ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                buildDaysRadioListTile(0, "23 FEB, 2023"),
+                                buildDaysRadioListTile(1, "24 FEB, 2023"),
+                                buildDaysRadioListTile(2, "25 FEB, 2023"),
+                                buildDaysRadioListTile(3, "26 FEB, 2023"),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
+                            child: SizedBox(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Venues",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                                Visibility(
+                                  visible: selectedPlaces.isNotEmpty,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedPlaces = [];
+                                      });
+                                    },
+                                    child: Text("Clear All",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            )),
+                          ),
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                                unselectedWidgetColor: Colors.white,
+                                disabledColor: Colors.blue),
+                            child: BlocBuilder<VenueCubit, VenueState>(
+                                builder: (context, venueState) {
+                              if (venueState is VenueSuccess) {
+                                List<Venue> allVenues = venueState.venuesList;
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  primary: false,
+                                  itemCount: allVenues.length,
+                                  itemBuilder: (context, index) {
+                                    return buildPlacesCheckBoxListTile(
+                                        index, allVenues[index].venue_name);
+                                  },
+                                );
+                              } else {
+                                return Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 200),
+                                    child: SpinKitThreeBounce(
+                                      color: AppColors.secondaryColor,
+                                      size: 30,
+                                    ),
+                                  ),
+                                );
+                              }
+                            }),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
-                    child: SizedBox(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Venues",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            )),
-                        Visibility(
-                          visible: selectedPlaces.isNotEmpty,
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedPlaces = [];
-                              });
-                            },
-                            child: Text("Clear All",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                          ),
-                        ),
-                      ],
-                    )),
-                  ),
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                        unselectedWidgetColor: Colors.white,
-                        disabledColor: Colors.blue),
-                    child: BlocBuilder<VenueCubit, VenueState>(
-                        builder: (context, venueState) {
-                      if (venueState is VenueSuccess) {
-                        List<Venue> allVenues = venueState.venuesList;
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: allVenues.length,
-                          itemBuilder: (context, index) {
-                            return buildPlacesCheckBoxListTile(
-                                index, allVenues[index].venue_name);
-                          },
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }),
                   )
                 ],
               )),
@@ -333,12 +352,19 @@ class _EventsScreenState extends State<EventsScreen> {
                   return BlocBuilder<VenueCubit, VenueState>(
                       builder: (context, venueState) {
                     if (venueState is VenueSuccess) {
-                      print("Venue Success");
                       List<Venue> allVenues = venueState.venuesList;
                       List<EventModel> filteredEvents = runFilter(state.events,
                           allVenues, placeSelections, daySelections);
                       List<EventModel> searchedEvents =
                           runSearch(filteredEvents, eventsSearchQuery);
+                      if (searchedEvents.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            "No Events Found.",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
                       return ListView.builder(
                         itemCount: searchedEvents.length,
                         itemBuilder: (context, index) {
@@ -390,7 +416,6 @@ class _EventsScreenState extends State<EventsScreen> {
                       return BlocBuilder<VenueCubit, VenueState>(
                           builder: (context, venueState) {
                         if (venueState is VenueSuccess) {
-                          print("Venue Success");
                           List<Venue> allVenues = venueState.venuesList;
                           List<EventModel> filteredFavEvents = runFilter(
                               favouriteEvents,
@@ -399,6 +424,14 @@ class _EventsScreenState extends State<EventsScreen> {
                               daySelections);
                           List<EventModel> searchedFavEvents =
                               runSearch(filteredFavEvents, eventsSearchQuery);
+                          if (searchedFavEvents.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                "No Events Found.",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }
                           return ListView.builder(
                             itemCount: searchedFavEvents.length,
                             itemBuilder: (context, index) {

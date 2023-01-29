@@ -39,6 +39,9 @@ class _FAQScreenState extends State<FAQScreen> {
                           .where((element) => element.prior == true)
                           .toList();
                       priorList.sort((a, b) => a.id.compareTo(b.id));
+                      if(priorList.isEmpty){
+                        return Container();
+                      }
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -88,7 +91,9 @@ class _FAQScreenState extends State<FAQScreen> {
                           .toList();
                       regularList.sort((a, b) => a.id.compareTo(b.id));
                       print("size of reg list: ${regularList.length}");
-
+                      if(regularList.isEmpty){
+                        return Container();
+                      }
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
                         child: Container(
