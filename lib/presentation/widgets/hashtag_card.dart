@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HashtagCard extends StatefulWidget {
@@ -53,8 +52,8 @@ class _HashtagCardState extends State<HashtagCard> {
           child: RotationTransition(
             turns: (index != null)
                 ? (index! % 2 == 0
-                    ? AlwaysStoppedAnimation(15 / 360)
-                    : AlwaysStoppedAnimation(-15 / 360))
+                    ? AlwaysStoppedAnimation(12 / 360)
+                    : AlwaysStoppedAnimation(-12 / 360))
                 : AlwaysStoppedAnimation(0),
             child: Container(
               margin: EdgeInsets.all(40),

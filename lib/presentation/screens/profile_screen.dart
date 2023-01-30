@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -127,53 +126,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+            GestureDetector(
+              onTap: () {
+                AuthService(FirebaseAuth.instance)
+                    .signOut(context)
+                    .then((isSuccess) {
+                  if (isSuccess) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => AuthScreen()));
+                  }
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: SvgPicture.asset("assets/sign_out_icon.svg"),
                         ),
-                        child: SvgPicture.asset("assets/sign_out_icon.svg"),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                      Text('Sign Out',
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontFamily:
-                                  GoogleFonts.getFont("Sora").fontFamily)),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      AuthService(FirebaseAuth.instance)
-                          .signOut(context)
-                          .then((isSuccess) {
-                        if (isSuccess) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AuthScreen()));
-                        }
-                      });
-                    },
-                    child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        Text('Sign Out',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontFamily:
+                                    GoogleFonts.getFont("Sora").fontFamily)),
+                      ],
+                    ),
+                    Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: SvgPicture.asset('assets/right_arrow_icon.svg',
                           height: 20, width: 20),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],

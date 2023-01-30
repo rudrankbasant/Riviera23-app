@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -97,7 +96,7 @@ Padding getStarted(BuildContext context) {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'Riviera23',
+              text: 'Riviera',
               style: TextStyle(
                 color: AppColors.secondaryColor,
                 fontSize: 15,

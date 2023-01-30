@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,13 +49,14 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
                             child: FadeInImage(
                               height: 250,
                               width: 200,
                               image: NetworkImage(item.imageUrl.toString()),
                               placeholder:
-                              const AssetImage("assets/app_icon.png"),
+                                  const AssetImage("assets/app_icon.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -66,7 +66,9 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                           Text(
                             item.name.toString(),
                             style: GoogleFonts.sora(
-                                color: AppColors.highlightColor, fontWeight: FontWeight.w700, fontSize: 16),
+                                color: AppColors.highlightColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(

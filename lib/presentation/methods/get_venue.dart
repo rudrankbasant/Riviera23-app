@@ -6,7 +6,7 @@ Venue getVenue(List<Venue> allVenues, EventModel event) {
     for (final j in i.venue_ids) {
       print("getVenue: ${i.venue_name} has $j  and ${event.loc.toString()}");
       if (event.loc.toString().toUpperCase().startsWith(j.toUpperCase())) {
-          print("getVenue:  ${i.venue_name} has $j was returned");
+        print("getVenue:  ${i.venue_name} has $j was returned");
         return i;
       }
     }

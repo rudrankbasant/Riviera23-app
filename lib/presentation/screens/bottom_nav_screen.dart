@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:riviera23/presentation/methods/gdsc_dialog.dart';
 import 'package:riviera23/presentation/screens/profile_screen.dart';
@@ -25,10 +24,11 @@ class BottomNavScreen extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNavScreen> {
   int selectedIndex = 0;
-  int tapCount  = 0;
+  int tapCount = 0;
   late Timer _timer;
+
   void _startOperation() {
-    _timer = Timer(const Duration(milliseconds: 4000), () {
+    _timer = Timer(const Duration(milliseconds: 3000), () {
       showCreatorDialog(context);
     });
   }
@@ -38,6 +38,7 @@ class _BottomNavState extends State<BottomNavScreen> {
     _timer.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _fragments = <Widget>[
@@ -99,10 +100,8 @@ class _BottomNavState extends State<BottomNavScreen> {
                       radius: 10,
                       onTapDown: (_) {
                         _startOperation();
-                        
-                        
                       },
-                      onTapUp: (_){
+                      onTapUp: (_) {
                         _timer.cancel();
                       },
                       onTap: () {

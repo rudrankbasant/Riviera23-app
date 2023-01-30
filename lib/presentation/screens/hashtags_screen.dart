@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -49,12 +48,16 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               text: TextSpan(
                 text: '#riviera23',
                 style: GoogleFonts.sora(
-                    color: AppColors.highlightColor, fontWeight: FontWeight.w500, fontSize: 23),
+                    color: AppColors.highlightColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 23),
                 children: <TextSpan>[
                   TextSpan(
                       text: ' photowall',
                       style: GoogleFonts.sora(
-                          color: Colors.white, fontWeight: FontWeight.w500, fontSize: 23)),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 23)),
                 ],
               ),
             ),
@@ -70,17 +73,23 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                 text: TextSpan(
                   text: 'Use ',
                   style: GoogleFonts.sora(
-                      color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
                   children: <TextSpan>[
                     TextSpan(
                         text: '#riviera23',
                         style: GoogleFonts.sora(
-                            color: AppColors.highlightColor, fontWeight: FontWeight.w500, fontSize: 15)),
+                            color: AppColors.highlightColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15)),
                     TextSpan(
                         text:
                             ' on your Instagram to get featured on this timeline.',
                         style: GoogleFonts.sora(
-                            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15)),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15)),
                   ],
                 ),
               ),

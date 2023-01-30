@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -31,6 +30,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
   Widget build(BuildContext context) {
     return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
       if (state is FeaturedSuccess) {
+        print("featued success");
         final List<Widget> imageSliders = state.featured
             .map((item) => GestureDetector(
                   onTap: () {
@@ -47,7 +47,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
                             child: FadeInImage(
                               height: 250,
                               width: 200,
@@ -63,7 +64,9 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                           Text(
                             item.name.toString(),
                             style: GoogleFonts.sora(
-                                color: AppColors.highlightColor, fontWeight: FontWeight.w800, fontSize: 16),
+                                color: AppColors.highlightColor,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(

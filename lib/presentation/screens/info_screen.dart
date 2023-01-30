@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:riviera23/presentation/screens/contacts_screen.dart';
 import 'package:riviera23/presentation/screens/faq_screen.dart';

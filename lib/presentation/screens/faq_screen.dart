@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/info/faq/faq_cubit.dart';
 import '../../utils/app_theme.dart';
+import '../methods/custom_flushbar.dart';
 
 class FAQScreen extends StatefulWidget {
   @override
@@ -39,6 +40,9 @@ class _FAQScreenState extends State<FAQScreen> {
                           .where((element) => element.prior == true)
                           .toList();
                       priorList.sort((a, b) => a.id.compareTo(b.id));
+                      if (priorList.isEmpty) {
+                        return Container();
+                      }
                       return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -88,7 +92,9 @@ class _FAQScreenState extends State<FAQScreen> {
                           .toList();
                       regularList.sort((a, b) => a.id.compareTo(b.id));
                       print("size of reg list: ${regularList.length}");
-
+                      if (regularList.isEmpty) {
+                        return Container();
+                      }
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
                         child: Container(
@@ -129,6 +135,18 @@ class _FAQScreenState extends State<FAQScreen> {
                       return SizedBox(height: 0);
                     }
                   },
+                ),
+                InkWell(
+                  onTap: () {
+                    _launchURL("https://riviera.vit.ac.in/#sponsors", context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                    child: Center(
+                      child: Text("See more",
+                          style: TextStyle(color: AppColors.highlightColor)),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -221,3 +239,17 @@ class _FAQScreenState extends State<FAQScreen> {
     );
   }
 }
+
+void _launchURL(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
+  }
+}
+

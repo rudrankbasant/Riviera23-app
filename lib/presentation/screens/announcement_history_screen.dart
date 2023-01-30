@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -247,7 +246,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                   ? TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        _launchURL(announcement.url);
+                        _launchURL(announcement.url, context);
                       },
                       child: const Text(
                         "Open link",
@@ -268,17 +267,17 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
           );
         });
   }
+}
 
-  void _launchURL(_url) async {
-    final Uri _uri = Uri.parse(_url);
-    try {
-      await canLaunchUrl(_uri)
-          ? await launchUrl(_uri)
-          : throw 'Could not launch $_uri';
-    } catch (e) {
-      print(e.toString());
-      showCustomFlushbar("Can't Open Link",
-          "The link may be null or may have some issues.", context);
-    }
+void _launchURL(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
   }
 }

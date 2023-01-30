@@ -9,7 +9,7 @@ String parseDate(String? datetime) {
     //2023-02-24T03:30:00.000Z
     var dateTime = DateFormat("yyyy-MM-ddThh:mm:ssZ").parse(datetime, true);
     var date = dateTime.toLocal();
-     var formatter = DateFormat("dd MMM, yyyy");
+    var formatter = DateFormat("dd MMM, yyyy");
     var formatted = formatter.format(date);
     return formatted.toUpperCase();
   }
@@ -25,7 +25,7 @@ String parseTime(String? datetime) {
 
     var dateTime = DateFormat("yyyy-MM-ddThh:mm:ssZ").parse(datetime, true);
     var date = dateTime.toLocal();
-     var formatter = DateFormat("hh:mm a");
+    var formatter = DateFormat("hh:mm a");
     var formatted = formatter.format(date);
     return formatted;
   }
