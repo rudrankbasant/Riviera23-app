@@ -225,7 +225,7 @@ void showCustomBottomSheet(
                             child: Text(
                               event.total_cost.toString() == "0"
                                   ? "Free"
-                                  : "\u{20B9}${event.total_cost}",
+                                  : "\u{20B9}${event.total_cost} (Inc. GST)",
                               style: TextStyle(
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,

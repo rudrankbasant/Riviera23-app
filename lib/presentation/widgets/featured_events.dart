@@ -30,6 +30,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
   Widget build(BuildContext context) {
     return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
       if (state is FeaturedSuccess) {
+        print("featued success");
         final List<Widget> imageSliders = state.featured
             .map((item) => GestureDetector(
                   onTap: () {

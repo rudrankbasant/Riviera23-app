@@ -509,7 +509,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               fontSize: 20)),
                       getDurationDate(event),
                       Text(
-                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0" ? "Free" : "\u{20B9}${event.total_cost}"}",
+                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0" ? "Free" : "\u{20B9}${event.total_cost} (Inc. GST)"}",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,

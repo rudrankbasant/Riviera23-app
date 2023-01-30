@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/info/contacts/contacts_cubit.dart';
 import '../../cubit/info/team/team_cubit.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_theme.dart';
+import '../methods/custom_flushbar.dart';
 
 class ContactScreen extends StatefulWidget {
   @override
@@ -106,6 +108,18 @@ class _ContactScreenState extends State<ContactScreen> {
                     );
                   },
                 ),
+                InkWell(
+                  onTap: () {
+                    _launchURL("https://riviera.vit.ac.in/team", context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                    child: Center(
+                      child: Text("See more",
+                          style: TextStyle(color: AppColors.highlightColor)),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 16,
                 ),
@@ -169,5 +183,18 @@ class _ContactScreenState extends State<ContactScreen> {
         ),
       ),
     );
+  }
+}
+
+void _launchURL(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
   }
 }
