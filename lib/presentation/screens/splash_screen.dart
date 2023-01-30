@@ -96,7 +96,7 @@ Padding getStarted(BuildContext context) {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'Riviera23',
+              text: 'Riviera',
               style: TextStyle(
                 color: AppColors.secondaryColor,
                 fontSize: 15,

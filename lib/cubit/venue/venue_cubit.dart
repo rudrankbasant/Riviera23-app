@@ -22,7 +22,7 @@ class VenueCubit extends Cubit<VenueState> {
       DocumentSnapshot timelineSnapshot = await firestore
           .collection('venues')
           .doc('cwY2PXEoh4kV3VQyMxxH')
-          .get(GetOptions(source: Source.server));
+          .get(GetOptions(source: serverORcache));
     Map<String, dynamic> data =
     timelineSnapshot.data() as Map<String, dynamic>;
 
