@@ -19,15 +19,25 @@ class VenueCubit extends Cubit<VenueState> {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      QuerySnapshot querySnapshot = await firestore
-          .collection('places')
-          .get(GetOptions(source: serverORcache));
+      DocumentSnapshot timelineSnapshot = await firestore
+          .collection('venues')
+          .doc('cwY2PXEoh4kV3VQyMxxH')
+          .get(GetOptions(source: Source.server));
+    Map<String, dynamic> data =
+    timelineSnapshot.data() as Map<String, dynamic>;
 
-      debugPrint(querySnapshot.toString());
-      VenueList venueListModel = VenueList.fromsSnapshots(querySnapshot.docs);
+    debugPrint(data.toString());
+    VenueList venueListModel = VenueList.fromMap(data);
+
+    emit(VenueSuccess(venuesList: venueListModel.allVenues));
+
+
+/*      debugPrint(querySnapshot.toString());
+      VenueList venueListModel = VenueList.fromsMap(querySnapshot.docs);
       print("here is the result ${venueListModel.allVenues}");
-      emit(VenueSuccess(venuesList: venueListModel.allVenues));
+      emit(VenueSuccess(venuesList: venueListModel.allVenues));*/
     } catch (e) {
+      print("VENUE ERROR " + e.toString());
       emit(VenueFailed(error: e.toString()));
     }
   }
