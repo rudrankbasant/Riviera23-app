@@ -2,12 +2,16 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
+import '../../cubit/events/events_cubit.dart';
+import '../../cubit/favourites/favourite_cubit.dart';
+import '../../cubit/hashtag/hashtag_cubit.dart';
 import '../../service/auth.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,6 +27,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final cubit = context.read<EventsCubit>();
+      cubit.getAllEvents();
+      final cubit2 = context.read<HashtagCubit>();
+      cubit2.getAllHashtag();
+    });
+
     checkifUserLoggedIn();
     leadtoGetStarted = false;
   }

@@ -12,7 +12,6 @@ import 'package:riviera23/utils/app_colors.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
-import '../../cubit/featured/featured_state.dart';
 import '../../data/models/event_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
@@ -163,7 +162,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                   ),
           ],
         );
-      } else if (state is FeaturedError) {
+      } else if (state is EventsError) {
         return const Center(
           child: Text(
             "Error! Couldn't load.",

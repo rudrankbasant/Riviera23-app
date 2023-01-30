@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
-import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/router/app_router.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
@@ -19,13 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
-import 'cubit/featured/featured_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/venue/venue_cubit.dart';
 import 'data/models/data_version.dart';
 import 'data/repository/events_repository.dart';
-import 'data/repository/featured_repository.dart';
-import 'data/repository/proshows_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -128,12 +124,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => VersionCubit()),
         BlocProvider(
           create: (context) => EventsCubit(EventsRepository()),
-        ),
-        BlocProvider(
-          create: (context) => ProShowsCubit(ProShowsRepository()),
-        ),
-        BlocProvider(
-          create: (context) => FeaturedCubit(FeaturedRepository()),
         ),
         BlocProvider(create: (context) => AnnouncementsCubit()),
         BlocProvider(create: (context) => VenueCubit()),
