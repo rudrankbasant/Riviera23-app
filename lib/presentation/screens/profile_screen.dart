@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
@@ -65,15 +67,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: CachedNetworkImage(
                         width: 75.0,
                         height: 75.0,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
+                        imageUrl: user.photoURL.toString(),
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 250.0,
+                          width: 200.0,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                             image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image:
-                                    NetworkImage(user.photoURL.toString())))),
+                                image: imageProvider, fit: BoxFit.cover),
+                        )),
+                        placeholder: (context, url) => SpinKitFadingCircle(
+                          color: AppColors.secondaryColor,
+                          size: 50.0,
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                            "assets/app_icon.png"),
+                      ),
+                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

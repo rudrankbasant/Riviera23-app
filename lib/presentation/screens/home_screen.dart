@@ -201,26 +201,27 @@ _showVersionDialog(context) async {
               ],
             )
           : AlertDialog(
+        backgroundColor: AppColors.cardBgColor,
               title: Text(
                 title,
                 style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.w400),
               ),
-              content: Text(message),
+              content: Text(message, style: TextStyle(color: Colors.white),),
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     btnLabelCancel,
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.redAccent),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: Text(btnLabel, style: TextStyle(color: Colors.black)),
+                  child: Text(btnLabel, style: TextStyle(color: AppColors.highlightColor)),
                   onPressed: () {
                     _launchURL(PLAY_STORE_URL, context);
                   },

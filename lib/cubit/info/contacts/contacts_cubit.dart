@@ -26,9 +26,9 @@ class ContactsCubit extends Cubit<ContactsState> {
           timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
-      debugPrint("heyy");
+
       ContactList contactsListModel = ContactList.fromMap(data);
-      debugPrint("here!!--");
+
       debugPrint(contactsListModel.toString());
       emit(ContactsSuccess(contactsList: contactsListModel.contactList));
     } catch (e) {

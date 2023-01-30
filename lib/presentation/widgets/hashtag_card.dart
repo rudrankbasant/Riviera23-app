@@ -1,4 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import '../../utils/app_colors.dart';
 
 class HashtagCard extends StatefulWidget {
   final int index;
@@ -46,6 +50,7 @@ class _HashtagCardState extends State<HashtagCard> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Row(
       children: [
         Expanded(
@@ -80,12 +85,22 @@ class _HashtagCardState extends State<HashtagCard> {
                   Column(
                     children: [
                       Container(
-                        child: Image.network(
-                          widget.imgUrl != null
-                              ? widget.imgUrl.toString()
-                              : "https://i.ytimg.com/vi/v2gseMj1UGI/maxresdefault.jpg",
-                          // width: 300,
-                          // height: 300,
+                        child: CachedNetworkImage(
+                          height: height * 0.3,
+                          imageUrl: imgUrl.toString(),
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+
+                            ),
+                          ),
+                          placeholder: (context, url) => SpinKitFadingCircle(
+                            color: AppColors.secondaryColor,
+                            size: 50.0,
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                              "assets/app_icon.png"),
                           fit: BoxFit.contain,
                         ),
                       ),

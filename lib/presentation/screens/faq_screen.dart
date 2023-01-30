@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -62,12 +64,24 @@ class _FAQScreenState extends State<FAQScreen> {
                                               0.2,
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: FadeInImage(
-                                        image: NetworkImage(
-                                            sponsor.url.toString()),
-                                        placeholder: const AssetImage(
-                                            "assets/app_icon.png"),
-                                        fit: BoxFit.fitWidth,
+                                      child: CachedNetworkImage(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.2,
+                                        imageUrl: sponsor.url.toString(),
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          height: 250.0,
+                                          width: 200.0,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: imageProvider, fit: BoxFit.fitWidth),
+                                          ),
+                                        ),
+                                        placeholder: (context, url) => SpinKitFadingCircle(
+                                          color: AppColors.secondaryColor,
+                                          size: 50.0,
+                                        ),
+                                        errorWidget: (context, url, error) => Image.asset(
+                                            "assets/placeholder.png"),
                                       )),
                                 ),
                               ),
@@ -119,12 +133,24 @@ class _FAQScreenState extends State<FAQScreen> {
                                         MediaQuery.of(context).size.width * 0.2,
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,
-                                    child: FadeInImage(
-                                      image: NetworkImage(
-                                          regularList[index].url.toString()),
-                                      placeholder: const AssetImage(
+                                    child: CachedNetworkImage(
+                                      height: MediaQuery.of(context).size.height *
+                                          0.2,
+                                      imageUrl: regularList[index].url.toString(),
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        height: 250.0,
+                                        width: 200.0,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: imageProvider, fit: BoxFit.fitWidth),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => SpinKitFadingCircle(
+                                        color: AppColors.secondaryColor,
+                                        size: 50.0,
+                                      ),
+                                      errorWidget: (context, url, error) => Image.asset(
                                           "assets/app_icon.png"),
-                                      fit: BoxFit.fitWidth,
                                     ),
                                   ),
                                 );

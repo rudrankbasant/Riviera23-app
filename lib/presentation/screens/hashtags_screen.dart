@@ -126,7 +126,19 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                         );
                       });
                 } else {
-                  return const Text("No posts yet");
+                  return Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 300,
+                        ),
+                        SpinKitThreeBounce(
+                          color: AppColors.secondaryColor,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  );
                 }
               }
               if (state is HashtagError) {

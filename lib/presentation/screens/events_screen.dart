@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -487,10 +488,24 @@ class _EventsScreenState extends State<EventsScreen> {
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.2,
                   width: MediaQuery.of(context).size.height * 0.15,
-                  child: FadeInImage(
-                    image: NetworkImage(event.imageUrl.toString()),
-                    placeholder: const AssetImage("assets/app_icon.png"),
-                    fit: BoxFit.cover,
+                  child: CachedNetworkImage(
+                    height: 250,
+                    width: 200,
+                    imageUrl: event.imageUrl.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      height: 250.0,
+                      width: 200.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ) ,
+                    placeholder: (context, url) => SpinKitFadingCircle(
+                      color: AppColors.secondaryColor,
+                      size: 50.0,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                        "assets/placeholder.png"),
                   ),
                 ),
               ),
