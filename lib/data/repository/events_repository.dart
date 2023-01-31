@@ -23,9 +23,12 @@ class EventsRepository {
 
   Future<List<EventModel>> getAllEventsData(Box eventBox) async{
     List<EventModel> events = [];
-    const url = '$baseURl/events';
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var base_url = prefs.getString('remote_base_url');
+    var url = '$base_url/events';
+    print("events repo " + url);
+
     bool? appStarted = prefs.getBool('appStarted');
     var myMap = eventBox.toMap().values.toList();
     if(appStarted==true || myMap.isEmpty ) {

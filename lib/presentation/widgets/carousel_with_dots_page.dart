@@ -11,7 +11,9 @@ import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
+import '../../utils/app_theme.dart';
 import '../methods/get_venue.dart';
+import '../screens/merch_screen.dart';
 
 class CarouselWithDotsPage extends StatefulWidget {
   List<Venue> allVenues;
@@ -34,17 +36,19 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
             .where((element) => element.eventType?.toLowerCase() == "proshow")
             .toList();
         if (proshows.isEmpty) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
-              child: Text(
-                'Pro-Shows will be updated soon',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
+          return  Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
+                  child: Text("PRO SHOWS",
+                      style: AppTheme.appTheme.textTheme.headline6),
                 ),
-              ),
+                Opacity(
+                  opacity: 0.8,
+                    child: Image.asset("assets/proshow_bg.png")),
+              ],
             ),
           );
         }
@@ -149,7 +153,23 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   ),
                 );
               }).toList(),
-            )
+            ),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MerchScreen()));
+              },
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                  FittedBox(child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Image.asset("assets/merch_banner.png"),
+                  ),
+                    fit: BoxFit.fill,
+                  )),
+            ),
           ],
         );
       } else if (state is EventsError) {

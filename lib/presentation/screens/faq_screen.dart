@@ -162,7 +162,7 @@ class _FAQScreenState extends State<FAQScreen> {
                     }
                   },
                 ),
-                InkWell(
+                /*InkWell(
                   onTap: () {
                     _launchURL("https://riviera.vit.ac.in/#sponsors", context);
                   },
@@ -173,7 +173,7 @@ class _FAQScreenState extends State<FAQScreen> {
                           style: TextStyle(color: AppColors.highlightColor)),
                     ),
                   ),
-                ),
+                ),*/
                 const SizedBox(
                   height: 20,
                 ),

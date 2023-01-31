@@ -75,8 +75,8 @@ class _EventsScreenState extends State<EventsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final cubit = context.read<EventsCubit>();
       cubit.getAllEvents();
-      final cubit2 = context.read<FavouriteCubit>();
-      cubit2.loadFavourites(user);
+      final cubit3 = context.read<FavouriteCubit>();
+      cubit3.loadFavourites(user);
     });
   }
 

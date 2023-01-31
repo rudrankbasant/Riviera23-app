@@ -10,6 +10,7 @@ import 'package:riviera23/service/auth.dart';
 
 import '../../utils/app_colors.dart';
 import '../widgets/profile_info.dart';
+import 'merch_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -106,13 +107,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.075,
+              height: 60,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MerchScreen()));
+              },
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                  FittedBox(child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Image.asset("assets/merch_banner.png"),
+                  ),
+                    fit: BoxFit.fill,
+                  )),
+            ),
+            SizedBox(
+              height: 40,
             ),
             Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text("Action Section",
+                  child: Text("MORE",
                       style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey,

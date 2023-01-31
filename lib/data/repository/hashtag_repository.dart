@@ -41,9 +41,13 @@ class HashtagRepository {
 
   Future<List<HashtagModel>> getAllEventsData(Box hashtagBox) async{
     List<HashtagModel> hashtags = [];
-    const url = '$baseURl/hashtag';
+
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var base_url = prefs.getString('remote_base_url');
+    var url = '$base_url/hashtag';
+
+
     bool? appStarted = prefs.getBool('appStarted');
     var myMap = hashtagBox.toMap().values.toList();
     if(appStarted==true || myMap.isEmpty ) {

@@ -7,15 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
+import 'package:riviera23/presentation/screens/merch_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/events/events_cubit.dart';
 
+import '../../cubit/favourites/favourite_cubit.dart';
 import '../../cubit/venue/venue_cubit.dart';
 import '../../data/models/venue_model.dart';
 
+import '../../service/auth.dart';
 import '../methods/custom_flushbar.dart';
 import '../widgets/carousel_with_dots_page.dart';
 import '../widgets/featured_events.dart';
@@ -35,10 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
-
+      final user = AuthService(FirebaseAuth.instance).user;
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         final cubit = context.read<EventsCubit>();
         cubit.getAllEvents();
+        final cubit3 = context.read<FavouriteCubit>();
+        cubit3.loadFavourites(user);
       });
     });
   }
@@ -69,6 +74,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             )),
         actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MerchScreen()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: SvgPicture.asset('assets/merch_button.svg',
+                  height: 32, width: 32),
+            ),
+          ),
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
@@ -144,7 +160,17 @@ void _notifyForAppUpdate(BuildContext context) async {
   print("Build Number: $buildNumber");
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? RemoteVersionApp = prefs.getString('remote_app_version');
+  var remote_version;
+  if(Platform.isAndroid) {
+    remote_version = prefs.getString('remote_app_version_android');
+  } else {
+    remote_version = prefs.getString('remote_app_version_ios');
+  }
+
+  print("home screen  " + remote_version);
+
+
+  String? RemoteVersionApp = remote_version;
   if (RemoteVersionApp != null && RemoteVersionApp != "") {
     double localVersion = double.parse(version.trim().replaceAll(".", ""));
     double latestVersion =
@@ -183,7 +209,7 @@ _showVersionDialog(context) async {
                 ),
                 CupertinoDialogAction(
                   onPressed: () {
-                    _launchURL(APP_STORE_URL, context);
+                    _launchURLBrowser(APP_STORE_URL, context);
                   },
                   child: Text(
                     btnLabel,
@@ -214,7 +240,7 @@ _showVersionDialog(context) async {
                 TextButton(
                   child: Text(btnLabel, style: TextStyle(color: AppColors.highlightColor)),
                   onPressed: () {
-                    _launchURL(PLAY_STORE_URL, context);
+                    _launchURLBrowser(PLAY_STORE_URL, context);
                   },
                 ),
               ],
@@ -228,6 +254,19 @@ void _launchURL(_url, BuildContext context) async {
   try {
     await canLaunchUrl(_uri)
         ? await launchUrl(_uri)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
+  }
+}
+
+void _launchURLBrowser(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
         : throw 'Could not launch $_uri';
   } catch (e) {
     print(e.toString());

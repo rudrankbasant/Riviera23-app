@@ -28,9 +28,14 @@ class _BottomNavState extends State<BottomNavScreen> {
   late Timer _timer;
 
   void _startOperation() {
-    _timer = Timer(const Duration(milliseconds: 3000), () {
+    _timer = Timer(const Duration(milliseconds: 4000), () {
       showCreatorDialog(context);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
