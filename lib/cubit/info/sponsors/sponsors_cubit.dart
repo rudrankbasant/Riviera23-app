@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:riviera23/data/models/sponsors_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,20 +43,26 @@ Future<Source> _getSourceValue() async {
   int? localSponsorVersion = prefs.getInt("local_sponsors");
 
   if (remoteSponsorVersion != null) {
-    if (localSponsorVersion != null) {
-      if (remoteSponsorVersion == localSponsorVersion) {
-        print("Sponsors serverORCache is set to cache");
-        return Source.cache;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      if (localSponsorVersion != null) {
+        if (remoteSponsorVersion == localSponsorVersion) {
+          print("Sponsors serverORCache is set to cache");
+          return Source.cache;
+        } else {
+          print("Sponsors was not up to date, serverORCache is set to server");
+          prefs.setInt("local_sponsors", remoteSponsorVersion);
+          return Source.server;
+        }
       } else {
-        print("Sponsors was not up to date, serverORCache is set to server");
+        print(
+            "local_sponsors was not even set up, serverORCache is set to server");
         prefs.setInt("local_sponsors", remoteSponsorVersion);
         return Source.server;
       }
-    } else {
-      print(
-          "local_sponsors was not even set up, serverORCache is set to server");
-      prefs.setInt("local_sponsors", remoteSponsorVersion);
-      return Source.server;
+    }else{
+      print("No internet connection, sponsors serverORCache is set to cache");
+      return Source.cache;
     }
   } else {
     return Source.server;

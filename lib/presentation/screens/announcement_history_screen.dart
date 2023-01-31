@@ -18,8 +18,13 @@ class AnnouncementHistoryScreen extends StatefulWidget {
 
 class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
   @override
+  void initState() {
+    super.initState();
+
+    BlocProvider.of<AnnouncementsCubit>(context).loadAnnouncements();
+  }
+  @override
   Widget build(BuildContext context) {
-    var top = false;
     var heightOfNotification = MediaQuery.of(context).size.height * 0.1;
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
