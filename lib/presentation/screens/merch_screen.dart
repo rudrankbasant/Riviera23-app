@@ -36,8 +36,8 @@ class _MerchScreenState extends State<MerchScreen> {
           mainAxisSpacing: 10,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 1.8),
+          childAspectRatio:( MediaQuery.of(context).size.width)/
+              (MediaQuery.of(context).size.height * 0.6 ),
           children: [
                GestureDetector(
                  onTap: (){
