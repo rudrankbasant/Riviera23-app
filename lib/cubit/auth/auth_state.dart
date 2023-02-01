@@ -7,13 +7,27 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthLoading extends AuthState {}
 
-class SignUpState extends AuthState {}
-
-class SignInSuccess extends AuthState {}
 
 class NotSignedInState extends AuthState {}
+
+class SignInSuccess extends AuthState {
+
+  final User currentUser;
+
+  SignInSuccess({required this.currentUser});
+
+  @override
+  List<Object> get props => [currentUser];
+
+
+}
+
+class AuthLoading extends AuthState {}
+
+
+
+
 
 class SignInFailed extends AuthState {
   final String error;

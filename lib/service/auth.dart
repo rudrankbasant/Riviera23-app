@@ -11,6 +11,8 @@ import '../presentation/methods/custom_flushbar.dart';
 import '../presentation/methods/snack_bar.dart';
 
 class AuthService {
+
+
   final FirebaseAuth _auth;
 
   AuthService(this._auth);
