@@ -36,8 +36,8 @@ class _MerchScreenState extends State<MerchScreen> {
           mainAxisSpacing: 10,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height *0.5),
+          childAspectRatio:( MediaQuery.of(context).size.width)/
+              (MediaQuery.of(context).size.height * 0.6 ),
           children: [
                GestureDetector(
                  onTap: (){
@@ -186,9 +186,10 @@ class _MerchScreenState extends State<MerchScreen> {
                     height: 160,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset("assets/merchandise/rnh.png",
+                      child: Image.asset("assets/merchandise/cnh.png",
                         fit: BoxFit.contain,),
-                    ),),
+                    ),
+                  ),
                   SizedBox(height: 10),
                   Text(
                     "Combo 3",
@@ -213,14 +214,13 @@ class _MerchScreenState extends State<MerchScreen> {
               },
               child: Column(
                 children: [
-                Container(
-                height: 160,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset("assets/merchandise/cnh.png",
-                    fit: BoxFit.contain,),
-                ),
-                ),
+                  Container(
+                    height: 160,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset("assets/merchandise/rnh.png",
+                        fit: BoxFit.contain,),
+                    ),),
                   SizedBox(height: 10),
                   Text(
                     "Combo 4",
@@ -239,6 +239,7 @@ class _MerchScreenState extends State<MerchScreen> {
                 ],
               ),
             ),
+
             ]
           ,
         ),
