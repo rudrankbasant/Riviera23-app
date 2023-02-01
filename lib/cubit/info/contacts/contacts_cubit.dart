@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/models/contact_model.dart';
@@ -26,9 +27,9 @@ class ContactsCubit extends Cubit<ContactsState> {
           timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
-      debugPrint("heyy");
+
       ContactList contactsListModel = ContactList.fromMap(data);
-      debugPrint("here!!--");
+
       debugPrint(contactsListModel.toString());
       emit(ContactsSuccess(contactsList: contactsListModel.contactList));
     } catch (e) {
@@ -42,21 +43,28 @@ class ContactsCubit extends Cubit<ContactsState> {
     int? localContactVersion = prefs.getInt("local_contacts");
 
     if (remoteContactVersion != null) {
-      if (localContactVersion != null) {
-        if (remoteContactVersion == localContactVersion) {
-          print("Contacts serverORCache is set to cache");
-          return Source.cache;
+      bool result = await InternetConnectionChecker().hasConnection;
+      if(result == true) {
+        if (localContactVersion != null) {
+          if (remoteContactVersion == localContactVersion) {
+            print("Contacts serverORCache is set to cache");
+            return Source.cache;
+          } else {
+            print("Contacts was not up to date, serverORCache is set to server");
+            prefs.setInt("local_contacts", remoteContactVersion);
+            return Source.server;
+          }
         } else {
-          print("Contacts was not up to date, serverORCache is set to server");
+          print(
+              "local_contacts was not even set up, serverORCache is set to server");
           prefs.setInt("local_contacts", remoteContactVersion);
           return Source.server;
         }
-      } else {
-        print(
-            "local_contacts was not even set up, serverORCache is set to server");
-        prefs.setInt("local_contacts", remoteContactVersion);
-        return Source.server;
+      }else{
+        print("No internet connection, contacts serverORCache is set to cache");
+        return Source.cache;
       }
+
     } else {
       return Source.server;
     }

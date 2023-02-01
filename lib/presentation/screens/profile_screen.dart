@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
@@ -8,6 +10,7 @@ import 'package:riviera23/service/auth.dart';
 
 import '../../utils/app_colors.dart';
 import '../widgets/profile_info.dart';
+import 'merch_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -65,15 +68,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: CachedNetworkImage(
                         width: 75.0,
                         height: 75.0,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
+                        imageUrl: user.photoURL.toString(),
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 250.0,
+                          width: 200.0,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                             image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image:
-                                    NetworkImage(user.photoURL.toString())))),
+                                image: imageProvider, fit: BoxFit.cover),
+                        )),
+                        placeholder: (context, url) => SpinKitFadingCircle(
+                          color: AppColors.secondaryColor,
+                          size: 50.0,
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                            "assets/app_icon.png"),
+                      ),
+                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,13 +107,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.075,
+              height: 60,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MerchScreen()));
+              },
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                  FittedBox(child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Image.asset("assets/merch_banner.png"),
+                  ),
+                    fit: BoxFit.fill,
+                  )),
+            ),
+            SizedBox(
+              height: 40,
             ),
             Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text("Action Section",
+                  child: Text("MORE",
                       style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey,

@@ -3,13 +3,13 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
-import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/router/app_router.dart';
 import 'package:riviera23/presentation/screens/splash_screen.dart';
@@ -19,13 +19,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
-import 'cubit/featured/featured_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/venue/venue_cubit.dart';
 import 'data/models/data_version.dart';
 import 'data/repository/events_repository.dart';
-import 'data/repository/featured_repository.dart';
-import 'data/repository/proshows_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -42,9 +39,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+
+  print(" main dart Before");
   //Check for data updates
   await getDataUpdate();
   await setAppStarted();
+  print(" main dart After");
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -108,7 +108,8 @@ Future<void> main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     systemNavigationBarColor: AppColors.primaryColor,
-    statusBarColor: Colors.transparent,
+    statusBarColor: AppColors.primaryColor,
+      statusBarIconBrightness: Brightness.light
   ));
 
 //Setting SystmeUIMode
@@ -129,12 +130,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => EventsCubit(EventsRepository()),
         ),
-        BlocProvider(
-          create: (context) => ProShowsCubit(ProShowsRepository()),
-        ),
-        BlocProvider(
-          create: (context) => FeaturedCubit(FeaturedRepository()),
-        ),
         BlocProvider(create: (context) => AnnouncementsCubit()),
         BlocProvider(create: (context) => VenueCubit()),
         BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
@@ -152,13 +147,39 @@ class MyApp extends StatelessWidget {
 }
 
 getDataUpdate() async {
+
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setDefaults(const {
+    "android_version": "1.0.10",
+    "base_url": "https://riviera.fly.dev",
+    "ios_version": "1.0.10",
+    "show_gdsc": false,
+  });
+
+  await remoteConfig.fetchAndActivate();
+  final androidVersion = remoteConfig.getString("android_version");
+  final iosVersion = remoteConfig.getString("ios_version");
+  var baseUrl = remoteConfig.getString("base_url");
+  final showGdsc = remoteConfig.getBool("show_gdsc");
+
+ print("main dart: $baseUrl");
+ print("android version: $androidVersion");
+
+
+
+
+
+
   //Check for data updates
   DataVersion RemoteVersions = await getRemoteVersion();
   print("Remote Version: $RemoteVersions");
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   //App Version is String
-  prefs.setString("remote_app_version", RemoteVersions.app_version_number);
+  prefs.setString("remote_app_version_android", androidVersion);
+  prefs.setString("remote_app_version_ios", iosVersion);
+  prefs.setString("remote_base_url", baseUrl);
+  prefs.setBool("remote_show_gdsc", showGdsc);
 
   //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
   prefs.setInt(

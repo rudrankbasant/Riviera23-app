@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:riviera23/data/models/team_member_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,19 +40,26 @@ class TeamCubit extends Cubit<TeamState> {
     int? localTeamVersion = prefs.getInt("local_team");
 
     if (remoteTeamVersion != null) {
-      if (localTeamVersion != null) {
-        if (remoteTeamVersion == localTeamVersion) {
-          print("Teams serverORCache is set to cache");
-          return Source.cache;
+      bool result = await InternetConnectionChecker().hasConnection;
+      if(result == true) {
+        if (localTeamVersion != null) {
+          if (remoteTeamVersion == localTeamVersion) {
+            print("Teams serverORCache is set to cache");
+            return Source.cache;
+          } else {
+            print("Teams was not up to date, serverORCache is set to server");
+            prefs.setInt("local_team", remoteTeamVersion);
+            return Source.server;
+          }
         } else {
-          print("Teams was not up to date, serverORCache is set to server");
+          print(
+              "local_team was not even set up, serverORCache is set to server");
           prefs.setInt("local_team", remoteTeamVersion);
           return Source.server;
         }
       } else {
-        print("local_team was not even set up, serverORCache is set to server");
-        prefs.setInt("local_team", remoteTeamVersion);
-        return Source.server;
+        print("No internet connection, team serverORCache is set to cache");
+        return Source.cache;
       }
     } else {
       return Source.server;

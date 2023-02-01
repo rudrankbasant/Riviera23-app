@@ -1,15 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/venue_model.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
-import '../../cubit/featured/featured_cubit.dart';
-import '../../cubit/featured/featured_state.dart';
+import '../../cubit/events/events_cubit.dart';
+import '../../cubit/events/events_state.dart';
+import '../../data/models/event_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
 import '../screens/events_screen.dart';
@@ -28,10 +31,11 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FeaturedCubit, FeaturedState>(builder: (context, state) {
-      if (state is FeaturedSuccess) {
-        print("featued success");
-        final List<Widget> imageSliders = state.featured
+    return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
+      if (state is EventsSuccess) {
+        List<EventModel> featuredEvents =
+            state.events.where((element) => element.featured == true).toList();
+        final List<Widget> imageSliders = featuredEvents
             .map((item) => GestureDetector(
                   onTap: () {
                     showCustomBottomSheet(
@@ -49,12 +53,24 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                           ClipRRect(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15.0)),
-                            child: FadeInImage(
+                            child: CachedNetworkImage(
                               height: 250,
                               width: 200,
-                              image: NetworkImage(item.imageUrl.toString()),
-                              placeholder:
-                                  const AssetImage("assets/app_icon.png"),
+                              imageUrl: item.imageUrl.toString(),
+                              imageBuilder: (context, imageProvider) => Container(
+                                height: 250.0,
+                                width: 200.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                ),
+                              ),
+                              placeholder: (context, url) => SpinKitFadingCircle(
+                                color: AppColors.secondaryColor,
+                                size: 50.0,
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                  "assets/placeholder.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -116,23 +132,37 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                 ],
               ),
             ),
-            CarouselSlider(
-              items: imageSliders,
-              options: CarouselOptions(
-                  autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 5),
-                  enlargeCenterPage: false,
-                  aspectRatio: 1 / 1,
-                  viewportFraction: 0.5,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  }),
-            ),
+            featuredEvents.isEmpty
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
+                      child: Text(
+                        'Featured Events will be updated soon',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  )
+                : CarouselSlider(
+                    items: imageSliders,
+                    options: CarouselOptions(
+                        autoPlay: true,
+                        autoPlayInterval: const Duration(seconds: 5),
+                        enlargeCenterPage: false,
+                        aspectRatio: 1 / 1,
+                        viewportFraction: 0.5,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }),
+                  ),
           ],
         );
-      } else if (state is FeaturedError) {
+      } else if (state is EventsError) {
         return const Center(
           child: Text(
             "Error! Couldn't load.",

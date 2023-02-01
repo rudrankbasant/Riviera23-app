@@ -110,7 +110,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                       itemBuilder: (context, itemIndex) {
                         return GestureDetector(
                           onTap: () {
-                            _launchURL(state.hashtags[itemIndex].permalink);
+                            _launchURLBrowser(state.hashtags[itemIndex].permalink, context);
                           },
                           child: Center(
                             child: HashtagCard(
@@ -126,7 +126,19 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                         );
                       });
                 } else {
-                  return const Text("No posts yet");
+                  return Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 300,
+                        ),
+                        SpinKitThreeBounce(
+                          color: AppColors.secondaryColor,
+                          size: 30,
+                        ),
+                      ],
+                    ),
+                  );
                 }
               }
               if (state is HashtagError) {
@@ -162,4 +174,19 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
           "The link may be null or may have some issues.", context);
     }
   }
+
+
+  void _launchURLBrowser(_url, BuildContext context) async {
+    final Uri _uri = Uri.parse(_url);
+    try {
+      await canLaunchUrl(_uri)
+          ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
+          : throw 'Could not launch $_uri';
+    } catch (e) {
+      print(e.toString());
+      showCustomFlushbar("Can't Open Link",
+          "The link may be null or may have some issues.", context);
+    }
+  }
+
 }

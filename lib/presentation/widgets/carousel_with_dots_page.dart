@@ -1,14 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:riviera23/cubit/proshows/proshows_cubit.dart';
-import 'package:riviera23/cubit/proshows/proshows_state.dart';
+
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
+import '../../cubit/events/events_cubit.dart';
+import '../../cubit/events/events_state.dart';
+import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
+import '../../utils/app_theme.dart';
 import '../methods/get_venue.dart';
+import '../screens/merch_screen.dart';
 
 class CarouselWithDotsPage extends StatefulWidget {
   List<Venue> allVenues;
@@ -25,24 +30,33 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return BlocBuilder<ProShowsCubit, ProShowsState>(builder: (context, state) {
-      if (state is ProShowsSuccess) {
-        if (state.proShows.isEmpty) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
-              child: Text(
-                'Pro-Shows will be updated soon',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
+    return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
+      if (state is EventsSuccess) {
+        List<EventModel> proshows = state.events
+            .where((element) => element.eventType?.toLowerCase() == "proshow")
+            .toList();
+        if (proshows.isEmpty) {
+          return  Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
+                  child: Text("PRO SHOWS",
+                      style: AppTheme.appTheme.textTheme.headline6),
                 ),
-              ),
+                Opacity(
+                  opacity: 0.8,
+                    child: Image.asset("assets/proshow_bg.png")),
+              ],
             ),
           );
         }
-        final List<Widget> imageSliders = state.proShows
+        if(proshows.length>20){
+          final nProShows = proshows.getRange(0, 20);
+          proshows = nProShows.toList();
+        }
+        final List<Widget> imageSliders = proshows
             .map((item) => GestureDetector(
                   onTap: () {
                     showCustomBottomSheet(
@@ -51,12 +65,24 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   child: Stack(
                     children: [
                       Container(
-                        child: FadeInImage(
-                          image: NetworkImage(item.imageUrl.toString()),
-                          placeholder: const AssetImage("assets/app_icon.png"),
-                          fit: BoxFit.cover,
-                          width: width,
-                        ),
+                    child: CachedNetworkImage(
+                    width: width,
+                    imageUrl: item.imageUrl.toString(),
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
+                    placeholder: (context, url) => SpinKitFadingCircle(
+                      color: AppColors.secondaryColor,
+                      size: 50.0,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                        "assets/placeholder.png"),
+                    fit: BoxFit.cover,
+                  )
+
                       ),
                       Positioned(
                         bottom: 0.0,
@@ -110,8 +136,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: state.proShows.map((proshow) {
-                int index = state.proShows.indexOf(proshow);
+              children: proshows.map((proshow) {
+                int index = proshows.indexOf(proshow);
                 return Container(
                   width: 8,
                   height: 8,
@@ -127,10 +153,26 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   ),
                 );
               }).toList(),
-            )
+            ),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MerchScreen()));
+              },
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child:
+                  FittedBox(child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: Image.asset("assets/merch_banner.png"),
+                  ),
+                    fit: BoxFit.fill,
+                  )),
+            ),
           ],
         );
-      } else if (state is ProShowsError) {
+      } else if (state is EventsError) {
         return const Center(
           child: Text("Error! Couldn't load.",
               style: TextStyle(color: Colors.white)),

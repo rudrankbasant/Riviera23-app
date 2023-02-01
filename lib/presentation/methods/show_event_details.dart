@@ -1,15 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/map_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
+import 'custom_flushbar.dart';
 
 void showCustomBottomSheet(
     BuildContext context, EventModel event, Venue venue) {
@@ -76,13 +80,18 @@ void showCustomBottomSheet(
                                   height:
                                       MediaQuery.of(context).size.height * 0.4,
                                   width: MediaQuery.of(context).size.width,
-                                  child: FadeInImage(
-                                    image:
-                                        NetworkImage(event.imageUrl.toString()),
-                                    placeholder:
-                                        const AssetImage("assets/app_icon.png"),
+                                  child: CachedNetworkImage(
+                                    height: 250,
+                                    width: 200,
+                                    imageUrl: event.imageUrl.toString(),
+                                    placeholder: (context, url) => SpinKitFadingCircle(
+                                      color: AppColors.secondaryColor,
+                                      size: 50.0,
+                                    ),
+                                    errorWidget: (context, url, error) => Image.asset(
+                                        "assets/placeholder.png"),
                                     fit: BoxFit.cover,
-                                  ),
+                                  )
                                 ),
                               ),
                               Positioned(
@@ -147,11 +156,76 @@ void showCustomBottomSheet(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: getDurationDateTime(event),
                           ),
-                          const SizedBox(
+                          SizedBox(
+                            height: 10,
+                          ),
+                          /*SizedBox(
                             height: 20,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              "VENUE",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: AppColors.secondaryColor,
+                                  fontFamily: GoogleFonts.sora.toString()),
+                            ),
+                          ),*/
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              MapUtils.openMap(
+                                  venue.latitude, venue.longitude, context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: AppColors.highlightColor),
+                                ),
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/maps_icon.svg",
+                                        color: AppColors.highlightColor,
+                                      ),
+                                      Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                10, 0, 10, 0),
+                                            child: Text(
+                                              event.loc.toString(),
+                                              style: TextStyle(
+                                                color: AppColors.highlightColor,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          )),
+                                      Icon(
+                                        Icons.directions,
+                                        color: AppColors.highlightColor,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
                               "ABOUT",
                               style: TextStyle(
@@ -165,7 +239,7 @@ void showCustomBottomSheet(
                             height: 5,
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Text(
                               event.description.toString(),
                               style: TextStyle(
@@ -179,7 +253,7 @@ void showCustomBottomSheet(
                             height: 20,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
+                            padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
                               "ORGANIZER",
                               style: TextStyle(
@@ -193,7 +267,7 @@ void showCustomBottomSheet(
                             height: 5,
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Text(
                               event.organizingBody.toString(),
                               style: TextStyle(
@@ -207,9 +281,9 @@ void showCustomBottomSheet(
                             height: 20,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
+                            padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
-                              "Registration Amount",
+                              "REGISTRATION AMOUNT",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 20,
@@ -221,7 +295,7 @@ void showCustomBottomSheet(
                             height: 5,
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Text(
                               event.total_cost.toString() == "0"
                                   ? "Free"
@@ -236,60 +310,32 @@ void showCustomBottomSheet(
                           SizedBox(
                             height: 20,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
-                            child: Text(
-                              "VENUE",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20,
-                                  color: AppColors.secondaryColor,
-                                  fontFamily: GoogleFonts.sora.toString()),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
                           InkWell(
                             onTap: () {
-                              MapUtils.openMap(
-                                  venue.latitude, venue.longitude, context);
+                              //OPEN VIT VTOP IN BROWSER
                             },
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: AppColors.highlightColor),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/maps_icon.svg",
-                                        color: AppColors.highlightColor,
-                                      ),
-                                      Expanded(
-                                          child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10, 0, 10, 0),
-                                        child: Text(
-                                          event.loc.toString(),
-                                          style: TextStyle(
-                                            color: AppColors.highlightColor,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      )),
-                                      Icon(
-                                        Icons.directions,
-                                        color: AppColors.highlightColor,
-                                      )
-                                    ],
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: SizedBox(
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: AppColors.highlightColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                   _launchURLBrowser("https://vtop.vit.ac.in/vtop", context);
+                                  },
+                                  child: Text(
+                                    'REGISTER NOW',
+                                    style: TextStyle(
+                                      color: AppColors.secondaryColor,
+                                      fontSize: 15,
+                                      fontFamily: GoogleFonts.sora.toString(),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -338,5 +384,32 @@ Text getDurationDateTime(EventModel event) {
           color: Colors.grey,
           fontFamily: GoogleFonts.sora.toString()),
     );
+  }
+}
+
+
+void _launchURL(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
+  }
+}
+
+void _launchURLBrowser(_url, BuildContext context) async {
+  final Uri _uri = Uri.parse(_url);
+  try {
+    await canLaunchUrl(_uri)
+        ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
+        : throw 'Could not launch $_uri';
+  } catch (e) {
+    print(e.toString());
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
   }
 }

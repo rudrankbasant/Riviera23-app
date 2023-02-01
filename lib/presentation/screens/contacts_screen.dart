@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -63,11 +65,24 @@ class _ContactScreenState extends State<ContactScreen> {
                                                   .size
                                                   .height *
                                               0.15,
-                                          child: FadeInImage(
-                                            image: NetworkImage(
-                                                teamMember.url.toString()),
-                                            placeholder: const AssetImage(
-                                                "assets/app_icon.png"),
+                                          child: CachedNetworkImage(
+                                            height: 250,
+                                            width: 200,
+                                            imageUrl: teamMember.url.toString(),
+                                            imageBuilder: (context, imageProvider) => Container(
+                                              height: 250.0,
+                                              width: 200.0,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: imageProvider, fit: BoxFit.cover),
+                                              ),
+                                            ),
+                                            placeholder: (context, url) => SpinKitFadingCircle(
+                                              color: AppColors.secondaryColor,
+                                              size: 50.0,
+                                            ),
+                                            errorWidget: (context, url, error) => Image.asset(
+                                                "assets/placeholder.png"),
                                             fit: BoxFit.cover,
                                           )),
                                     ),
