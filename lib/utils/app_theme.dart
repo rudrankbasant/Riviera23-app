@@ -7,7 +7,7 @@ class AppTheme {
 
   static ThemeData appTheme = ThemeData(
     primaryColor: AppColors.primaryColor,
-    scaffoldBackgroundColor: AppColors.primaryColor,
+    scaffoldBackgroundColor: AppColors.secondaryColor,
     textTheme: const TextTheme(
       headline6: TextStyle(
         color: Colors.white,
