@@ -64,8 +64,10 @@ dependencies:
   path_provider: ^2.0.12
   rxdart: ^0.27.7
   shared_preferences: ^2.0.17
+  shimmer: ^2.0.0
   sign_in_with_apple: ^4.3.0
   url_launcher: ^6.1.7
+
 
 flutter_icons:
   android: true
@@ -95,7 +97,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
-    - assets/merchandise/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
@@ -119,3 +121,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  image: assets/trial.png
+  color: "#0F0F10"
+  android: true
+  ios: true
+  android_12:
+    image: assets/trial.png
+    color: "#0F0F10"
+
