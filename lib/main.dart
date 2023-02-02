@@ -20,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
+import 'cubit/merch/merch_cubit.dart';
 import 'cubit/venue/venue_cubit.dart';
 import 'data/models/data_version.dart';
 import 'data/repository/events_repository.dart';
@@ -115,7 +116,9 @@ Future<void> main() async {
 //Setting SystmeUIMode
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
+
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -133,7 +136,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AnnouncementsCubit()),
         BlocProvider(create: (context) => VenueCubit()),
         BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
-        BlocProvider(create: (context) => FavouriteCubit())
+        BlocProvider(create: (context) => FavouriteCubit()),
+        BlocProvider(create: (context) => MerchCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -182,14 +186,15 @@ getDataUpdate() async {
   prefs.setBool("remote_show_gdsc", showGdsc);
 
   //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
-  prefs.setInt(
-      "remote_announcement", RemoteVersions.announcement_version_number);
+  prefs.setInt("remote_announcement", RemoteVersions.announcement_version_number);
   prefs.setInt("remote_contacts", RemoteVersions.contacts_version_number);
   prefs.setInt("remote_faq", RemoteVersions.faq_version_number);
   prefs.setInt("remote_fav", RemoteVersions.favorites_version_number);
   prefs.setInt("remote_places", RemoteVersions.places_version_number);
   prefs.setInt("remote_sponsors", RemoteVersions.sponsors_version_number);
   prefs.setInt("remote_team", RemoteVersions.team_version_number);
+  prefs.setInt("remote_merch", RemoteVersions.merch_version_number);
+  print("Merch Version: ${RemoteVersions.merch_version_number}");
 }
 
 Future<DataVersion> getRemoteVersion() async {
@@ -217,7 +222,8 @@ Future<DataVersion> getRemoteVersion() async {
         favorites_version_number: -1,
         places_version_number: -1,
         sponsors_version_number: -1,
-        team_version_number: -1);
+        team_version_number: -1,
+        merch_version_number: -1);
   }
 }
 
