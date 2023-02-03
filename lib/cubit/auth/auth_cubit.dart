@@ -77,8 +77,10 @@ class AuthCubit extends Cubit<AuthState> {
       // if you want to display your own custom error message
       if (e.code == 'weak-password') {
         showCustomFlushbar("Weak Password",'The password provided is too weak.', context);
+        emit(NotSignedInState());
       } else if (e.code == 'email-already-in-use') {
         showCustomFlushbar("Account Exists",'The account already exists for that email.', context);
+        emit(NotSignedInState());
       }
       showSnackBar(context, e.message!);
       emit(NotSignedInState());// Displaying the usual firebase error message
@@ -110,8 +112,10 @@ class AuthCubit extends Cubit<AuthState> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showCustomFlushbar("No user found", "This email address has not been registered.", context);
+        emit(NotSignedInState());
       } else if (e.code == 'wrong-password') {
         showCustomFlushbar("Authentication Failed!", "Wrong Password provided for the current email.", context);
+        emit(NotSignedInState());
       }
       showSnackBar(context, e.message!);
       emit(NotSignedInState());
