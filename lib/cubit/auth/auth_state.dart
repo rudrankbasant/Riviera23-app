@@ -9,11 +9,15 @@ abstract class AuthState extends Equatable {
 
 class AuthLoading extends AuthState {}
 
-class SignUpState extends AuthState {}
+class SignInSuccess extends AuthState {
+  final User user;
 
-class SignInSuccess extends AuthState {}
+  SignInSuccess({required this.user});
+}
 
 class NotSignedInState extends AuthState {}
+
+
 
 class SignInFailed extends AuthState {
   final String error;

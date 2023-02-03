@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
+import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/router/app_router.dart';
@@ -137,7 +138,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => VenueCubit()),
         BlocProvider(create: (context) => HashtagCubit(HashtagRepository())),
         BlocProvider(create: (context) => FavouriteCubit()),
-        BlocProvider(create: (context) => MerchCubit())
+        BlocProvider(create: (context) => MerchCubit()),
+        BlocProvider(create: (context) => AuthCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
