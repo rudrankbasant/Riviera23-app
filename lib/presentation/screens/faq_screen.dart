@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/info/faq/faq_cubit.dart';
@@ -76,9 +77,12 @@ class _FAQScreenState extends State<FAQScreen> {
                                                 image: imageProvider, fit: BoxFit.fitWidth),
                                           ),
                                         ),
-                                        placeholder: (context, url) => SpinKitFadingCircle(
-                                          color: AppColors.secondaryColor,
-                                          size: 50.0,
+                                        placeholder: (context, url) => Shimmer.fromColors(
+                                          baseColor: AppColors.primaryColor,
+                                          highlightColor: Colors.grey,
+                                          child: Container(
+                                            color: Colors.grey,
+                                          ),
                                         ),
                                         errorWidget: (context, url, error) => Image.asset(
                                             "assets/placeholder.png"),
@@ -145,9 +149,12 @@ class _FAQScreenState extends State<FAQScreen> {
                                               image: imageProvider, fit: BoxFit.fitWidth),
                                         ),
                                       ),
-                                      placeholder: (context, url) => SpinKitFadingCircle(
-                                        color: AppColors.secondaryColor,
-                                        size: 50.0,
+                                      placeholder: (context, url) => Shimmer.fromColors(
+                                        baseColor: AppColors.primaryColor,
+                                        highlightColor: Colors.grey,
+                                        child: Container(
+                                          color: Colors.grey,
+                                        ),
                                       ),
                                       errorWidget: (context, url, error) => Image.asset(
                                           "assets/app_icon.png"),

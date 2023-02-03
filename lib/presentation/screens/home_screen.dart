@@ -231,7 +231,7 @@ _showVersionDialog(context) async {
                 TextButton(
                   child: Text(
                     btnLabelCancel,
-                    style: TextStyle(color: Colors.redAccent),
+                    style: TextStyle(color: Colors.grey),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();

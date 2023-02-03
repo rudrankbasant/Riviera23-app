@@ -8,6 +8,7 @@ import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/map_utils.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/favourites/favourite_cubit.dart';
@@ -84,9 +85,12 @@ void showCustomBottomSheet(
                                     height: 250,
                                     width: 200,
                                     imageUrl: event.imageUrl.toString(),
-                                    placeholder: (context, url) => SpinKitFadingCircle(
-                                      color: AppColors.secondaryColor,
-                                      size: 50.0,
+                                    placeholder: (context, url) => Shimmer.fromColors(
+                                      baseColor: AppColors.primaryColor,
+                                      highlightColor: Colors.grey,
+                                      child: Container(
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                     errorWidget: (context, url, error) => Image.asset(
                                         "assets/placeholder.png"),

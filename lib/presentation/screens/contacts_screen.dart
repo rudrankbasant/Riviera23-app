@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/info/contacts/contacts_cubit.dart';
@@ -77,9 +78,12 @@ class _ContactScreenState extends State<ContactScreen> {
                                                     image: imageProvider, fit: BoxFit.cover),
                                               ),
                                             ),
-                                            placeholder: (context, url) => SpinKitFadingCircle(
-                                              color: AppColors.secondaryColor,
-                                              size: 50.0,
+                                            placeholder: (context, url) => Shimmer.fromColors(
+                                              baseColor: AppColors.primaryColor,
+                                              highlightColor: Colors.grey,
+                                              child: Container(
+                                                color: Colors.grey,
+                                              ),
                                             ),
                                             errorWidget: (context, url, error) => Image.asset(
                                                 "assets/placeholder.png"),

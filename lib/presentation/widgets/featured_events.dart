@@ -9,6 +9,7 @@ import 'package:riviera23/data/models/venue_model.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
@@ -65,9 +66,12 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                                       image: imageProvider, fit: BoxFit.cover),
                                 ),
                               ),
-                              placeholder: (context, url) => SpinKitFadingCircle(
-                                color: AppColors.secondaryColor,
-                                size: 50.0,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: AppColors.primaryColor,
+                                highlightColor: Colors.grey,
+                                child: Container(
+                                  color: Colors.grey,
+                                ),
                               ),
                               errorWidget: (context, url, error) => Image.asset(
                                   "assets/placeholder.png"),

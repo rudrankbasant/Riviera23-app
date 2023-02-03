@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
@@ -74,9 +75,12 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                             image: imageProvider, fit: BoxFit.cover),
                       ),
                     ),
-                    placeholder: (context, url) => SpinKitFadingCircle(
-                      color: AppColors.secondaryColor,
-                      size: 50.0,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: AppColors.primaryColor,
+                      highlightColor: Colors.grey,
+                      child: Container(
+                        color: Colors.grey,
+                      ),
                     ),
                     errorWidget: (context, url, error) => Image.asset(
                         "assets/placeholder.png"),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../utils/app_colors.dart';
 
@@ -95,9 +96,12 @@ class _HashtagCardState extends State<HashtagCard> {
 
                             ),
                           ),
-                          placeholder: (context, url) => SpinKitFadingCircle(
-                            color: AppColors.secondaryColor,
-                            size: 50.0,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: AppColors.primaryColor,
+                            highlightColor: Colors.grey,
+                            child: Container(
+                              color: Colors.grey,
+                            ),
                           ),
                           errorWidget: (context, url, error) => Image.asset(
                               "assets/app_icon.png"),
