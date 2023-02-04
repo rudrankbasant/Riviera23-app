@@ -334,7 +334,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: SvgPicture.asset(
-                                    "assets/sign_out_icon.svg"),
+                                    "assets/cross.svg"),
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.05,

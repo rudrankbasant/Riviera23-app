@@ -129,6 +129,6 @@ flutter_native_splash:
   android: true
   ios: true
   android_12:
-    image: assets/trial.png
+    image: assets/android12icon.png
     color: "#0F0F10"
 
