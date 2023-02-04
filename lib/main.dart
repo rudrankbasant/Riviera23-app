@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
@@ -17,7 +18,6 @@ import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
@@ -49,6 +49,9 @@ Future<void> main() async {
   print(" main dart After");
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  print(" main dart After 2");
+  messaging.getToken().then((value) => print("Token: $value"));
+
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
     badge: true,
@@ -93,7 +96,6 @@ Future<void> main() async {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-
                 icon: "",
                 // other properties...
               ),
@@ -111,7 +113,7 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     systemNavigationBarColor: AppColors.primaryColor,
     statusBarColor: AppColors.primaryColor,
-      statusBarIconBrightness: Brightness.light
+      statusBarIconBrightness: Platform.isAndroid? Brightness.light : Brightness.dark,
   ));
 
 //Setting SystmeUIMode
@@ -162,15 +164,28 @@ getDataUpdate() async {
     "show_gdsc": false,
   });
 
-  await remoteConfig.fetchAndActivate();
-  final androidVersion = remoteConfig.getString("android_version");
-  final iosVersion = remoteConfig.getString("ios_version");
-  var baseUrl = remoteConfig.getString("base_url");
-  final showGdsc = remoteConfig.getBool("show_gdsc");
-  print("showGdsc fetched: $showGdsc");
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isConnected = await InternetConnectionChecker().hasConnection;
+  if (isConnected) {
+    await remoteConfig.fetchAndActivate();
+    final androidVersion = remoteConfig.getString("android_version");
+    final iosVersion = remoteConfig.getString("ios_version");
+    var baseUrl = remoteConfig.getString("base_url");
+    final showGdsc = remoteConfig.getBool("show_gdsc");
+    print("showGdsc fetched: $showGdsc");
+    print("main dart: $baseUrl");
+    print("android version: $androidVersion");
 
- print("main dart: $baseUrl");
- print("android version: $androidVersion");
+
+
+    prefs.setString("remote_app_version_android", androidVersion);
+    prefs.setString("remote_app_version_ios", iosVersion);
+    prefs.setString("remote_base_url", baseUrl);
+    prefs.setBool("remote_show_gdsc", showGdsc);
+  }
+
+
+
 
 
 
@@ -180,13 +195,6 @@ getDataUpdate() async {
   //Check for data updates
   DataVersion RemoteVersions = await getRemoteVersion();
   print("Remote Version: $RemoteVersions");
-
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //App Version is String
-  prefs.setString("remote_app_version_android", androidVersion);
-  prefs.setString("remote_app_version_ios", iosVersion);
-  prefs.setString("remote_base_url", baseUrl);
-  prefs.setBool("remote_show_gdsc", showGdsc);
 
   //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
   prefs.setInt("remote_announcement", RemoteVersions.announcement_version_number);
