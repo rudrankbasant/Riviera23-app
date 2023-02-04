@@ -75,8 +75,7 @@ class AuthService {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
-      showSnackBar(
-          context, e.message!); // Displaying the usual firebase error message
+      showCustomFlushbar("Error!", e.message!, context); // Displaying the usual firebase error message
     }
   }
 
@@ -106,7 +105,7 @@ class AuthService {
         showCustomFlushbar("Authentication Failed!",
             "Wrong Password provided for the current email.", context);
       }
-      showSnackBar(context, e.message!);
+      showCustomFlushbar("Error!", e.message!, context);
       return null; // Displaying the error message
     }
   }
@@ -120,7 +119,7 @@ class AuthService {
           "Please check your inbox or spam folder for verification link",
           context);
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Display error message
+      showCustomFlushbar("Error!", e.message!, context);  // Display error message
     }
   }
 
@@ -140,7 +139,7 @@ class AuthService {
       final firebaseCredential = await auth.signInWithCredential(credential);
       return firebaseCredential;
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Displaying the error message
+      showCustomFlushbar("Error!", e.message!, context); // Displaying the error message
       return null;
     }
   }
@@ -176,7 +175,7 @@ class AuthService {
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       return await firebaseCredential.user!.getIdToken(true);
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
+      showCustomFlushbar("Error!", e.message!, context);
       return null;
     }
   }
@@ -193,7 +192,7 @@ class AuthService {
       await _auth.signOut();
       return true;
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Displaying the error message
+      showCustomFlushbar("Error!", e.message!, context);  // Displaying the error message
       return false;
     }
   }

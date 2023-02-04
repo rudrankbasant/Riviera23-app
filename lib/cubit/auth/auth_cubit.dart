@@ -10,7 +10,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../presentation/methods/snack_bar.dart';
 
 part 'auth_state.dart';
 
@@ -82,7 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
         showCustomFlushbar("Account Exists",'The account already exists for that email.', context);
         emit(NotSignedInState());
       }
-      showSnackBar(context, e.message!);
+      showCustomFlushbar("Error!", e.message!, context);
       emit(NotSignedInState());// Displaying the usual firebase error message
     }
   }
@@ -117,7 +116,7 @@ class AuthCubit extends Cubit<AuthState> {
         showCustomFlushbar("Authentication Failed!", "Wrong Password provided for the current email.", context);
         emit(NotSignedInState());
       }
-      showSnackBar(context, e.message!);
+      showCustomFlushbar("Error!", e.message!, context);
       emit(NotSignedInState());
       return null; // Displaying the error message
     }
@@ -132,7 +131,7 @@ class AuthCubit extends Cubit<AuthState> {
           "Please check your inbox or spam folder for verification link",
           context);
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Display error message
+      showCustomFlushbar("Error!", e.message!, context); // Display error message
     }
   }
 
@@ -184,7 +183,7 @@ class AuthCubit extends Cubit<AuthState> {
     } on FirebaseAuthException catch (e) {
       print("Auth Cubit: Error signing in with Google");
       print(e.message);
-      showSnackBar(context, e.message!); // Displaying the error message
+      showCustomFlushbar("Error!", e.message!, context); // Displaying the error message
       emit(NotSignedInState());
       return null;
     }
@@ -223,7 +222,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccess(user: user));
       return await firebaseCredential.user!.getIdToken(true);
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
+      showCustomFlushbar("Error!", e.message!, context);
       emit(NotSignedInState());
       return null;
     }
@@ -242,7 +241,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _auth.signOut();
       return true;
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!); // Displaying the error message
+      showCustomFlushbar("Error!", e.message!, context); // Displaying the error message
       return false;
     }
   }

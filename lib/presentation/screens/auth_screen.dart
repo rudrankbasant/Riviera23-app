@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
+import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -241,33 +242,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                             cpasswordController.text.trim()) {
                                           signUpUser();
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  "Passwords do not match"),
-                                            ),
-                                          );
+                                          showCustomFlushbar("Error!", "Passwords don't match", context);
                                         }
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Please enter email and password"),
-                                          ),
-                                        );
+                                        showCustomFlushbar("Error!", "Please Enter email and password", context);
                                       }
                                     } else {
                                       loginUser();
                                     }
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "Please enter email and password"),
-                                      ),
-                                    );
+                                    showCustomFlushbar("Error!", "Please Enter email and password", context);
                                   }
                                 },
                                 child: Padding(
