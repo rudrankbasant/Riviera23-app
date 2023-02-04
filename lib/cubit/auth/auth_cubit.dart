@@ -124,7 +124,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // EMAIL VERIFICATION
-  Future<void> sendEmailVerification(BuildContext context) async {
+  Future<dynamic> sendEmailVerification(BuildContext context) async {
     try {
       _auth.currentUser!.sendEmailVerification();
       showCustomFlushbar(
@@ -133,6 +133,30 @@ class AuthCubit extends Cubit<AuthState> {
           context);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!); // Display error message
+    }
+  }
+
+  Future<bool> sendResetPassowrdEmail(String email, BuildContext context) async{
+    emit(AuthLoading());
+    try{
+      await _auth.sendPasswordResetEmail(email: email);
+      emit(NotSignedInState());
+      showCustomFlushbar("Password Reset Email Sent!", "Please check your inbox or spam folder for password reset link", context);
+      return true;
+    } on FirebaseAuthException catch (e){
+      if (e.code == 'badly-formatted-email') {
+        showCustomFlushbar("Badly Formatted Email", "Please enter a valid email address", context);
+        emit(NotSignedInState());
+      } else if (e.code == 'user-not-found') {
+        showCustomFlushbar("No user found", "This email address has not been registered.", context);
+        emit(NotSignedInState());
+      }else{
+        showCustomFlushbar("Error", e.message!, context);
+        emit(NotSignedInState());
+      }
+      emit(NotSignedInState());
+      return false;
+
     }
   }
 
@@ -145,6 +169,10 @@ class AuthCubit extends Cubit<AuthState> {
       // Trigger the authentication flow
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
 
+      if(googleSignInAccount ==null){
+        emit(NotSignedInState());
+        return null;
+      }
       final GoogleSignInAuthentication googleAuth = await googleSignInAccount!.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -154,6 +182,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccess(user: user));
       return firebaseCredential;
     } on FirebaseAuthException catch (e) {
+      print("Auth Cubit: Error signing in with Google");
+      print(e.message);
       showSnackBar(context, e.message!); // Displaying the error message
       emit(NotSignedInState());
       return null;
