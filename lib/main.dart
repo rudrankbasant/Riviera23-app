@@ -167,6 +167,7 @@ getDataUpdate() async {
   final iosVersion = remoteConfig.getString("ios_version");
   var baseUrl = remoteConfig.getString("base_url");
   final showGdsc = remoteConfig.getBool("show_gdsc");
+  print("showGdsc fetched: $showGdsc");
 
  print("main dart: $baseUrl");
  print("android version: $androidVersion");

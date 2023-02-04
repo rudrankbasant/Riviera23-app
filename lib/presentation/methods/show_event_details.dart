@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
@@ -51,7 +50,7 @@ void showCustomBottomSheet(
                     Center(
                       child: Container(
                         height: 5,
-                        width: 50,
+                        width: 80,
                         decoration: BoxDecoration(
                           color: AppColors.secondaryColor,
                           borderRadius: BorderRadius.circular(10),
@@ -163,20 +162,6 @@ void showCustomBottomSheet(
                           SizedBox(
                             height: 10,
                           ),
-                          /*SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30.0),
-                            child: Text(
-                              "VENUE",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20,
-                                  color: AppColors.secondaryColor,
-                                  fontFamily: GoogleFonts.sora.toString()),
-                            ),
-                          ),*/
                           SizedBox(
                             height: 10,
                           ),
@@ -314,32 +299,27 @@ void showCustomBottomSheet(
                           SizedBox(
                             height: 20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              //OPEN VIT VTOP IN BROWSER
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: SizedBox(
-                                height: 50,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: AppColors.highlightColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: AppColors.highlightColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  onPressed: () {
-                                   _launchURLBrowser("https://vtop.vit.ac.in/vtop", context);
-                                  },
-                                  child: Text(
-                                    'REGISTER NOW',
-                                    style: TextStyle(
-                                      color: AppColors.secondaryColor,
-                                      fontSize: 15,
-                                      fontFamily: GoogleFonts.sora.toString(),
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                                onPressed: () {
+                                 showRegistrationDialog(context);
+                                },
+                                child: Text(
+                                  'REGISTER NOW',
+                                  style: TextStyle(
+                                    color: AppColors.secondaryColor,
+                                    fontSize: 15,
+                                    fontFamily: GoogleFonts.sora.toString(),
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -392,19 +372,112 @@ Text getDurationDateTime(EventModel event) {
 }
 
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
-  try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
-  } catch (e) {
-    print(e.toString());
-    showCustomFlushbar("Can't Open Link",
-        "The link may be null or may have some issues.", context);
-  }
-}
+void showRegistrationDialog(BuildContext context){
+  showDialog(
+      context: context,
+      builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(
+                    20.0,
+                  ),
+                ),
+              ),
+              contentPadding: EdgeInsets.only(
+                top: 10.0,
+              ),
+              content: Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 3, 8, 3),
+                        child: Text(
+                          "Registration",
+                          style:
+                          GoogleFonts.sora(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 3, 8, 3),
+                        child: Text(
+                          "Register for events at Riviera 2023 as a VIT student, or as an external participant.",
+                          style:
+                          GoogleFonts.sora(fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(28, 15, 28, 8),
+                        child: SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.highlightColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              _launchURLBrowser("https://vtop.vit.ac.in/vtop", context);
+                            },
+                            child: Text(
+                              'VIT STUDENT',
+                              style: TextStyle(
+                                color: AppColors.secondaryColor,
+                                fontSize: 15,
+                                fontFamily: GoogleFonts.sora.toString(),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _launchURLBrowser("https://web.vit.ac.in/riviera/", context);
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.fromLTRB(28, 0, 28, 8),
+                          child: SizedBox(
+                            height: 50,
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: AppColors.highlightColor),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'EXTERNAL PARTICIPANT',
+                                  style: TextStyle(
+                                    color: AppColors.highlightColor,
+                                    fontSize: 15,
+                                    fontFamily: GoogleFonts.sora.toString(),
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );},
+        );
 
+}
 void _launchURLBrowser(_url, BuildContext context) async {
   final Uri _uri = Uri.parse(_url);
   try {
