@@ -72,10 +72,11 @@ Future<void> main() async {
       'riviera_notif_channel', // id
       'Riviera 2023', // title
       // description
-      importance: Importance.max,
+      importance: Importance.high,
     );
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
+
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -84,10 +85,11 @@ Future<void> main() async {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
-
+      print("Handling a open app message: ${message.messageId}");
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null) {
+        print('Message also contained a notification: ${message.notification}');
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -96,7 +98,8 @@ Future<void> main() async {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                icon: "",
+                icon: "@drawable/ic_notif_icon",
+                importance: Importance.high,
                 // other properties...
               ),
             ));
@@ -120,7 +123,7 @@ Future<void> main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 
 }
 
