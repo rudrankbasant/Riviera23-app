@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
                   Visibility(
                     visible: user.displayName != null,
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 60,
+                    height: MediaQuery.of(context).size.height * 0.06,
                   ),
                   GestureDetector(
                     onTap: () {
