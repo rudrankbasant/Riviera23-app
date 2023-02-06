@@ -80,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context) => MerchScreen()));
             },
             child: Padding(
-              padding: const EdgeInsets.only(right: 15.0),
+              padding: const EdgeInsets.only(right: 25.0),
               child: SvgPicture.asset('assets/merch_button.svg',
-                  height: 32, width: 32),
+                  height: 22, width: 22),
             ),
           ),
           GestureDetector(
@@ -231,7 +231,7 @@ _showVersionDialog(context) async {
                 TextButton(
                   child: Text(
                     btnLabelCancel,
-                    style: TextStyle(color: Colors.redAccent),
+                    style: TextStyle(color: Colors.grey),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();

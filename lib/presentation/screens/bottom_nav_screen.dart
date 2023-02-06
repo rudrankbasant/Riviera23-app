@@ -5,6 +5,7 @@ import 'package:riviera23/presentation/methods/gdsc_dialog.dart';
 import 'package:riviera23/presentation/screens/profile_screen.dart';
 import 'package:riviera23/presentation/widgets/custom_bottomnavbar_item.dart';
 import 'package:riviera23/utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'events_screen.dart';
 import 'hashtags_screen.dart';
@@ -27,11 +28,28 @@ class _BottomNavState extends State<BottomNavScreen> {
   int tapCount = 0;
   late Timer _timer;
 
-  void _startOperation() {
-    _timer = Timer(const Duration(milliseconds: 4000), () {
-      showCreatorDialog(context);
-    });
+
+  Future<bool> getGSDCBoolean() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? showGDSC = prefs.getBool("remote_show_gdsc");
+    if(showGDSC != null){
+      return showGDSC;
+    }
+    return false;
   }
+
+  Future<void> _startOperation() async {
+    var showGDSC = await getGSDCBoolean();
+    print("showGDSC: $showGDSC");
+    if(showGDSC){
+      _timer = Timer(const Duration(milliseconds: 4000), () {
+        showCreatorDialog(context);
+      });
+    }
+
+  }
+
+
 
   @override
   void initState() {

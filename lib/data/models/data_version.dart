@@ -7,6 +7,7 @@ class DataVersion {
   final int places_version_number;
   final int sponsors_version_number;
   final int team_version_number;
+  final int merch_version_number;
 
   DataVersion({
     required this.app_version_number,
@@ -17,6 +18,7 @@ class DataVersion {
     required this.places_version_number,
     required this.sponsors_version_number,
     required this.team_version_number,
+    required this.merch_version_number,
   });
 
   factory DataVersion.fromMap(Map<String, dynamic> map) {
@@ -29,6 +31,7 @@ class DataVersion {
       places_version_number: map['places_version_number'],
       sponsors_version_number: map['sponsors_version_number'],
       team_version_number: map['team_version_number'],
+      merch_version_number: map['merch_version_number'],
     );
   }
 }

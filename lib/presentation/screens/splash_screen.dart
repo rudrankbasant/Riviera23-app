@@ -9,8 +9,8 @@ import 'package:riviera23/presentation/screens/auth_screen.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 
+import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/events/events_cubit.dart';
-import '../../cubit/favourites/favourite_cubit.dart';
 import '../../cubit/hashtag/hashtag_cubit.dart';
 import '../../service/auth.dart';
 
@@ -28,15 +28,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final cubit = context.read<EventsCubit>();
       cubit.getAllEvents();
       final cubit2 = context.read<HashtagCubit>();
       cubit2.getAllHashtag();
+      final cubit3 = context.read<AuthCubit>();
+      cubit3.checkAlreadySignedIn();
     });
 
-    checkifUserLoggedIn();
+    //checkifUserLoggedIn();
     leadtoGetStarted = false;
   }
 
@@ -44,37 +45,52 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                ),
-                Center(
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
-                      child: Image.asset(
-                        'assets/riviera_icon.png',
-                        fit: BoxFit.contain,
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is SignInSuccess) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => BottomNavScreen(null)));
+          }else if(state is NotSignedInState){
+            setState(() {
+              leadtoGetStarted = true;
+            });
+          }
+        },
+        builder: (context, state) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                    ),
+                    Center(
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
+                          child: Image.asset(
+                            'assets/riviera_icon.png',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          leadtoGetStarted
-              ? Align(
-                  alignment: Alignment.bottomCenter, child: getStarted(context))
-              : const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: VitLogo(),
-                )
-        ],
+              ),
+              leadtoGetStarted
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: getStarted(context))
+                  : const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: VitLogo(),
+                    )
+            ],
+          );
+        },
       ),
     );
   }
@@ -144,7 +160,7 @@ Padding getStarted(BuildContext context) {
               ),
             ),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AuthScreen(),
