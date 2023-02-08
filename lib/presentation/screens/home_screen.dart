@@ -10,14 +10,13 @@ import 'package:riviera23/presentation/screens/announcement_history_screen.dart'
 import 'package:riviera23/presentation/screens/merch_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/events/events_cubit.dart';
-
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../cubit/venue/venue_cubit.dart';
 import '../../data/models/venue_model.dart';
-
 import '../../service/auth.dart';
 import '../methods/custom_flushbar.dart';
 import '../widgets/carousel_with_dots_page.dart';
@@ -25,11 +24,18 @@ import '../widgets/featured_events.dart';
 import '../widgets/on_going_events.dart';
 
 class HomeScreen extends StatefulWidget {
+  ScrollController? _controller;
+  HomeScreen(this._controller);
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  GlobalKey _merch_guide = GlobalKey();
+  GlobalKey _ongoing_guide = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -37,98 +43,118 @@ class _HomeScreenState extends State<HomeScreen> {
     checkForAppUpdate(context);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
       final user = AuthService(FirebaseAuth.instance).user;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        final cubit = context.read<EventsCubit>();
-        cubit.getAllEvents();
-        final cubit3 = context.read<FavouriteCubit>();
-        cubit3.loadFavourites(user);
-      });
+      final cubit = context.read<EventsCubit>();
+      cubit.getAllEvents();
+      final cubit3 = context.read<FavouriteCubit>();
+      cubit3.loadFavourites(user);
+      ShowCaseWidget.of(context).startShowCase([_merch_guide, _ongoing_guide]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: false,
-        titleSpacing: 0.0,
-        title: Transform(
-            // you can forcefully translate values left side using Transform
-            transform: Matrix4.translationValues(10.0, 2.0, 0.0),
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Image.asset(
-                  'assets/riviera_icon.png',
-                  height: 40,
-                  width: 90,
-                  fit: BoxFit.contain,
+        backgroundColor: AppColors.primaryColor,
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: false,
+          titleSpacing: 0.0,
+          title: Transform(
+              // you can forcefully translate values left side using Transform
+              transform: Matrix4.translationValues(10.0, 2.0, 0.0),
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Image.asset(
+                    'assets/riviera_icon.png',
+                    height: 40,
+                    width: 90,
+                    fit: BoxFit.contain,
+                  ),
                 ),
+              )),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MerchScreen()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 25.0),
+                child: CustomShowcase(_merch_guide,"See all Merch", SvgPicture.asset('assets/merch_button.svg',
+                    height: 22, width: 22)),
               ),
-            )),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MerchScreen()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 25.0),
-              child: SvgPicture.asset('assets/merch_button.svg',
-                  height: 22, width: 22),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AnnouncementHistoryScreen()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: SvgPicture.asset('assets/notification_icon.svg',
-                  height: 20, width: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AnnouncementHistoryScreen()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: SvgPicture.asset('assets/notification_icon.svg',
+                    height: 20, width: 20),
+              ),
             ),
-          ),
-        ],
-      ),
-      body: Container(
-        color: Theme.of(context).primaryColor,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(child:
-              BlocBuilder<VenueCubit, VenueState>(
-                  builder: (context, venueState) {
-            if (venueState is VenueSuccess) {
-              List<Venue> allVenues = venueState.venuesList;
-              return Column(
-                children: [
-                  CarouselWithDotsPage(
-                    allVenues: allVenues,
-                  ),
-                  SizedBox(height: 30),
-                  FeaturedEvents(
-                    allVenues: allVenues,
-                  ),
-                  SizedBox(height: 0),
-                  OnGoingEvents(
-                    allVenues: allVenues,
-                  )
-                ],
-              );
-            } else {
-              return Container();
-            }
-          })),
+          ],
         ),
-      ),
+        body: Container(
+          color: Theme.of(context).primaryColor,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
+                controller: widget._controller,
+                child: BlocBuilder<VenueCubit, VenueState>(
+                    builder: (context, venueState) {
+              if (venueState is VenueSuccess) {
+                List<Venue> allVenues = venueState.venuesList;
+                return Column(
+                  children: [
+                    CarouselWithDotsPage(
+                      allVenues: allVenues,
+                    ),
+                    SizedBox(height: 30),
+                    FeaturedEvents(
+                      allVenues: allVenues,
+                    ),
+                    SizedBox(height: 0),
+                    CustomShowcase(
+                      _ongoing_guide,
+                      "On Going Events will appear here.",
+                      OnGoingEvents(
+                        allVenues: allVenues,
+                      ),
+                    )
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            })),
+          ),
+        ),
+      );
+  }
+}
+
+class CustomShowcase extends StatelessWidget {
+  GlobalKey _guide_key;
+  String desc;
+  Widget childWidget;
+  CustomShowcase(this._guide_key,this.desc, this.childWidget);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Showcase(
+      key:_guide_key,
+      description: desc,
+      child: childWidget,
     );
   }
 }
@@ -161,14 +187,13 @@ void _notifyForAppUpdate(BuildContext context) async {
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   var remote_version;
-  if(Platform.isAndroid) {
+  if (Platform.isAndroid) {
     remote_version = prefs.getString('remote_app_version_android');
   } else {
     remote_version = prefs.getString('remote_app_version_ios');
   }
 
   print("home screen  " + remote_version);
-
 
   String? RemoteVersionApp = remote_version;
   if (RemoteVersionApp != null && RemoteVersionApp != "") {
@@ -218,7 +243,7 @@ _showVersionDialog(context) async {
               ],
             )
           : AlertDialog(
-        backgroundColor: AppColors.cardBgColor,
+              backgroundColor: AppColors.cardBgColor,
               title: Text(
                 title,
                 style: const TextStyle(
@@ -226,7 +251,10 @@ _showVersionDialog(context) async {
                     color: Colors.white,
                     fontWeight: FontWeight.w400),
               ),
-              content: Text(message, style: TextStyle(color: Colors.white),),
+              content: Text(
+                message,
+                style: TextStyle(color: Colors.white),
+              ),
               actions: <Widget>[
                 TextButton(
                   child: Text(
@@ -238,7 +266,8 @@ _showVersionDialog(context) async {
                   },
                 ),
                 TextButton(
-                  child: Text(btnLabel, style: TextStyle(color: AppColors.highlightColor)),
+                  child: Text(btnLabel,
+                      style: TextStyle(color: AppColors.highlightColor)),
                   onPressed: () {
                     _launchURLBrowser(PLAY_STORE_URL, context);
                   },

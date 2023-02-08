@@ -9,7 +9,7 @@ class AppColors {
   // static Color highlightColor = HexColor('5D63FF');
   static Color highlightColor = HexColor('466FFF');
   static Color cardBgColor = HexColor('1E1D1D');
-  static Color cardBgColor2 = HexColor('1E1D1D');
+  static Color cardBgColor2 = HexColor('272728');
 
   AppColors();
 }

@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -8,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
+
+import '../../utils/app_colors.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -460,7 +463,9 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
         return StatefulBuilder(
           builder: (context, setState){
           return AlertDialog(
+            backgroundColor: AppColors.primaryColor,
             shape: RoundedRectangleBorder(
+              side: BorderSide(color: AppColors.highlightColor),
               borderRadius: BorderRadius.all(
                 Radius.circular(
                   20.0,
@@ -475,102 +480,121 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(8.0),
                 child: resetlinkSent
-                    ? Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                    ? BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+
+                  child: Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(50.0),
+                                child: Image.asset("assets/app_icon.png", height: 100, width: 100,),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                               Text(
+                                "Reset Password Link Sent",
+                                style: GoogleFonts.sora(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                child: Text(
+                                  "Please check your email for a link to reset your password. \nIf it doesn’t appear within a few minutes, check your spam folder.",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.sora(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                      ),
+                    )
+                    : BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(50.0),
-                              child: Image.asset("assets/app_icon.png", height: 100, width: 100,),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              "Reset Password Link Sent",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 3, 8, 3),
+                              child: Text(
+                                "Reset Password",
+                                style:
+                                    GoogleFonts.sora(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                              child: const Text(
-                                "Please check your email for a link to reset your password. \nIf it doesn’t appear within a few minutes, check your spam folder.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Enter your email ID to reset your password", style: GoogleFonts.sora(color: Colors.white, fontSize: 14),
+                              ),
+                            ),
+                            Container(
+                              height: 80,
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextField(
+                                style: GoogleFonts.sora(color: Colors.white),
+                                cursorColor: Colors.white,
+                                controller: resetPassEmailController,
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    hintText: 'Email',
+                                    hintStyle: GoogleFonts.sora(color: Colors.white, fontSize: 14),
+                                    labelText: 'Email',
+                                labelStyle: GoogleFonts.sora(color: Colors.white, fontSize: 14)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 0.0,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 65,
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (resetPassEmailController.text.isNotEmpty) {
+                                    BlocProvider.of<AuthCubit>(context)
+                                        .sendResetPassowrdEmail(
+                                            resetPassEmailController.text, context)
+                                        .then((value) {
+                                      if (value) {
+                                        setState(() {
+                                          resetlinkSent = true;
+                                        });
+                                      }
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: AppColors.highlightColor,
+                                  // fixedSize: Size(250, 50),
+                                ),
+                                child: Text(
+                                  "Send",
                                 ),
                               ),
                             ),
                           ],
                         ),
-                    )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 3, 8, 3),
-                            child: Text(
-                              "Reset Password",
-                              style:
-                                  GoogleFonts.sora(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Enter your email ID to reset your password",
-                            ),
-                          ),
-                          Container(
-                            height: 80,
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              controller: resetPassEmailController,
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Email',
-                                  labelText: 'Email'),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0.0,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 65,
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (resetPassEmailController.text.isNotEmpty) {
-                                  BlocProvider.of<AuthCubit>(context)
-                                      .sendResetPassowrdEmail(
-                                          resetPassEmailController.text, context)
-                                      .then((value) {
-                                    if (value) {
-                                      setState(() {
-                                        resetlinkSent = true;
-                                      });
-                                    }
-                                  });
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.black,
-                                // fixedSize: Size(250, 50),
-                              ),
-                              child: Text(
-                                "Send",
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    ),
               ),
             ),
           );},

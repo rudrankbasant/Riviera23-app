@@ -406,10 +406,16 @@ class _EventsScreenState extends State<EventsScreen> {
                         }
                       }
                       if (favouriteEvents.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            "Add some favourites by liking an event!",
-                            style: TextStyle(color: Colors.white),
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            child: Text(
+                              "You will receive event-specific notifications for your favourite events. \n\nAdd some favourites by liking an event!",
+                              style: GoogleFonts.sora(
+                                  color: Colors.white, fontSize: 12),
+                              textAlign: TextAlign.center,
+
+                            ),
                           ),
                         );
                       }
@@ -447,7 +453,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     } else if (state is FavouriteFailed) {
                       return const Center(
                         child: Text(
-                          "Add some favourites by liking an event!",
+                          "You will receive event-specific notifications for your favourite events. Add some favourites by liking an event!",
                           style: TextStyle(color: Colors.white),
                         ),
                       );

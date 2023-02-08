@@ -6,6 +6,7 @@ import 'package:riviera23/presentation/screens/profile_screen.dart';
 import 'package:riviera23/presentation/widgets/custom_bottomnavbar_item.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'events_screen.dart';
 import 'hashtags_screen.dart';
@@ -64,8 +65,20 @@ class _BottomNavState extends State<BottomNavScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = ScrollController();
+
     final List<Widget> _fragments = <Widget>[
-      HomeScreen(),
+      ShowCaseWidget(
+          scrollDuration: 	Duration(milliseconds: 500),
+          onStart: (index, key) {
+            if(index == 1) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _controller.jumpTo(300);
+              });
+            }
+          },
+    builder: Builder(
+    builder : (context)=>HomeScreen(_controller))),
       EventsScreen(widget.eventScreenIndex ?? 0),
       HashtagsScreen(),
       InfoScreen(),
