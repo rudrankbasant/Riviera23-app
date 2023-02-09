@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +11,7 @@ import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/presentation/screens/home_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/map_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,8 +21,7 @@ import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
 import 'custom_flushbar.dart';
 
-void showCustomBottomSheet(
-    BuildContext context, EventModel event, Venue venue) {
+void showCustomBottomSheet(BuildContext context, EventModel event, Venue venue) {
   List<String> favouritesIDs = [];
   var isFavourite = false;
 
@@ -44,8 +45,9 @@ void showCustomBottomSheet(
               return ShowCaseWidget(
                 builder: Builder(
                     builder : (context){
-                      WidgetsBinding.instance!.addPostFrameCallback(
-                              (_) => ShowCaseWidget.of(context)!.startShowCase([_favourite_guide]));
+
+                      WidgetsBinding.instance.addPostFrameCallback(
+                              (_) =>  displayEventCardShowcase(context, _favourite_guide));
                       return Container(
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
@@ -116,19 +118,8 @@ void showCustomBottomSheet(
                                         bottom: 0.0,
                                         child: GestureDetector(
                                           onTap: () {
-                                            if (state is FavouriteSuccess) {
-                                              var newList = favouritesIDs;
-                                              favouritesIDs.contains(event.id)
-                                                  ? newList.remove(event.id)
-                                                  : newList.add(event.id.toString());
-                                              FavouriteModel newFavouriteModel =
-                                              FavouriteModel(
-                                                  uniqueUserId: state
-                                                      .favouriteList.uniqueUserId,
-                                                  favouriteEventIds: newList);
-                                              BlocProvider.of<FavouriteCubit>(context)
-                                                  .upDateFavourites(newFavouriteModel);
-                                            }
+                                            updateFavouritesAndSubscriptions(
+                                                context, event, favouritesIDs, state);
                                           },
                                           child: Padding(
                                               padding: const EdgeInsets.fromLTRB(
@@ -323,7 +314,7 @@ void showCustomBottomSheet(
                                       height: 50,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          primary: AppColors.highlightColor,
+                                          backgroundColor: AppColors.highlightColor,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(10),
                                           ),
@@ -371,6 +362,42 @@ void showCustomBottomSheet(
           }));
 }
 
+void updateFavouritesAndSubscriptions(BuildContext context, EventModel event, List<String> favouritesIDs, FavouriteState state) async {
+  if (state is FavouriteSuccess) {
+    var newList = favouritesIDs;
+    if(favouritesIDs.contains(event.id)) {
+      newList.remove(event.id);
+      await FirebaseMessaging.instance.unsubscribeFromTopic(event.id.toString());
+    } else {
+      newList.add(event.id.toString());
+      await FirebaseMessaging.instance.subscribeToTopic(event.id.toString());
+      showCustomFlushbar("Added to Favourites!", "You will be receiving important notifications for this event.", context);
+    }
+    FavouriteModel newFavouriteModel =
+    FavouriteModel(
+        uniqueUserId: state
+            .favouriteList.uniqueUserId,
+        favouriteEventIds: newList);
+    BlocProvider.of<FavouriteCubit>(context).upDateFavourites(newFavouriteModel);
+
+  }
+}
+
+displayEventCardShowcase(BuildContext context,  GlobalKey<State<StatefulWidget>> key1) async {
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? showcaseVisibilityStatus = prefs.getBool("show_eventcard_showcase");
+
+  if (showcaseVisibilityStatus == null) {
+    prefs.setBool("show_eventcard_showcase", false);
+    print("showcaseVisibilityStatus is null, showing event card showcase");
+    ShowCaseWidget.of(context).startShowCase([key1]);
+  }else{
+    print("showcaseVisibilityStatus is not null, not showing event card showcase");
+  }
+
+}
+
 Text getDurationDateTime(EventModel event) {
   if (parseDate(event.start) == parseDate(event.end)) {
     return Text(
@@ -393,13 +420,12 @@ Text getDurationDateTime(EventModel event) {
   }
 }
 
-
 void showRegistrationDialog(BuildContext context){
   showDialog(
       context: context,
       builder: (context) {
             return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: AlertDialog(
                 backgroundColor: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
@@ -501,9 +527,9 @@ void showRegistrationDialog(BuildContext context){
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
                             child: Text(
-                              "External Participants need to register on the portal.",
+                              "External participants need to register on the portal.",
                               style:
-                              GoogleFonts.sora(fontWeight: FontWeight.w300,fontSize: 12, color: Colors.white),
+                              GoogleFonts.sora(fontWeight: FontWeight.w300,fontSize: 12, color: Colors.grey),
                             ),
                           ),
                         )
