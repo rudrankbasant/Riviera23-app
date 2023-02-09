@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       cubit.getAllEvents();
       final cubit3 = context.read<FavouriteCubit>();
       cubit3.loadFavourites(user);
-      ShowCaseWidget.of(context).startShowCase([_merch_guide, _ongoing_guide]);
+      displayShowcase(context, _merch_guide, _ongoing_guide);
     });
   }
 
@@ -276,6 +276,22 @@ _showVersionDialog(context) async {
             );
     },
   );
+}
+
+
+displayShowcase(BuildContext context, GlobalKey<State<StatefulWidget>> key1, GlobalKey<State<StatefulWidget>> key2) async {
+
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? showcaseVisibilityStatus = prefs.getBool("show_homescreen_showcase");
+
+  if (showcaseVisibilityStatus == null) {
+    prefs.setBool("show_homescreen_showcase", false);
+    print("showcaseVisibilityStatus is null, showing homescreen showcase");
+    ShowCaseWidget.of(context).startShowCase([key1, key2]);
+  }else{
+    print("showcaseVisibilityStatus is not null, not showing homescreen showcase");
+  }
 }
 
 void _launchURL(_url, BuildContext context) async {

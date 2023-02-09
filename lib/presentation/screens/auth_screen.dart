@@ -139,6 +139,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(7)),
                                       ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)),
+                                      ),
                                       border: OutlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.white, width: 1),
@@ -161,6 +167,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(7)),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: Colors.white, width: 1),
                                         borderRadius: BorderRadius.all(
@@ -215,6 +227,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                         label: Text(
                                           "Confirm Password",
                                           style: TextStyle(color: Colors.white),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.white, width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(7)),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
@@ -521,7 +539,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                       ),
                     )
                     : BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                   child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,6 +573,13 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                         color: Colors.white,
                                       ),
                                     ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    enabled: true,
                                     hintText: 'Email',
                                     hintStyle: GoogleFonts.sora(color: Colors.white, fontSize: 14),
                                     labelText: 'Email',
