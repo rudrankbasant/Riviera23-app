@@ -122,7 +122,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("ONGOING EVENTS",
-                      style: AppTheme.appTheme.textTheme.headline6),
+                      style: AppTheme.appTheme.textTheme.titleLarge),
                 ],
               ),
             ),
@@ -143,10 +143,11 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 : CarouselSlider(
                     items: imageSliders,
                     options: CarouselOptions(
+                      scrollDirection: Axis.horizontal,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
                         enlargeCenterPage: false,
-                        aspectRatio: 1 / 1,
+                        aspectRatio: 1 / 0.95,
                         viewportFraction: 0.5,
                         onPageChanged: (index, reason) {
                           setState(() {

@@ -104,39 +104,43 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Container(
           color: Theme.of(context).primaryColor,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-                controller: widget._controller,
-                child: BlocBuilder<VenueCubit, VenueState>(
-                    builder: (context, venueState) {
-              if (venueState is VenueSuccess) {
-                List<Venue> allVenues = venueState.venuesList;
-                return Column(
-                  children: [
-                    CarouselWithDotsPage(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+              controller: widget._controller,
+              child: BlocBuilder<VenueCubit, VenueState>(
+                  builder: (context, venueState) {
+            if (venueState is VenueSuccess) {
+              List<Venue> allVenues = venueState.venuesList;
+              return Column(
+                children: [
+                  CarouselWithDotsPage(
+                    allVenues: allVenues,
+                  ),
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+                    child: FeaturedEvents(
                       allVenues: allVenues,
                     ),
-                    SizedBox(height: 30),
-                    FeaturedEvents(
-                      allVenues: allVenues,
-                    ),
-                    SizedBox(height: 0),
-                    CustomShowcase(
-                      _ongoing_guide,
-                      "On Going Events will appear here.",
-                      OnGoingEvents(
+                  ),
+                  SizedBox(height: 0),
+                  CustomShowcase(
+                    _ongoing_guide,
+                    "On Going Events will appear here.",
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
+                      child: OnGoingEvents(
                         allVenues: allVenues,
                       ),
-                    )
-                  ],
-                );
-              } else {
-                return Container();
-              }
-            })),
-          ),
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
+          })),
         ),
       );
   }

@@ -109,7 +109,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                           ),
                           child: Text(
                             '${item.name}',
-                            style: GoogleFonts.sora(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600),
+                            style: TextStyle(color: Colors.white, fontFamily: 'Axis', fontSize: 25, fontWeight: FontWeight.w600),
                           ),
                         ),
                       )
@@ -149,7 +149,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                     shape: BoxShape.circle,
                     color: _current == index
                         ? AppColors.highlightColor
-                        : AppColors.secondaryColor,
+                        : Colors.grey,
                   ),
                 );
               }).toList(),
@@ -164,7 +164,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   width: MediaQuery.of(context).size.width,
                   child:
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Image.asset("assets/merch_banner.png", fit: BoxFit.fitWidth,),
                   )),
             ),
