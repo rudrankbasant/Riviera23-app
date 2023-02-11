@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => AnnouncementHistoryScreen()));
               },
               child: Padding(
-                padding: const EdgeInsets.only(right: 30.0),
+                padding: const EdgeInsets.only(right: 25.0),
                 child: SvgPicture.asset('assets/notification_icon.svg',
                     height: 20, width: 20),
               ),

@@ -124,7 +124,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
               items: imageSliders,
               options: CarouselOptions(
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayInterval: const Duration(seconds: 4),
                   enlargeCenterPage: false,
                   aspectRatio: 16 / 12,
                   viewportFraction: 1,

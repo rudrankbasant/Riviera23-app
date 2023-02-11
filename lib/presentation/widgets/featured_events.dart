@@ -154,7 +154,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                     items: imageSliders,
                     options: CarouselOptions(
                         autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayInterval: const Duration(seconds: 6),
                         enlargeCenterPage: false,
                         aspectRatio: 1 / 0.95,
                         viewportFraction: 0.5,
