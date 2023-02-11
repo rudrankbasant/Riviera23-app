@@ -35,8 +35,7 @@ class _MerchScreenState extends State<MerchScreen> {
           elevation: 0,
           title: Text(
             'Merchandise',
-            style: GoogleFonts.sora(
-                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20, fontFamily: 'Axis'),
           ),
           centerTitle: true,
         ),

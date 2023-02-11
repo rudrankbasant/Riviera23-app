@@ -912,6 +912,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  showcaseview:
+    dependency: "direct main"
+    description:
+      name: showcaseview
+      sha256: "34ffa07c4ae9bfb6153d93d11aec83b57e1719fb7b23baa1da89433d4bf44e74"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0+1"
   sign_in_with_apple:
     dependency: "direct main"
     description:

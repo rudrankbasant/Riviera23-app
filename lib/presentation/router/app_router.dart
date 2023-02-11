@@ -16,7 +16,7 @@ class AppRouter {
         });
       case '/home':
         return MaterialPageRoute(builder: (_) {
-          return HomeScreen();
+          return HomeScreen(null);
         });
       case '/events/all':
         return MaterialPageRoute(builder: (_) {

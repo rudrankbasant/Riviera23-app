@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -37,7 +37,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
             .where((element) => element.eventType?.toLowerCase() == "proshow")
             .toList();
         if (proshows.isEmpty) {
-          return  Center(
+          return Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,13 +47,12 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                       style: AppTheme.appTheme.textTheme.headline6),
                 ),
                 Opacity(
-                  opacity: 0.8,
-                    child: Image.asset("assets/proshow_bg.png")),
+                    opacity: 0.8, child: Image.asset("assets/proshow_bg.png")),
               ],
             ),
           );
         }
-        if(proshows.length>20){
+        if (proshows.length > 20) {
           final nProShows = proshows.getRange(0, 20);
           proshows = nProShows.toList();
         }
@@ -65,30 +64,31 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                   },
                   child: Stack(
                     children: [
-                      Container(
-                    child: CachedNetworkImage(
-                    width: width,
-                    imageUrl: item.imageUrl.toString(),
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.cover),
+                      CachedNetworkImage(
+                        imageUrl: item.imageUrl.toString(),
+                        imageBuilder: (context, imageProvider) => Center(
+                          child: Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: AppColors.primaryColor,
+                          highlightColor: Colors.grey,
+                          child: Container(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Image.asset("assets/placeholder.png"),
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: AppColors.primaryColor,
-                      highlightColor: Colors.grey,
-                      child: Container(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Image.asset(
-                        "assets/placeholder.png"),
-                    fit: BoxFit.cover,
-                  )
-
-                      ),
-                      Positioned(
+                       Positioned(
                         bottom: 0.0,
                         left: 0.0,
                         right: 0.0,
@@ -109,14 +109,10 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                           ),
                           child: Text(
                             '${item.name}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(color: Colors.white, fontFamily: 'Axis', fontSize: 25, fontWeight: FontWeight.w600),
                           ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ))
@@ -128,9 +124,9 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
               items: imageSliders,
               options: CarouselOptions(
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayInterval: const Duration(seconds: 4),
                   enlargeCenterPage: false,
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 16 / 12,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
                     setState(() {
@@ -153,13 +149,13 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                     shape: BoxShape.circle,
                     color: _current == index
                         ? AppColors.highlightColor
-                        : AppColors.secondaryColor,
+                        : Colors.grey,
                   ),
                 );
               }).toList(),
             ),
             SizedBox(height: 30),
-            GestureDetector(
+                GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => MerchScreen()));
@@ -167,11 +163,9 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
               child: Container(
                   width: MediaQuery.of(context).size.width,
                   child:
-                  FittedBox(child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: Image.asset("assets/merch_banner.png"),
-                  ),
-                    fit: BoxFit.fill,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Image.asset("assets/merch_banner.png", fit: BoxFit.fitWidth,),
                   )),
             ),
           ],

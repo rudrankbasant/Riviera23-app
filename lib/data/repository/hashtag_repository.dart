@@ -48,9 +48,11 @@ class HashtagRepository {
     var url = '$base_url/hashtag';
 
 
-    bool? appStarted = prefs.getBool('appStarted');
+    bool? appStarted_hashtags = prefs.getBool('appStarted_hashtags');
+    print("appStarted_hashtags: $appStarted_hashtags");
     var myMap = hashtagBox.toMap().values.toList();
-    if(appStarted==true || myMap.isEmpty ) {
+    if(appStarted_hashtags==true || myMap.isEmpty ) {
+      prefs.setBool("appStarted_hashtags", false);
       try {
         var response = await http.get(
           Uri.parse(url),

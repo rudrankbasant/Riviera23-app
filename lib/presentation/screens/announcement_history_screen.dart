@@ -34,8 +34,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         elevation: 0,
         title: Text(
           'Announcements',
-          style: GoogleFonts.sora(
-              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20, fontFamily: 'Axis'),
         ),
         centerTitle: true,
       ),

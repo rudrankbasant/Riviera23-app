@@ -244,4 +244,6 @@ Future<DataVersion> getRemoteVersion() async {
 Future<void> setAppStarted() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('appStarted', true);
+  prefs.setBool('appStarted_events', true);
+  prefs.setBool("appStarted_hashtags", true);
 }

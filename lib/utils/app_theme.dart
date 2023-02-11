@@ -8,13 +8,14 @@ class AppTheme {
   static ThemeData appTheme = ThemeData(
     primaryColor: AppColors.primaryColor,
     scaffoldBackgroundColor: AppColors.primaryColor,
-    textTheme: const TextTheme(
-      headline6: TextStyle(
+    textTheme:  TextTheme(
+      titleLarge: const TextStyle(
         color: Colors.white,
         fontSize: 16,
         fontWeight: FontWeight.w600,
+          fontFamily: 'Axis'
       ),
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         color: Colors.white,
         fontSize: 16,
         fontWeight: FontWeight.w400,

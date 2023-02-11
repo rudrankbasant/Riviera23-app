@@ -29,9 +29,11 @@ class EventsRepository {
     var url = '$base_url/events';
     print("events repo " + url);
 
-    bool? appStarted = prefs.getBool('appStarted');
+    bool? appStarted_events = prefs.getBool('appStarted_events');
+    print("appStarted_events: $appStarted_events");
     var myMap = eventBox.toMap().values.toList();
-    if(appStarted==true || myMap.isEmpty ) {
+    if(appStarted_events==true || myMap.isEmpty ) {
+      prefs.setBool('appStarted_events', false);
       try {
         var response = await http.get(
           Uri.parse(url),

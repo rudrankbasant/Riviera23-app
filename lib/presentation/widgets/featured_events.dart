@@ -123,7 +123,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("FEATURED EVENTS",
-                      style: AppTheme.appTheme.textTheme.headline6),
+                      style: AppTheme.appTheme.textTheme.titleLarge),
                   GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -154,9 +154,9 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                     items: imageSliders,
                     options: CarouselOptions(
                         autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayInterval: const Duration(seconds: 6),
                         enlargeCenterPage: false,
-                        aspectRatio: 1 / 1,
+                        aspectRatio: 1 / 0.95,
                         viewportFraction: 0.5,
                         onPageChanged: (index, reason) {
                           setState(() {

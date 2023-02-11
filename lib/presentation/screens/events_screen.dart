@@ -356,8 +356,20 @@ class _EventsScreenState extends State<EventsScreen> {
                       List<Venue> allVenues = venueState.venuesList;
                       List<EventModel> filteredEvents = runFilter(state.events,
                           allVenues, placeSelections, daySelections);
-                      List<EventModel> searchedEvents =
-                          runSearch(filteredEvents, eventsSearchQuery);
+                      List<EventModel> searchedEvents = runSearch(filteredEvents, eventsSearchQuery);
+                      //sort events by start date with null safety
+                      searchedEvents.sort((a, b) {
+                        if (a.start == null && b.start == null) {
+                          return 0;
+                        } else if (a.start == null) {
+                          return 1;
+                        } else if (b.start == null) {
+                          return -1;
+                        } else {
+                          return a.start!.compareTo(b.start!);
+                        }
+                      });
+
                       if (searchedEvents.isEmpty) {
                         return const Center(
                           child: Text(
@@ -406,10 +418,16 @@ class _EventsScreenState extends State<EventsScreen> {
                         }
                       }
                       if (favouriteEvents.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            "Add some favourites by liking an event!",
-                            style: TextStyle(color: Colors.white),
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                            child: Text(
+                              "You will receive event-specific notifications for your favourite events. \n\nAdd some favourites by liking an event!",
+                              style: GoogleFonts.sora(
+                                  color: Colors.white, fontSize: 12),
+                              textAlign: TextAlign.center,
+
+                            ),
                           ),
                         );
                       }
@@ -425,6 +443,18 @@ class _EventsScreenState extends State<EventsScreen> {
                               daySelections);
                           List<EventModel> searchedFavEvents =
                               runSearch(filteredFavEvents, eventsSearchQuery);
+                          //sort events by start date with null safety
+                          searchedFavEvents.sort((a, b) {
+                            if (a.start == null && b.start == null) {
+                              return 0;
+                            } else if (a.start == null) {
+                              return 1;
+                            } else if (b.start == null) {
+                              return -1;
+                            } else {
+                              return a.start!.compareTo(b.start!);
+                            }
+                          });
                           if (searchedFavEvents.isEmpty) {
                             return const Center(
                               child: Text(
@@ -447,7 +477,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     } else if (state is FavouriteFailed) {
                       return const Center(
                         child: Text(
-                          "Add some favourites by liking an event!",
+                          "You will receive event-specific notifications for your favourite events. Add some favourites by liking an event!",
                           style: TextStyle(color: Colors.white),
                         ),
                       );

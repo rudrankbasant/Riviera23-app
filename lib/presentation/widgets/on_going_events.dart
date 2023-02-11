@@ -34,8 +34,21 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
   Widget build(BuildContext context) {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
       if (state is EventsSuccess) {
-        List<EventModel> onGoingEvents =
-            state.events.where((element) => isGoingOn(element)).toList();
+        List<EventModel> onGoingEvents = state.events.where((element) => isGoingOn(element)).toList();
+
+        //sort in reverse order
+        onGoingEvents.sort((a, b) {
+          if (a.start == null && b.start == null) {
+            return 0;
+          } else if (a.start == null) {
+            return -1;
+          } else if (b.start == null) {
+            return 1;
+          } else {
+            return b.start!.compareTo(a.start!);
+          }
+        });
+
         final List<Widget> imageSliders = onGoingEvents
             .map((item) => GestureDetector(
                   onTap: () {
@@ -122,7 +135,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("ONGOING EVENTS",
-                      style: AppTheme.appTheme.textTheme.headline6),
+                      style: AppTheme.appTheme.textTheme.titleLarge),
                 ],
               ),
             ),
@@ -143,10 +156,11 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 : CarouselSlider(
                     items: imageSliders,
                     options: CarouselOptions(
+                      scrollDirection: Axis.horizontal,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
                         enlargeCenterPage: false,
-                        aspectRatio: 1 / 1,
+                        aspectRatio: 1 / 0.95,
                         viewportFraction: 0.5,
                         onPageChanged: (index, reason) {
                           setState(() {
