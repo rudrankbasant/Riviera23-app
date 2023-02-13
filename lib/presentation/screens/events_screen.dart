@@ -369,7 +369,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           return a.start!.compareTo(b.start!);
                         }
                       });
-
+                      putPastEventsAtBottom(searchedEvents);
                       if (searchedEvents.isEmpty) {
                         return const Center(
                           child: Text(
@@ -455,6 +455,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               return a.start!.compareTo(b.start!);
                             }
                           });
+                          putPastEventsAtBottom(searchedFavEvents);
                           if (searchedFavEvents.isEmpty) {
                             return const Center(
                               child: Text(
@@ -713,5 +714,25 @@ class _EventsScreenState extends State<EventsScreen> {
           });
         },
         title: Text(place));
+  }
+
+  void putPastEventsAtBottom(List<EventModel> searchedEvents) {
+    List<EventModel> pastEvents = [];
+    List<EventModel> upcomingEvents = [];
+    for (EventModel event in searchedEvents) {
+      //compare iso date with null safety
+      if(event.end!=null){
+        if (DateTime.parse(event.end!).isBefore(DateTime.now())) {
+          pastEvents.add(event);
+        } else {
+          upcomingEvents.add(event);
+        }
+      }else{
+        pastEvents.add(event);
+      }
+    }
+    searchedEvents.clear();
+    searchedEvents.addAll(upcomingEvents);
+    searchedEvents.addAll(pastEvents);
   }
 }

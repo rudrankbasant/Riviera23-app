@@ -141,6 +141,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             )),
+        actions: [
+          Theme(
+            data: Theme.of(context).copyWith(
+              cardColor: AppColors.cardBgColor,
+
+            ),
+            child: PopupMenuButton(
+              icon: Icon(Icons.more_vert, color: Colors.white,),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          _showDeletionDialog(context);
+                        },
+                        child: Text(
+                          'Request Account Deletion',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ];
+                }),
+          )
+        ],
       ),
       body: LayoutBuilder(builder: (context, constraint) {
         return SingleChildScrollView(
@@ -296,50 +322,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: MediaQuery.of(context).size.width * 0.05,
                               ),
                               Text('Sign Out',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      fontFamily: GoogleFonts.getFont("Sora")
-                                          .fontFamily)),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: SvgPicture.asset(
-                                'assets/right_arrow_icon.svg',
-                                height: 20,
-                                width: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      _showDeletionDialog(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                width: 50.0,
-                                height: 50.0,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SvgPicture.asset(
-                                    "assets/cross.svg"),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.05,
-                              ),
-                              Text('Request Account Deletion',
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: Colors.white,
