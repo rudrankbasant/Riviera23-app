@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riviera23/presentation/screens/auth_screen.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
-import 'package:riviera23/service/auth.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthService(FirebaseAuth.instance).user;
+    final user = AuthCubit().user;
     final Email email = Email(
       body:
           'This request is initiated to delete account associated with ${user.email} created with ${user.providerData[0].providerId}',
@@ -145,10 +143,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Theme(
             data: Theme.of(context).copyWith(
               cardColor: AppColors.cardBgColor,
-
             ),
             child: PopupMenuButton(
-              icon: Icon(Icons.more_vert, color: Colors.white,),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(

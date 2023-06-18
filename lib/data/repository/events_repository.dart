@@ -4,42 +4,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:riviera23/utils/constants.dart';
+import 'package:riviera23/constants/api_endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants/strings.dart';
 import '../models/event_model.dart';
 
 class EventsRepository {
-
   Future<List<EventModel>> getAllEvents() async {
     Box eventBox;
     var dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);
-    eventBox = await Hive.openBox('events');
+    eventBox = await Hive.openBox(Strings.eventBox);
     return await getAllEventsData(eventBox);
   }
 
-
-
-  Future<List<EventModel>> getAllEventsData(Box eventBox) async{
+  Future<List<EventModel>> getAllEventsData(Box eventBox) async {
     List<EventModel> events = [];
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var base_url = prefs.getString('remote_base_url');
-    var url = '$base_url/events';
-    print("events repo " + url);
+    var baseURL = prefs.getString(Strings.idRemoteBaseURL);
+    var url = APIEndpoints.getEvents(baseURL);
 
-    bool? appStarted_events = prefs.getBool('appStarted_events');
-    print("appStarted_events: $appStarted_events");
+    String eventsBoolKey = Strings.appStartedEvents;
+    bool? appStartedEvents = prefs.getBool(eventsBoolKey);
+
     var myMap = eventBox.toMap().values.toList();
-    if(appStarted_events==true || myMap.isEmpty ) {
-      prefs.setBool('appStarted_events', false);
+    if (appStartedEvents == true || myMap.isEmpty) {
+      prefs.setBool(eventsBoolKey, false);
       try {
         var response = await http.get(
           Uri.parse(url),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: APIEndpoints.header,
         );
 
         if (response.statusCode == 200) {
@@ -49,36 +45,29 @@ class EventsRepository {
           // If the server did not return a 200 OK response,
           // then throw an exception.
           debugPrint(response.body);
-          throw Exception('Failed to fetch');
+          throw Exception(Strings.failedToFetch);
         }
       } catch (SocketException) {
-        print("EVENTS---> No Internet");
+        debugPrint(Strings.noInternetEvents);
       }
     }
 
-      //get data from box
-      if (myMap.isNotEmpty) {
-        for (var i = 0; i < myMap.length; i++) {
-          events.add(EventModel.fromJson(myMap[i]));
-        }
-        return events;
-      } else {
-        debugPrint('No data in EventBox');
-        return events;
+    //Get data from box
+    if (myMap.isNotEmpty) {
+      for (var i = 0; i < myMap.length; i++) {
+        events.add(EventModel.fromJson(myMap[i]));
       }
-
-
+      return events;
+    } else {
+      debugPrint(Strings.errorEventBox);
+      return events;
+    }
   }
 
-
-
-  Future putData(Box eventBox, data) async{
+  Future putData(Box eventBox, data) async {
     await eventBox.clear();
-    for(var d in data){
-      print("saving $d in EventBox");
+    for (var d in data) {
       await eventBox.add(d);
     }
   }
-
-
 }

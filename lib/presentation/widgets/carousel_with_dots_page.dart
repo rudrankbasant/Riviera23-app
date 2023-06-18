@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -88,7 +87,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                             Image.asset("assets/placeholder.png"),
                         fit: BoxFit.cover,
                       ),
-                       Positioned(
+                      Positioned(
                         bottom: 0.0,
                         left: 0.0,
                         right: 0.0,
@@ -109,7 +108,11 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                           ),
                           child: Text(
                             '${item.name}',
-                            style: TextStyle(color: Colors.white, fontFamily: 'Axis', fontSize: 25, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Axis',
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       )
@@ -155,17 +158,19 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
               }).toList(),
             ),
             SizedBox(height: 30),
-                GestureDetector(
+            GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => MerchScreen()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => MerchScreen()));
               },
               child: Container(
                   width: MediaQuery.of(context).size.width,
-                  child:
-                  Padding(
+                  child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Image.asset("assets/merch_banner.png", fit: BoxFit.fitWidth,),
+                    child: Image.asset(
+                      "assets/merch_banner.png",
+                      fit: BoxFit.fitWidth,
+                    ),
                   )),
             ),
           ],

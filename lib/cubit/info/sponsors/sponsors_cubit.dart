@@ -44,7 +44,7 @@ Future<Source> _getSourceValue() async {
 
   if (remoteSponsorVersion != null) {
     bool result = await InternetConnectionChecker().hasConnection;
-    if(result == true) {
+    if (result == true) {
       if (localSponsorVersion != null) {
         if (remoteSponsorVersion == localSponsorVersion) {
           print("Sponsors serverORCache is set to cache");
@@ -60,7 +60,7 @@ Future<Source> _getSourceValue() async {
         prefs.setInt("local_sponsors", remoteSponsorVersion);
         return Source.server;
       }
-    }else{
+    } else {
       print("No internet connection, sponsors serverORCache is set to cache");
       return Source.cache;
     }

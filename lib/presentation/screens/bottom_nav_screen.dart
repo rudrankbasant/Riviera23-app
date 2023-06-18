@@ -29,11 +29,10 @@ class _BottomNavState extends State<BottomNavScreen> {
   int tapCount = 0;
   late Timer _timer;
 
-
-  Future<bool> getGSDCBoolean() async{
+  Future<bool> getGSDCBoolean() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? showGDSC = prefs.getBool("remote_show_gdsc");
-    if(showGDSC != null){
+    if (showGDSC != null) {
       return showGDSC;
     }
     return false;
@@ -42,15 +41,12 @@ class _BottomNavState extends State<BottomNavScreen> {
   Future<void> _startOperation() async {
     var showGDSC = await getGSDCBoolean();
     print("showGDSC: $showGDSC");
-    if(showGDSC){
+    if (showGDSC) {
       _timer = Timer(const Duration(milliseconds: 4000), () {
         showCreatorDialog(context);
       });
     }
-
   }
-
-
 
   @override
   void initState() {
@@ -69,16 +65,15 @@ class _BottomNavState extends State<BottomNavScreen> {
 
     final List<Widget> _fragments = <Widget>[
       ShowCaseWidget(
-          scrollDuration: 	Duration(milliseconds: 500),
+          scrollDuration: Duration(milliseconds: 500),
           onStart: (index, key) {
-            if(index == 1) {
+            if (index == 1) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 _controller.jumpTo(300);
               });
             }
           },
-    builder: Builder(
-    builder : (context)=>HomeScreen(_controller))),
+          builder: Builder(builder: (context) => HomeScreen(_controller))),
       EventsScreen(widget.eventScreenIndex ?? 0),
       HashtagsScreen(),
       InfoScreen(),

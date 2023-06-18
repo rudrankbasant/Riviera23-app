@@ -18,6 +18,7 @@ import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
@@ -40,7 +41,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
 
   print(" main dart Before");
   //Check for data updates
@@ -76,7 +76,6 @@ Future<void> main() async {
     );
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -116,7 +115,8 @@ Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
     systemNavigationBarColor: AppColors.primaryColor,
     statusBarColor: AppColors.primaryColor,
-      statusBarIconBrightness: Platform.isAndroid? Brightness.light : Brightness.dark,
+    statusBarIconBrightness:
+        Platform.isAndroid ? Brightness.light : Brightness.dark,
   ));
 
 //Setting SystmeUIMode
@@ -124,7 +124,6 @@ Future<void> main() async {
       overlays: [SystemUiOverlay.top]);
 
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -158,7 +157,6 @@ class MyApp extends StatelessWidget {
 }
 
 getDataUpdate() async {
-
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setDefaults(const {
     "android_version": "1.0.10",
@@ -179,28 +177,19 @@ getDataUpdate() async {
     print("main dart: $baseUrl");
     print("android version: $androidVersion");
 
-
-
     prefs.setString("remote_app_version_android", androidVersion);
     prefs.setString("remote_app_version_ios", iosVersion);
     prefs.setString("remote_base_url", baseUrl);
     prefs.setBool("remote_show_gdsc", showGdsc);
   }
 
-
-
-
-
-
-
-
-
   //Check for data updates
   DataVersion RemoteVersions = await getRemoteVersion();
   print("Remote Version: $RemoteVersions");
 
   //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
-  prefs.setInt("remote_announcement", RemoteVersions.announcement_version_number);
+  prefs.setInt(
+      "remote_announcement", RemoteVersions.announcement_version_number);
   prefs.setInt("remote_contacts", RemoteVersions.contacts_version_number);
   prefs.setInt("remote_faq", RemoteVersions.faq_version_number);
   prefs.setInt("remote_fav", RemoteVersions.favorites_version_number);

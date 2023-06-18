@@ -23,6 +23,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
 
     BlocProvider.of<AnnouncementsCubit>(context).loadAnnouncements();
   }
+
   @override
   Widget build(BuildContext context) {
     var heightOfNotification = MediaQuery.of(context).size.height * 0.1;
@@ -34,7 +35,11 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         elevation: 0,
         title: Text(
           'Announcements',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20, fontFamily: 'Axis'),
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              fontFamily: 'Axis'),
         ),
         centerTitle: true,
       ),

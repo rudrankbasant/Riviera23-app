@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/merch/merch_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
@@ -35,7 +34,11 @@ class _MerchScreenState extends State<MerchScreen> {
           elevation: 0,
           title: Text(
             'Merchandise',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20, fontFamily: 'Axis'),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+                fontFamily: 'Axis'),
           ),
           centerTitle: true,
         ),
@@ -61,7 +64,8 @@ class _MerchScreenState extends State<MerchScreen> {
                               setState(() {
                                 showSizeChart = false;
                               });
-                              showBottomMerchScreen(context, merchList[index], showSizeChart);
+                              showBottomMerchScreen(
+                                  context, merchList[index], showSizeChart);
                             },
                             child: getMerchCard(merchList[index], context));
                       }));
@@ -184,26 +188,29 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                 height:
                                     MediaQuery.of(context).size.height * 0.4,
                                 width: MediaQuery.of(context).size.width,
-                                child: showSizeChart? Container(
-                                  height: 250,
-                                  width: 200,
-                                  child: Image.asset("assets/size.jpg"),
-                                ) :CachedNetworkImage(
-                                  height: 250,
-                                  width: 200,
-                                  imageUrl: merch.url.toString(),
-                                  placeholder: (context, url) =>
-                                      Shimmer.fromColors(
-                                    baseColor: AppColors.primaryColor,
-                                    highlightColor: Colors.grey,
-                                    child: Container(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset("assets/placeholder.png"),
-                                  fit: BoxFit.cover,
-                                )),
+                                child: showSizeChart
+                                    ? Container(
+                                        height: 250,
+                                        width: 200,
+                                        child: Image.asset("assets/size.jpg"),
+                                      )
+                                    : CachedNetworkImage(
+                                        height: 250,
+                                        width: 200,
+                                        imageUrl: merch.url.toString(),
+                                        placeholder: (context, url) =>
+                                            Shimmer.fromColors(
+                                          baseColor: AppColors.primaryColor,
+                                          highlightColor: Colors.grey,
+                                          child: Container(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                                "assets/placeholder.png"),
+                                        fit: BoxFit.cover,
+                                      )),
                           ),
                         ],
                       ),
@@ -236,7 +243,9 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 15,
-                                      color: showSizeChart?AppColors.highlightColor:AppColors.secondaryColor,
+                                      color: showSizeChart
+                                          ? AppColors.highlightColor
+                                          : AppColors.secondaryColor,
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
@@ -289,8 +298,8 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10, 0, 10, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: Text(
                                       "\u{20B9}${merch.price}",
                                       style: TextStyle(
@@ -347,7 +356,6 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
         });
       });
 }
-
 
 void _launchURLBrowser(_url, BuildContext context) async {
   final Uri _uri = Uri.parse(_url);

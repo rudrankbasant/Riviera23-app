@@ -44,13 +44,14 @@ class ContactsCubit extends Cubit<ContactsState> {
 
     if (remoteContactVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
-      if(result == true) {
+      if (result == true) {
         if (localContactVersion != null) {
           if (remoteContactVersion == localContactVersion) {
             print("Contacts serverORCache is set to cache");
             return Source.cache;
           } else {
-            print("Contacts was not up to date, serverORCache is set to server");
+            print(
+                "Contacts was not up to date, serverORCache is set to server");
             prefs.setInt("local_contacts", remoteContactVersion);
             return Source.server;
           }
@@ -60,11 +61,10 @@ class ContactsCubit extends Cubit<ContactsState> {
           prefs.setInt("local_contacts", remoteContactVersion);
           return Source.server;
         }
-      }else{
+      } else {
         print("No internet connection, contacts serverORCache is set to cache");
         return Source.cache;
       }
-
     } else {
       return Source.server;
     }

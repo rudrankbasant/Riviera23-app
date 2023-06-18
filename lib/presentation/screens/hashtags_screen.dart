@@ -110,7 +110,8 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                       itemBuilder: (context, itemIndex) {
                         return GestureDetector(
                           onTap: () {
-                            _launchURLBrowser(state.hashtags[itemIndex].permalink, context);
+                            _launchURLBrowser(
+                                state.hashtags[itemIndex].permalink, context);
                           },
                           child: Center(
                             child: HashtagCard(
@@ -175,7 +176,6 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
     }
   }
 
-
   void _launchURLBrowser(_url, BuildContext context) async {
     final Uri _uri = Uri.parse(_url);
     try {
@@ -188,5 +188,4 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
           "The link may be null or may have some issues.", context);
     }
   }
-
 }

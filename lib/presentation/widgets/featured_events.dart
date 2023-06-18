@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/venue_model.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
@@ -58,7 +57,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                               height: 250,
                               width: 200,
                               imageUrl: item.imageUrl.toString(),
-                              imageBuilder: (context, imageProvider) => Container(
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
                                 height: 250.0,
                                 width: 200.0,
                                 decoration: BoxDecoration(
@@ -73,8 +73,8 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                  "assets/placeholder.png"),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset("assets/placeholder.png"),
                               fit: BoxFit.cover,
                             ),
                           ),

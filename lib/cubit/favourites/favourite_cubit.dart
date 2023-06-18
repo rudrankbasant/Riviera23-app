@@ -6,8 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../service/auth.dart';
+import '../auth/auth_cubit.dart';
 
 part './favourite_state.dart';
 
@@ -46,7 +45,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
   upDateFavourites(FavouriteModel favouriteModel) async {
     try {
       emit(FavouriteLoading());
-      final user = AuthService(FirebaseAuth.instance).user;
+      final user = AuthCubit().user;
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       await firestore
           .collection('favourites')
@@ -61,7 +60,8 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     }
   }
 
-  void syncExistingUsersToSubscribedTopics(FavouriteModel userFavourites) async {
+  void syncExistingUsersToSubscribedTopics(
+      FavouriteModel userFavourites) async {
     //this is a one time function to sync the existing users' favourites to the subscribed topics
     //so that they can receive notifications for their favourites
 
@@ -71,11 +71,11 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     if (showcaseVisibilityStatus == null) {
       prefs.setBool("subscribe_existing_users", false);
       print("subscribing existing users to topics");
-      for(var favID in userFavourites.favouriteEventIds){
-        print("subscribe to topic: "+favID);
+      for (var favID in userFavourites.favouriteEventIds) {
+        print("subscribe to topic: " + favID);
         await FirebaseMessaging.instance.subscribeToTopic(favID);
       }
-    }else{
+    } else {
       print("already subscribed existing users to topics");
     }
   }

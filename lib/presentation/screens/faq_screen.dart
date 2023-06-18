@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
@@ -66,26 +65,32 @@ class _FAQScreenState extends State<FAQScreen> {
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
                                       child: CachedNetworkImage(
-                                        height: MediaQuery.of(context).size.height *
-                                            0.2,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.2,
                                         imageUrl: sponsor.url.toString(),
-                                        imageBuilder: (context, imageProvider) => Container(
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
                                           height: 250.0,
                                           width: 200.0,
                                           decoration: BoxDecoration(
                                             image: DecorationImage(
-                                                image: imageProvider, fit: BoxFit.fitWidth),
+                                                image: imageProvider,
+                                                fit: BoxFit.fitWidth),
                                           ),
                                         ),
-                                        placeholder: (context, url) => Shimmer.fromColors(
+                                        placeholder: (context, url) =>
+                                            Shimmer.fromColors(
                                           baseColor: AppColors.primaryColor,
                                           highlightColor: Colors.grey,
                                           child: Container(
                                             color: Colors.grey,
                                           ),
                                         ),
-                                        errorWidget: (context, url, error) => Image.asset(
-                                            "assets/placeholder.png"),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset(
+                                                "assets/placeholder.png"),
                                       )),
                                 ),
                               ),
@@ -138,26 +143,31 @@ class _FAQScreenState extends State<FAQScreen> {
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,
                                     child: CachedNetworkImage(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.2,
-                                      imageUrl: regularList[index].url.toString(),
-                                      imageBuilder: (context, imageProvider) => Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      imageUrl:
+                                          regularList[index].url.toString(),
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
                                         height: 250.0,
                                         width: 200.0,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
-                                              image: imageProvider, fit: BoxFit.fitWidth),
+                                              image: imageProvider,
+                                              fit: BoxFit.fitWidth),
                                         ),
                                       ),
-                                      placeholder: (context, url) => Shimmer.fromColors(
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
                                         baseColor: AppColors.primaryColor,
                                         highlightColor: Colors.grey,
                                         child: Container(
                                           color: Colors.grey,
                                         ),
                                       ),
-                                      errorWidget: (context, url, error) => Image.asset(
-                                          "assets/app_icon.png"),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset("assets/app_icon.png"),
                                     ),
                                   ),
                                 );
@@ -285,4 +295,3 @@ void _launchURL(_url, BuildContext context) async {
         "The link may be null or may have some issues.", context);
   }
 }
-

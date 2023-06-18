@@ -12,7 +12,7 @@ class AnnouncementsLoading extends AnnouncementsState {}
 class AnnouncementsSuccess extends AnnouncementsState {
   final List<Announcement> announcementsList;
 
-  AnnouncementsSuccess({required this.announcementsList});
+  const AnnouncementsSuccess({required this.announcementsList});
 
   @override
   List<Object> get props => [announcementsList];
@@ -21,5 +21,5 @@ class AnnouncementsSuccess extends AnnouncementsState {
 class AnnouncementsFailed extends AnnouncementsState {
   final String error;
 
-  AnnouncementsFailed({required this.error});
+  const AnnouncementsFailed({required this.error});
 }

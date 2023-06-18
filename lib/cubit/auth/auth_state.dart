@@ -17,8 +17,6 @@ class SignInSuccess extends AuthState {
 
 class NotSignedInState extends AuthState {}
 
-
-
 class SignInFailed extends AuthState {
   final String error;
 

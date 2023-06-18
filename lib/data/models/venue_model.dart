@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class VenueList {
@@ -7,8 +6,6 @@ class VenueList {
   VenueList({
     required this.allVenues,
   });
-
-
 
   factory VenueList.fromMap(Map<String, dynamic> map) {
     List<Venue> mVenueList = [];
@@ -19,14 +16,14 @@ class VenueList {
     return VenueList(allVenues: mVenueList);
   }
 
-  /*factory VenueList.fromsSnapshots(List<QueryDocumentSnapshot> snapshots){
+/*factory VenueList.fromsSnapshots(List<QueryDocumentSnapshot> snapshots){
     List<Venue> mVenues = [];
     snapshots.forEach((v) {
       mVenues.add(Venue.fromMap(v.data()));
     });
     return VenueList(allVenues: mVenues);
   }*/
- /* factory VenueList.fromsSnapshots(List<QueryDocumentSnapshot<Object?>> docs) {
+/* factory VenueList.fromsSnapshots(List<QueryDocumentSnapshot<Object?>> docs) {
     print("VenueList.fromsSnapshots started $docs");
     List<Venue> venues = [];
     docs.forEach((doc) {
@@ -35,8 +32,6 @@ class VenueList {
     print("VenueList.fromsSnapshots ended $venues");
     return VenueList(allVenues: venues);
   }*/
-
-
 }
 
 class Venue {
@@ -51,6 +46,7 @@ class Venue {
     required this.latitude,
     required this.longitude,
   });
+
   factory Venue.fromMap(Map<String, dynamic> data) {
     print("Venue.fromSnaps started $data");
     return Venue(

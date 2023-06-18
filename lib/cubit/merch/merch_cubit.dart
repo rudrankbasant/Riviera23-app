@@ -25,14 +25,12 @@ class MerchCubit extends Cubit<MerchState> {
           .doc('tnD9TzV0iVoq77moYpIl')
           .get(GetOptions(source: serverORcache));
       Map<String, dynamic> data =
-      timelineSnapshot.data() as Map<String, dynamic>;
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       debugPrint(data.toString());
       MerchList MerchListModel = MerchList.fromMap(data);
 
       emit(MerchSuccess(merchsList: MerchListModel.merchList));
-
-
     } catch (e) {
       print("Merch ERROR " + e.toString());
       emit(MerchFailed(error: e.toString()));
@@ -48,7 +46,7 @@ class MerchCubit extends Cubit<MerchState> {
     print("localMerchVersion $localMerchVersion");
     if (remoteMerchVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
-      if(result == true) {
+      if (result == true) {
         if (localMerchVersion != null) {
           if (remoteMerchVersion == localMerchVersion) {
             print("Merch serverORCache is set to cache");

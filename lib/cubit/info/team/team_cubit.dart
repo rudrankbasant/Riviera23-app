@@ -41,7 +41,7 @@ class TeamCubit extends Cubit<TeamState> {
 
     if (remoteTeamVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
-      if(result == true) {
+      if (result == true) {
         if (localTeamVersion != null) {
           if (remoteTeamVersion == localTeamVersion) {
             print("Teams serverORCache is set to cache");

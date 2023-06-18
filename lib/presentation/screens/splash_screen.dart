@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,7 +9,6 @@ import 'package:riviera23/utils/app_colors.dart';
 import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/hashtag/hashtag_cubit.dart';
-import '../../service/auth.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -50,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state is SignInSuccess) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => BottomNavScreen(null)));
-          }else if(state is NotSignedInState){
+          } else if (state is NotSignedInState) {
             setState(() {
               leadtoGetStarted = true;
             });
@@ -93,24 +89,6 @@ class _SplashScreenState extends State<SplashScreen> {
         },
       ),
     );
-  }
-
-  Future<void> checkifUserLoggedIn() async {
-    bool isLoggedIn =
-        await AuthService(FirebaseAuth.instance).checkAlreadySignedIn();
-
-    if (isLoggedIn) {
-      Timer(
-          Duration(seconds: 2),
-          () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => BottomNavScreen(null))));
-    } else {
-      Timer(
-          Duration(seconds: 2),
-          () => setState(() {
-                leadtoGetStarted = true;
-              }));
-    }
   }
 }
 

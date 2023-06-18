@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/cubit/venue/venue_cubit.dart';
 import 'package:riviera23/data/models/event_model.dart';
@@ -15,7 +15,6 @@ import 'package:shimmer/shimmer.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/venue_model.dart';
-import '../../service/auth.dart';
 import '../../utils/app_colors.dart';
 import '../methods/get_venue.dart';
 import '../methods/parse_datetime.dart';
@@ -72,7 +71,7 @@ class _EventsScreenState extends State<EventsScreen> {
     defaultAppBar = true;
     eventsSearchQuery = "";
 
-    final user = AuthService(FirebaseAuth.instance).user;
+    final user = AuthCubit().user;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final cubit = context.read<EventsCubit>();
       cubit.getAllEvents();
@@ -356,7 +355,8 @@ class _EventsScreenState extends State<EventsScreen> {
                       List<Venue> allVenues = venueState.venuesList;
                       List<EventModel> filteredEvents = runFilter(state.events,
                           allVenues, placeSelections, daySelections);
-                      List<EventModel> searchedEvents = runSearch(filteredEvents, eventsSearchQuery);
+                      List<EventModel> searchedEvents =
+                          runSearch(filteredEvents, eventsSearchQuery);
                       //sort events by start date with null safety
                       searchedEvents.sort((a, b) {
                         if (a.start == null && b.start == null) {
@@ -426,7 +426,6 @@ class _EventsScreenState extends State<EventsScreen> {
                               style: GoogleFonts.sora(
                                   color: Colors.white, fontSize: 12),
                               textAlign: TextAlign.center,
-
                             ),
                           ),
                         );
@@ -531,7 +530,7 @@ class _EventsScreenState extends State<EventsScreen> {
                         image: DecorationImage(
                             image: imageProvider, fit: BoxFit.cover),
                       ),
-                    ) ,
+                    ),
                     placeholder: (context, url) => Shimmer.fromColors(
                       baseColor: AppColors.primaryColor,
                       highlightColor: Colors.grey,
@@ -539,8 +538,8 @@ class _EventsScreenState extends State<EventsScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    errorWidget: (context, url, error) => Image.asset(
-                        "assets/placeholder.png"),
+                    errorWidget: (context, url, error) =>
+                        Image.asset("assets/placeholder.png"),
                   ),
                 ),
               ),
@@ -721,13 +720,13 @@ class _EventsScreenState extends State<EventsScreen> {
     List<EventModel> upcomingEvents = [];
     for (EventModel event in searchedEvents) {
       //compare iso date with null safety
-      if(event.end!=null){
+      if (event.end != null) {
         if (DateTime.parse(event.end!).isBefore(DateTime.now())) {
           pastEvents.add(event);
         } else {
           upcomingEvents.add(event);
         }
-      }else{
+      } else {
         pastEvents.add(event);
       }
     }

@@ -42,7 +42,7 @@ class FaqCubit extends Cubit<FaqState> {
 
     if (remoteFAQVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
-      if(result == true) {
+      if (result == true) {
         if (localFAQVersion != null) {
           if (remoteFAQVersion == localFAQVersion) {
             print("FAQs serverORCache is set to cache");

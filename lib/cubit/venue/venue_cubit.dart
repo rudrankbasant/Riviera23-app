@@ -24,14 +24,13 @@ class VenueCubit extends Cubit<VenueState> {
           .collection('venues')
           .doc('cwY2PXEoh4kV3VQyMxxH')
           .get(GetOptions(source: serverORcache));
-    Map<String, dynamic> data =
-    timelineSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          timelineSnapshot.data() as Map<String, dynamic>;
 
-    debugPrint(data.toString());
-    VenueList venueListModel = VenueList.fromMap(data);
+      debugPrint(data.toString());
+      VenueList venueListModel = VenueList.fromMap(data);
 
-    emit(VenueSuccess(venuesList: venueListModel.allVenues));
-
+      emit(VenueSuccess(venuesList: venueListModel.allVenues));
 
 /*      debugPrint(querySnapshot.toString());
       VenueList venueListModel = VenueList.fromsMap(querySnapshot.docs);
@@ -52,7 +51,7 @@ class VenueCubit extends Cubit<VenueState> {
     print("localPlacesVersion $localPlacesVersion");
     if (remotePlacesVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
-      if(result == true) {
+      if (result == true) {
         if (localPlacesVersion != null) {
           if (remotePlacesVersion == localPlacesVersion) {
             print("Places serverORCache is set to cache");

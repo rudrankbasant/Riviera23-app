@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
@@ -34,7 +33,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
   Widget build(BuildContext context) {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
       if (state is EventsSuccess) {
-        List<EventModel> onGoingEvents = state.events.where((element) => isGoingOn(element)).toList();
+        List<EventModel> onGoingEvents =
+            state.events.where((element) => isGoingOn(element)).toList();
 
         //sort in reverse order
         onGoingEvents.sort((a, b) {
@@ -71,7 +71,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                               height: 250,
                               width: 200,
                               imageUrl: item.imageUrl.toString(),
-                              imageBuilder: (context, imageProvider) => Container(
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
                                 height: 250.0,
                                 width: 200.0,
                                 decoration: BoxDecoration(
@@ -86,8 +87,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                                   color: Colors.grey,
                                 ),
                               ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                  "assets/placeholder.png"),
+                              errorWidget: (context, url, error) =>
+                                  Image.asset("assets/placeholder.png"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -156,7 +157,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 : CarouselSlider(
                     items: imageSliders,
                     options: CarouselOptions(
-                      scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
                         autoPlay: true,
                         autoPlayInterval: const Duration(seconds: 3),
                         enlargeCenterPage: false,

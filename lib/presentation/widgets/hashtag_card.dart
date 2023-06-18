@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../utils/app_colors.dart';
@@ -93,7 +92,6 @@ class _HashtagCardState extends State<HashtagCard> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: imageProvider, fit: BoxFit.cover),
-
                             ),
                           ),
                           placeholder: (context, url) => Shimmer.fromColors(
@@ -103,8 +101,8 @@ class _HashtagCardState extends State<HashtagCard> {
                               color: Colors.grey,
                             ),
                           ),
-                          errorWidget: (context, url, error) => Image.asset(
-                              "assets/app_icon.png"),
+                          errorWidget: (context, url, error) =>
+                              Image.asset("assets/app_icon.png"),
                           fit: BoxFit.contain,
                         ),
                       ),
