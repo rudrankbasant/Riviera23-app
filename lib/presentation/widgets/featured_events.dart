@@ -10,6 +10,8 @@ import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constants/strings/asset_paths.dart';
+import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
@@ -20,7 +22,7 @@ import '../screens/events_screen.dart';
 class FeaturedEvents extends StatefulWidget {
   List<Venue> allVenues;
 
-  FeaturedEvents({required this.allVenues});
+  FeaturedEvents({super.key, required this.allVenues});
 
   @override
   _FeaturedEventsState createState() => _FeaturedEventsState();
@@ -52,7 +54,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                         children: [
                           ClipRRect(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
+                                const BorderRadius.all(Radius.circular(15.0)),
                             child: CachedNetworkImage(
                               height: 250,
                               width: 200,
@@ -74,7 +76,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                                 ),
                               ),
                               errorWidget: (context, url, error) =>
-                                  Image.asset("assets/placeholder.png"),
+                                  Image.asset(AssetPaths.placeholder),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -118,11 +120,11 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
         return Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("FEATURED EVENTS",
+                  Text(Strings.featuredEventsTitle,
                       style: AppTheme.appTheme.textTheme.titleLarge),
                   GestureDetector(
                       onTap: () {
@@ -131,7 +133,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                             MaterialPageRoute(
                                 builder: (context) => EventsScreen(0)));
                       },
-                      child: Text("See more",
+                      child: Text(Strings.seeMore,
                           style: TextStyle(color: AppColors.highlightColor)))
                 ],
               ),
@@ -141,7 +143,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
                       child: Text(
-                        'Featured Events will be updated soon',
+                        Strings.featuredEventsEmpty,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
@@ -169,7 +171,7 @@ class _FeaturedEventsState extends State<FeaturedEvents> {
       } else if (state is EventsError) {
         return const Center(
           child: Text(
-            "Error! Couldn't load.",
+            Strings.errorLoading,
             style: TextStyle(color: Colors.white),
           ),
         );

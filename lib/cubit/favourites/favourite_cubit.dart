@@ -2,16 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constants/strings/strings.dart';
 import '../auth/auth_cubit.dart';
 
 part './favourite_state.dart';
 
 class FavouriteCubit extends Cubit<FavouriteState> {
-  FavouriteCubit() : super(FavouriteLoading()) {}
+  FavouriteCubit() : super(FavouriteLoading());
 
   void loadFavourites(User user) async {
     try {
@@ -24,7 +26,6 @@ class FavouriteCubit extends Cubit<FavouriteState> {
         if (timelineSnapshot.exists) {
           Map<String, dynamic> data =
               timelineSnapshot.data() as Map<String, dynamic>;
-          debugPrint(user.uid + data.toString());
           FavouriteModel userFavourites = FavouriteModel.fromMap(data);
           syncExistingUsersToSubscribedTopics(userFavourites);
           emit(FavouriteSuccess(favouriteList: userFavourites));
@@ -35,7 +36,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
           emit(FavouriteSuccess(favouriteList: userFavourites));
         }
       } else {
-        emit(FavouriteFailed(error: 'User not logged in'));
+        emit(const FavouriteFailed(error: Strings.userNotLoggedIn));
       }
     } catch (e) {
       emit(FavouriteFailed(error: e.toString()));
@@ -50,10 +51,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
       await firestore
           .collection('favourites')
           .doc(user.uid)
-          .set(favouriteModel.toMap())
-          .then((_) => print('Added'))
-          .catchError((error) => print('Add failed: $error'));
-      //loadFavourites(user);
+          .set(favouriteModel.toMap());
       emit(FavouriteSuccess(favouriteList: favouriteModel));
     } catch (e) {
       emit(FavouriteFailed(error: e.toString()));
@@ -66,17 +64,15 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     //so that they can receive notifications for their favourites
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? showcaseVisibilityStatus = prefs.getBool("subscribe_existing_users");
+    bool? showcaseVisibilityStatus =
+        prefs.getBool(SharedPrefKeys.subscribeExistingUsers);
 
     if (showcaseVisibilityStatus == null) {
-      prefs.setBool("subscribe_existing_users", false);
-      print("subscribing existing users to topics");
+      prefs.setBool(SharedPrefKeys.subscribeExistingUsers, false);
+
       for (var favID in userFavourites.favouriteEventIds) {
-        print("subscribe to topic: " + favID);
         await FirebaseMessaging.instance.subscribeToTopic(favID);
       }
-    } else {
-      print("already subscribed existing users to topics");
     }
   }
 }

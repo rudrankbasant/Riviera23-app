@@ -79,8 +79,8 @@ class _AuthScreenState extends State<AuthScreen> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(color: Colors.white),
-                  SizedBox(
+                  const CircularProgressIndicator(color: Colors.white),
+                  const SizedBox(
                     height: 40,
                   ),
                   Text(
@@ -102,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SizedBox(height: 90),
+                          const SizedBox(height: 90),
                           Column(
                             children: [
                               Padding(
@@ -318,10 +318,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                       ),
                                     )),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                child: Row(children: const <Widget>[
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                child: Row(children: <Widget>[
                                   Expanded(
                                       child: Divider(
                                     color: Colors.grey,
@@ -490,16 +489,16 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
               backgroundColor: AppColors.primaryColor,
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: AppColors.highlightColor),
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(
                     20.0,
                   ),
                 ),
               ),
-              contentPadding: EdgeInsets.only(
+              contentPadding: const EdgeInsets.only(
                 top: 10.0,
               ),
-              content: Container(
+              content: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.3,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(8.0),
@@ -583,13 +582,13 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                   decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Colors.white,
                                         ),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Colors.white,
                                         ),
                                       ),
@@ -602,7 +601,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                           color: Colors.white, fontSize: 14)),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 0.0,
                               ),
                               Container(
@@ -614,7 +613,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                     if (resetPassEmailController
                                         .text.isNotEmpty) {
                                       BlocProvider.of<AuthCubit>(context)
-                                          .sendResetPassowrdEmail(
+                                          .sendResetPasswordEmail(
                                               resetPassEmailController.text,
                                               context)
                                           .then((value) {
@@ -627,10 +626,10 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: AppColors.highlightColor,
+                                    backgroundColor: AppColors.highlightColor,
                                     // fixedSize: Size(250, 50),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "Send",
                                   ),
                                 ),

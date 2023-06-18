@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class ContactList {
   List<Contact> contactList;
 
@@ -8,7 +6,6 @@ class ContactList {
   factory ContactList.fromMap(Map<String, dynamic> map) {
     List<Contact> mContactList = [];
     map['contacts'].forEach((v) {
-      debugPrint("contact less :" + v.toString());
       mContactList.add(Contact.fromMap(v));
     });
     return ContactList(contactList: mContactList);

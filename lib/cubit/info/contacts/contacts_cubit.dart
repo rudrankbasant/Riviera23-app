@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/models/contact_model.dart';
@@ -39,30 +40,24 @@ class ContactsCubit extends Cubit<ContactsState> {
 
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? remoteContactVersion = prefs.getInt("remote_contacts");
-    int? localContactVersion = prefs.getInt("local_contacts");
+    int? remoteContactVersion = prefs.getInt(SharedPrefKeys.idRemoteContacts);
+    int? localContactVersion = prefs.getInt(SharedPrefKeys.idLocalContacts);
 
     if (remoteContactVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         if (localContactVersion != null) {
           if (remoteContactVersion == localContactVersion) {
-            print("Contacts serverORCache is set to cache");
             return Source.cache;
           } else {
-            print(
-                "Contacts was not up to date, serverORCache is set to server");
-            prefs.setInt("local_contacts", remoteContactVersion);
+            prefs.setInt(SharedPrefKeys.idLocalContacts, remoteContactVersion);
             return Source.server;
           }
         } else {
-          print(
-              "local_contacts was not even set up, serverORCache is set to server");
-          prefs.setInt("local_contacts", remoteContactVersion);
+          prefs.setInt(SharedPrefKeys.idLocalContacts, remoteContactVersion);
           return Source.server;
         }
       } else {
-        print("No internet connection, contacts serverORCache is set to cache");
         return Source.cache;
       }
     } else {

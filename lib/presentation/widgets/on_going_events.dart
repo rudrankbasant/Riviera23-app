@@ -8,6 +8,8 @@ import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constants/strings/asset_paths.dart';
+import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
@@ -19,6 +21,7 @@ class OnGoingEvents extends StatefulWidget {
   List<Venue> allVenues;
 
   OnGoingEvents({
+    super.key,
     required this.allVenues,
   });
 
@@ -66,7 +69,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                         children: [
                           ClipRRect(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
+                                const BorderRadius.all(Radius.circular(15.0)),
                             child: CachedNetworkImage(
                               height: 250,
                               width: 200,
@@ -88,7 +91,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                                 ),
                               ),
                               errorWidget: (context, url, error) =>
-                                  Image.asset("assets/placeholder.png"),
+                                  Image.asset(AssetPaths.placeholder),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -173,7 +176,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
         );
       } else if (state is EventsError) {
         return const Center(
-          child: Text("Error! Couldn't load."),
+          child: Text(Strings.errorLoading),
         );
       } else {
         return Container();

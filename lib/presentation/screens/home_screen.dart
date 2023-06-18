@@ -23,17 +23,17 @@ import '../widgets/featured_events.dart';
 import '../widgets/on_going_events.dart';
 
 class HomeScreen extends StatefulWidget {
-  ScrollController? _controller;
+  final ScrollController? _controller;
 
-  HomeScreen(this._controller);
+  const HomeScreen(this._controller, {super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  GlobalKey _merch_guide = GlobalKey();
-  GlobalKey _ongoing_guide = GlobalKey();
+  final GlobalKey _merch_guide = GlobalKey();
+  final GlobalKey _ongoing_guide = GlobalKey();
 
   @override
   void initState() {
@@ -79,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => MerchScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MerchScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 25.0),
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AnnouncementHistoryScreen()));
+                  builder: (context) => const AnnouncementHistoryScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 25.0),
@@ -119,14 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     CarouselWithDotsPage(
                       allVenues: allVenues,
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
                       child: FeaturedEvents(
                         allVenues: allVenues,
                       ),
                     ),
-                    SizedBox(height: 0),
+                    const SizedBox(height: 0),
                     CustomShowcase(
                       _ongoing_guide,
                       "On Going Events will appear here.",
@@ -149,11 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class CustomShowcase extends StatelessWidget {
-  GlobalKey _guide_key;
+  final GlobalKey _guide_key;
   String desc;
   Widget childWidget;
 
-  CustomShowcase(this._guide_key, this.desc, this.childWidget);
+  CustomShowcase(this._guide_key, this.desc, this.childWidget, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -181,34 +181,22 @@ void checkForAppUpdate(BuildContext context) async {
 void _notifyForAppUpdate(BuildContext context) async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-  String appName = packageInfo.appName;
-  String packageName = packageInfo.packageName;
   String version = packageInfo.version;
-  String buildNumber = packageInfo.buildNumber;
-
-  print("App Name: $appName");
-  print("Package Name: $packageName");
-  print("Version: $version");
-  print("Build Number: $buildNumber");
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  var remote_version;
+  String? remoteVersion;
   if (Platform.isAndroid) {
-    remote_version = prefs.getString('remote_app_version_android');
+    remoteVersion = prefs.getString('remote_app_version_android');
   } else {
-    remote_version = prefs.getString('remote_app_version_ios');
+    remoteVersion = prefs.getString('remote_app_version_ios');
   }
 
-  print("home screen  " + remote_version);
-
-  String? RemoteVersionApp = remote_version;
+  String? RemoteVersionApp = remoteVersion;
   if (RemoteVersionApp != null && RemoteVersionApp != "") {
     double localVersion = double.parse(version.trim().replaceAll(".", ""));
     double latestVersion =
         double.parse(RemoteVersionApp.trim().replaceAll(".", ""));
 
-    print("Local Version: $localVersion");
-    print("Latest Version: $latestVersion");
     if (latestVersion > localVersion) {
       _showVersionDialog(context);
     }
@@ -259,13 +247,13 @@ _showVersionDialog(context) async {
               ),
               content: Text(
                 message,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     btnLabelCancel,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -291,35 +279,30 @@ displayShowcase(BuildContext context, GlobalKey<State<StatefulWidget>> key1,
 
   if (showcaseVisibilityStatus == null) {
     prefs.setBool("show_homescreen_showcase", false);
-    print("showcaseVisibilityStatus is null, showing homescreen showcase");
+
     ShowCaseWidget.of(context).startShowCase([key1, key2]);
-  } else {
-    print(
-        "showcaseVisibilityStatus is not null, not showing homescreen showcase");
   }
 }
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURL(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }
 }
 
-void _launchURLBrowser(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURLBrowser(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

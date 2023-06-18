@@ -18,13 +18,13 @@ class EventsSuccess extends EventsState {
   EventsSuccess(this.events);
 
   @override
-  List<Object> get props => [this.events];
+  List<Object> get props => [events];
 }
 
 class EventsError extends EventsState {
   final String error;
 
-  EventsError(this.error);
+  const EventsError(this.error);
 
   @override
   List<Object> get props => [error];

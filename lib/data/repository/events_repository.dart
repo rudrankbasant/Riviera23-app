@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:riviera23/constants/api_endpoints.dart';
+import 'package:riviera23/constants/strings/api_endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constants/strings.dart';
+import '../../constants/strings/shared_pref_keys.dart';
+import '../../constants/strings/strings.dart';
 import '../models/event_model.dart';
 
 class EventsRepository {
@@ -23,7 +23,7 @@ class EventsRepository {
     List<EventModel> events = [];
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var baseURL = prefs.getString(Strings.idRemoteBaseURL);
+    var baseURL = prefs.getString(SharedPrefKeys.idRemoteBaseURL);
     var url = APIEndpoints.getEvents(baseURL);
 
     String eventsBoolKey = Strings.appStartedEvents;
@@ -42,13 +42,10 @@ class EventsRepository {
           final json = jsonDecode(response.body) as List;
           await putData(eventBox, json);
         } else {
-          // If the server did not return a 200 OK response,
-          // then throw an exception.
-          debugPrint(response.body);
           throw Exception(Strings.failedToFetch);
         }
-      } catch (SocketException) {
-        debugPrint(Strings.noInternetEvents);
+      } catch (e) {
+        throw Exception(e.toString());
       }
     }
 
@@ -59,7 +56,6 @@ class EventsRepository {
       }
       return events;
     } else {
-      debugPrint(Strings.errorEventBox);
       return events;
     }
   }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constants/strings/shared_pref_keys.dart';
 import '../../data/models/merch_model.dart';
 
 part './merch_state.dart';
@@ -32,38 +33,30 @@ class MerchCubit extends Cubit<MerchState> {
 
       emit(MerchSuccess(merchsList: MerchListModel.merchList));
     } catch (e) {
-      print("Merch ERROR " + e.toString());
       emit(MerchFailed(error: e.toString()));
     }
   }
 
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? remoteMerchVersion = prefs.getInt("remote_merch");
-    int? localMerchVersion = prefs.getInt("local_merch");
+    int? remoteMerchVersion = prefs.getInt(SharedPrefKeys.idRemoteMerch);
+    int? localMerchVersion = prefs.getInt(SharedPrefKeys.idLocalMerch);
 
-    print("remoteMerchVersion $remoteMerchVersion");
-    print("localMerchVersion $localMerchVersion");
     if (remoteMerchVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         if (localMerchVersion != null) {
           if (remoteMerchVersion == localMerchVersion) {
-            print("Merch serverORCache is set to cache");
             return Source.cache;
           } else {
-            print("Merch was not up to date, serverORCache is set to server");
-            prefs.setInt("local_merch", remoteMerchVersion);
+            prefs.setInt(SharedPrefKeys.idLocalMerch, remoteMerchVersion);
             return Source.server;
           }
         } else {
-          print(
-              "local_merch was not even set up, serverORCache is set to server");
-          prefs.setInt("local_merch", remoteMerchVersion);
+          prefs.setInt(SharedPrefKeys.idLocalMerch, remoteMerchVersion);
           return Source.server;
         }
       } else {
-        print("No internet connection, Merch serverORCache is set to cache");
         return Source.cache;
       }
     } else {

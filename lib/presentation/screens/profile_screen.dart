@@ -20,6 +20,8 @@ import '../widgets/profile_info.dart';
 import 'merch_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -91,13 +93,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   content: Text(
                     message,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   actions: <Widget>[
                     TextButton(
                       child: Text(
                         btnLabelCancel,
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -105,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     TextButton(
                       child: Text(btnLabel,
-                          style: TextStyle(color: Colors.redAccent)),
+                          style: const TextStyle(color: Colors.redAccent)),
                       onPressed: () {
                         requestAccountDeletion();
                       },
@@ -145,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               cardColor: AppColors.cardBgColor,
             ),
             child: PopupMenuButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.more_vert,
                   color: Colors.white,
                 ),
@@ -157,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.of(context).pop();
                           _showDeletionDialog(context);
                         },
-                        child: Text(
+                        child: const Text(
                           'Request Account Deletion',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -186,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: CachedNetworkImage(
                               width: 75.0,
                               height: 75.0,
@@ -235,25 +237,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MerchScreen()));
+                          builder: (context) => const MerchScreen()));
                     },
-                    child: Container(
+                    child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: FittedBox(
+                          fit: BoxFit.fill,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Image.asset("assets/merch_banner.png"),
                           ),
-                          fit: BoxFit.fill,
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: Text("MORE",
                             style: TextStyle(
                                 fontSize: 15,
@@ -296,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AuthScreen()));
+                                  builder: (context) => const AuthScreen()));
                         }
                       });
                     },
@@ -360,14 +362,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       _launchURL("https://dscvit.com/privacy-policy", context);
                     },
-                    child: Text("Version ${version}",
+                    child: Text("Version $version",
                         style: TextStyle(
                             fontSize: 10,
                             color: Colors.grey,
                             fontFamily:
                                 GoogleFonts.getFont("Sora").fontFamily)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
@@ -387,14 +389,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURL(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

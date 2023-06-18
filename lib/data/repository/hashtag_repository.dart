@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constants/api_endpoints.dart';
-import '../../constants/strings.dart';
+import '../../constants/strings/api_endpoints.dart';
+import '../../constants/strings/shared_pref_keys.dart';
+import '../../constants/strings/strings.dart';
 import '../models/hashtag_model.dart';
 
 class HashtagRepository {
@@ -23,7 +23,7 @@ class HashtagRepository {
     List<HashtagModel> hashtags = [];
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var baseURL = prefs.getString(Strings.idRemoteBaseURL);
+    var baseURL = prefs.getString(SharedPrefKeys.idRemoteBaseURL);
     var url = APIEndpoints.getHashtag(baseURL);
 
     bool? appStartedHashtags = prefs.getBool(Strings.appStartedHashtag);
@@ -41,13 +41,10 @@ class HashtagRepository {
           final json = jsonDecode(response.body) as List;
           await putData(hashtagBox, json);
         } else {
-          // If the server did not return a 200 OK response,
-          // then throw an exception.
-          debugPrint(response.body);
           throw Exception(Strings.failedToFetch);
         }
-      } catch (SocketException) {
-        print(Strings.noInternetHashtags);
+      } catch (e) {
+        throw Exception(e.toString());
       }
     }
 
@@ -58,7 +55,6 @@ class HashtagRepository {
       }
       return hashtags;
     } else {
-      debugPrint(Strings.errorHashtagBox);
       return hashtags;
     }
   }

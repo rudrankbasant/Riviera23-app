@@ -12,7 +12,7 @@ class SponsorsLoading extends SponsorsState {}
 class SponsorsSuccess extends SponsorsState {
   final List<Sponsor> sponsorsList;
 
-  SponsorsSuccess({required this.sponsorsList});
+  const SponsorsSuccess({required this.sponsorsList});
 
   @override
   List<Object> get props => [SponsorsList];
@@ -21,5 +21,5 @@ class SponsorsSuccess extends SponsorsState {
 class SponsorsFailed extends SponsorsState {
   final String error;
 
-  SponsorsFailed({required this.error});
+  const SponsorsFailed({required this.error});
 }

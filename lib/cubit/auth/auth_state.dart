@@ -12,7 +12,7 @@ class AuthLoading extends AuthState {}
 class SignInSuccess extends AuthState {
   final User user;
 
-  SignInSuccess({required this.user});
+  const SignInSuccess({required this.user});
 }
 
 class NotSignedInState extends AuthState {}
@@ -20,5 +20,5 @@ class NotSignedInState extends AuthState {}
 class SignInFailed extends AuthState {
   final String error;
 
-  SignInFailed({required this.error});
+  const SignInFailed({required this.error});
 }

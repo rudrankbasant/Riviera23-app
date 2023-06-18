@@ -19,7 +19,7 @@ class CustomBottomNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: index == 2
           ? MediaQuery.of(context).size.width * 0.30
           : MediaQuery.of(context).size.width * 0.175,

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/venue_model.dart';
@@ -31,44 +32,31 @@ class VenueCubit extends Cubit<VenueState> {
       VenueList venueListModel = VenueList.fromMap(data);
 
       emit(VenueSuccess(venuesList: venueListModel.allVenues));
-
-/*      debugPrint(querySnapshot.toString());
-      VenueList venueListModel = VenueList.fromsMap(querySnapshot.docs);
-      print("here is the result ${venueListModel.allVenues}");
-      emit(VenueSuccess(venuesList: venueListModel.allVenues));*/
     } catch (e) {
-      print("VENUE ERROR " + e.toString());
       emit(VenueFailed(error: e.toString()));
     }
   }
 
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? remotePlacesVersion = prefs.getInt("remote_places");
-    int? localPlacesVersion = prefs.getInt("local_places");
+    int? remotePlacesVersion = prefs.getInt(SharedPrefKeys.idRemotePlaces);
+    int? localPlacesVersion = prefs.getInt(SharedPrefKeys.idLocalPlaces);
 
-    print("remotePlacesVersion $remotePlacesVersion");
-    print("localPlacesVersion $localPlacesVersion");
     if (remotePlacesVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         if (localPlacesVersion != null) {
           if (remotePlacesVersion == localPlacesVersion) {
-            print("Places serverORCache is set to cache");
             return Source.cache;
           } else {
-            print("Places was not up to date, serverORCache is set to server");
-            prefs.setInt("local_places", remotePlacesVersion);
+            prefs.setInt(SharedPrefKeys.idLocalPlaces, remotePlacesVersion);
             return Source.server;
           }
         } else {
-          print(
-              "local_places was not even set up, serverORCache is set to server");
-          prefs.setInt("local_places", remotePlacesVersion);
+          prefs.setInt(SharedPrefKeys.idLocalPlaces, remotePlacesVersion);
           return Source.server;
         }
       } else {
-        print("No internet connection, venue serverORCache is set to cache");
         return Source.cache;
       }
     } else {

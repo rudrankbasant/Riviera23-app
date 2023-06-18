@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constants/strings/asset_paths.dart';
+
 class ProfileInfo extends StatelessWidget {
   final String imgPath;
   final String infoText;
@@ -53,7 +55,7 @@ class ProfileInfo extends StatelessWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: SvgPicture.asset('assets/right_arrow_icon.svg',
+                    child: SvgPicture.asset(AssetPaths.rightArrowIcon,
                         height: 20, width: 20),
                   ),
                 )

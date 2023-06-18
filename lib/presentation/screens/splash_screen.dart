@@ -63,13 +63,11 @@ class _SplashScreenState extends State<SplashScreen> {
                       height: MediaQuery.of(context).size.height * 0.4,
                     ),
                     Center(
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
-                          child: Image.asset(
-                            'assets/riviera_icon.png',
-                            fit: BoxFit.contain,
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
+                        child: Image.asset(
+                          'assets/riviera_icon.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -132,7 +130,7 @@ Padding getStarted(BuildContext context) {
           width: width * 0.8,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
+              backgroundColor: Colors.blue,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

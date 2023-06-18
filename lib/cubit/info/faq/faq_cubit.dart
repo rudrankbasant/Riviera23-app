@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/models/faq_model.dart';
@@ -37,29 +38,24 @@ class FaqCubit extends Cubit<FaqState> {
 
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? remoteFAQVersion = prefs.getInt("remote_faq");
-    int? localFAQVersion = prefs.getInt("local_faq");
+    int? remoteFAQVersion = prefs.getInt(SharedPrefKeys.idRemoteFaq);
+    int? localFAQVersion = prefs.getInt(SharedPrefKeys.idLocalFaq);
 
     if (remoteFAQVersion != null) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         if (localFAQVersion != null) {
           if (remoteFAQVersion == localFAQVersion) {
-            print("FAQs serverORCache is set to cache");
             return Source.cache;
           } else {
-            print("FAQs was not up to date, serverORCache is set to server");
-            prefs.setInt("local_faq", remoteFAQVersion);
+            prefs.setInt(SharedPrefKeys.idLocalFaq, remoteFAQVersion);
             return Source.server;
           }
         } else {
-          print(
-              "local_faq was not even set up, serverORCache is set to server");
-          prefs.setInt("local_faq", remoteFAQVersion);
+          prefs.setInt(SharedPrefKeys.idLocalFaq, remoteFAQVersion);
           return Source.server;
         }
       } else {
-        print("No internet connection, faq serverORCache is set to cache");
         return Source.cache;
       }
     } else {

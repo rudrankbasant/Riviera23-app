@@ -18,13 +18,13 @@ class HashtagSuccess extends HashtagState {
   HashtagSuccess(this.hashtags);
 
   @override
-  List<Object> get props => [this.hashtags];
+  List<Object> get props => [hashtags];
 }
 
 class HashtagError extends HashtagState {
   final String error;
 
-  HashtagError(this.error);
+  const HashtagError(this.error);
 
   @override
   List<Object> get props => [error];

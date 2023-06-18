@@ -11,6 +11,8 @@ import '../../utils/app_theme.dart';
 import '../methods/custom_flushbar.dart';
 
 class FAQScreen extends StatefulWidget {
+  const FAQScreen({super.key});
+
   @override
   State<FAQScreen> createState() => _FAQScreenState();
 }
@@ -29,12 +31,12 @@ class _FAQScreenState extends State<FAQScreen> {
         backgroundColor: AppColors.primaryColor,
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Sponsors", style: AppTheme.appTheme.textTheme.headline6),
+                Text("Sponsors", style: AppTheme.appTheme.textTheme.titleLarge),
                 BlocBuilder<SponsorsCubit, SponsorsState>(
                   builder: (context, state) {
                     if (state is SponsorsSuccess) {
@@ -109,12 +111,11 @@ class _FAQScreenState extends State<FAQScreen> {
                 BlocBuilder<SponsorsCubit, SponsorsState>(
                   builder: (context, state) {
                     if (state is SponsorsSuccess) {
-                      print("mainlist: ${state.sponsorsList.toString()}");
                       var regularList = state.sponsorsList
                           .where((element) => element.prior == false)
                           .toList();
                       regularList.sort((a, b) => a.id.compareTo(b.id));
-                      print("size of reg list: ${regularList.length}");
+
                       if (regularList.isEmpty) {
                         return Container();
                       }
@@ -175,7 +176,7 @@ class _FAQScreenState extends State<FAQScreen> {
                         ),
                       );
                     } else {
-                      return SizedBox(height: 0);
+                      return const SizedBox(height: 0);
                     }
                   },
                 ),
@@ -194,7 +195,7 @@ class _FAQScreenState extends State<FAQScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("FAQ", style: AppTheme.appTheme.textTheme.headline6),
+                Text("FAQ", style: AppTheme.appTheme.textTheme.titleLarge),
                 BlocBuilder<FaqCubit, FaqState>(
                   builder: (context, state) {
                     if (state is FaqSuccess) {
@@ -283,14 +284,13 @@ class _FAQScreenState extends State<FAQScreen> {
   }
 }
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURL(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

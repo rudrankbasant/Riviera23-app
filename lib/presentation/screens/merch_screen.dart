@@ -11,6 +11,8 @@ import '../../data/models/merch_model.dart';
 import '../methods/custom_flushbar.dart';
 
 class MerchScreen extends StatefulWidget {
+  const MerchScreen({super.key});
+
   @override
   State<MerchScreen> createState() => _MerchScreenState();
 }
@@ -32,7 +34,7 @@ class _MerchScreenState extends State<MerchScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
           elevation: 0,
-          title: Text(
+          title: const Text(
             'Merchandise',
             style: TextStyle(
                 color: Colors.white,
@@ -86,7 +88,7 @@ Widget getMerchCard(Merch merch, BuildContext context) {
     padding: const EdgeInsets.all(12.0),
     child: Column(
       children: [
-        Container(
+        SizedBox(
           height: 160,
           child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
@@ -113,7 +115,7 @@ Widget getMerchCard(Merch merch, BuildContext context) {
                 ),
               )),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
           merch.name,
           style: GoogleFonts.sora(
@@ -152,7 +154,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Center(
@@ -165,7 +167,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Expanded(
@@ -184,12 +186,12 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                   Rect.fromLTRB(0, 0, rect.width, rect.height));
                             },
                             blendMode: BlendMode.dstOut,
-                            child: Container(
+                            child: SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.4,
                                 width: MediaQuery.of(context).size.width,
                                 child: showSizeChart
-                                    ? Container(
+                                    ? SizedBox(
                                         height: 250,
                                         width: 200,
                                         child: Image.asset("assets/size.jpg"),
@@ -214,7 +216,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Padding(
@@ -253,7 +255,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       const SizedBox(
@@ -284,7 +286,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                               fontFamily: GoogleFonts.sora.toString()),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Padding(
@@ -313,7 +315,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                               ),
                             ),
                             Expanded(
-                                child: Container(
+                                child: SizedBox(
                               height: MediaQuery.of(context).size.height * 0.06,
                               child: Padding(
                                 padding:
@@ -344,7 +346,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -357,14 +359,13 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
       });
 }
 
-void _launchURLBrowser(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURLBrowser(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

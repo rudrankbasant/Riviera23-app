@@ -12,7 +12,7 @@ class ContactsLoading extends ContactsState {}
 class ContactsSuccess extends ContactsState {
   final List<Contact> contactsList;
 
-  ContactsSuccess({required this.contactsList});
+  const ContactsSuccess({required this.contactsList});
 
   @override
   List<Object> get props => [contactsList];
@@ -21,5 +21,5 @@ class ContactsSuccess extends ContactsState {
 class ContactsFailed extends ContactsState {
   final String error;
 
-  ContactsFailed({required this.error});
+  const ContactsFailed({required this.error});
 }

@@ -12,7 +12,7 @@ class FaqLoading extends FaqState {}
 class FaqSuccess extends FaqState {
   final List<Faq> faqList;
 
-  FaqSuccess({required this.faqList});
+  const FaqSuccess({required this.faqList});
 
   @override
   List<Object> get props => [faqList];
@@ -21,5 +21,5 @@ class FaqSuccess extends FaqState {
 class FaqFailed extends FaqState {
   final String error;
 
-  FaqFailed({required this.error});
+  const FaqFailed({required this.error});
 }

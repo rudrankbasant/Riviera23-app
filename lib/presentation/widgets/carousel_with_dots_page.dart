@@ -7,6 +7,8 @@ import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constants/strings/asset_paths.dart';
+import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
@@ -18,7 +20,7 @@ import '../screens/merch_screen.dart';
 class CarouselWithDotsPage extends StatefulWidget {
   List<Venue> allVenues;
 
-  CarouselWithDotsPage({required this.allVenues});
+  CarouselWithDotsPage({super.key, required this.allVenues});
 
   @override
   _CarouselWithDotsPageState createState() => _CarouselWithDotsPageState();
@@ -42,11 +44,11 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
-                  child: Text("PRO SHOWS",
-                      style: AppTheme.appTheme.textTheme.headline6),
+                  child: Text(Strings.proshows,
+                      style: AppTheme.appTheme.textTheme.titleLarge),
                 ),
                 Opacity(
-                    opacity: 0.8, child: Image.asset("assets/proshow_bg.png")),
+                    opacity: 0.8, child: Image.asset(AssetPaths.prowShowBg)),
               ],
             ),
           );
@@ -84,7 +86,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                           ),
                         ),
                         errorWidget: (context, url, error) =>
-                            Image.asset("assets/placeholder.png"),
+                            Image.asset(AssetPaths.placeholder),
                         fit: BoxFit.cover,
                       ),
                       Positioned(
@@ -108,7 +110,7 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                           ),
                           child: Text(
                             '${item.name}',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Axis',
                                 fontSize: 25,
@@ -157,18 +159,18 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MerchScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MerchScreen()));
               },
-              child: Container(
+              child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: Image.asset(
-                      "assets/merch_banner.png",
+                      AssetPaths.merchBanner,
                       fit: BoxFit.fitWidth,
                     ),
                   )),
@@ -177,8 +179,8 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
         );
       } else if (state is EventsError) {
         return const Center(
-          child: Text("Error! Couldn't load.",
-              style: TextStyle(color: Colors.white)),
+          child:
+              Text(Strings.errorLoading, style: TextStyle(color: Colors.white)),
         );
       } else {
         return Center(

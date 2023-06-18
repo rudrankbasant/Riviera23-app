@@ -22,7 +22,7 @@ import '../methods/parse_datetime.dart';
 class EventsScreen extends StatefulWidget {
   int? index;
 
-  EventsScreen(this.index);
+  EventsScreen(this.index, {super.key});
 
   @override
   State<EventsScreen> createState() => _EventsScreenState();
@@ -99,15 +99,13 @@ class _EventsScreenState extends State<EventsScreen> {
                   title: Transform(
                       // you can forcefully translate values left side using Transform
                       transform: Matrix4.translationValues(10.0, 2.0, 0.0),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Image.asset(
-                            'assets/riviera_icon.png',
-                            height: 40,
-                            width: 90,
-                            fit: BoxFit.contain,
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Image.asset(
+                          'assets/riviera_icon.png',
+                          height: 40,
+                          width: 90,
+                          fit: BoxFit.contain,
                         ),
                       )),
                   actions: [
@@ -151,7 +149,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   titleSpacing: 0.0,
-                  leading: Icon(Icons.search),
+                  leading: const Icon(Icons.search),
                   title: TextField(
                     onChanged: (value) {
                       setState(() {
@@ -161,15 +159,15 @@ class _EventsScreenState extends State<EventsScreen> {
                     decoration: InputDecoration(
                       hintText: "Search",
                       hintStyle: TextStyle(color: AppColors.secondaryColor),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
                     ),
                     cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   actions: [
                     IconButton(
@@ -179,7 +177,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             eventsSearchQuery = "";
                           });
                         },
-                        icon: Icon(Icons.close))
+                        icon: const Icon(Icons.close))
                   ],
                   bottom: const TabBar(
                     indicatorColor: Colors.white,
@@ -206,19 +204,19 @@ class _EventsScreenState extends State<EventsScreen> {
                             onTap: () {
                               _closeEndDrawer(false);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.close,
                               color: Colors.white,
                             )),
                         Text(
                           "Event Filter",
-                          style: AppTheme.appTheme.textTheme.headline6,
+                          style: AppTheme.appTheme.textTheme.titleLarge,
                         ),
                         GestureDetector(
                             onTap: () {
                               _closeEndDrawer(true);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.check,
                               color: Colors.white,
                             ))
@@ -230,12 +228,13 @@ class _EventsScreenState extends State<EventsScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(25, 12.5, 15, 10),
+                            padding:
+                                const EdgeInsets.fromLTRB(25, 12.5, 15, 10),
                             child: SizedBox(
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Event Dates",
+                                const Text("Event Dates",
                                     style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 16,
@@ -249,7 +248,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                         selectedDays = [];
                                       });
                                     },
-                                    child: Text("Clear All",
+                                    child: const Text("Clear All",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -263,7 +262,7 @@ class _EventsScreenState extends State<EventsScreen> {
                           SizedBox(
                             height: 60,
                             child: ListView(
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               children: [
@@ -278,12 +277,12 @@ class _EventsScreenState extends State<EventsScreen> {
                             height: 20,
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(25, 0, 15, 10),
+                            padding: const EdgeInsets.fromLTRB(25, 0, 15, 10),
                             child: SizedBox(
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Venues",
+                                const Text("Venues",
                                     style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 16,
@@ -297,7 +296,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                         selectedPlaces = [];
                                       });
                                     },
-                                    child: Text("Clear All",
+                                    child: const Text("Clear All",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
@@ -318,7 +317,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                 List<Venue> allVenues = venueState.venuesList;
                                 return ListView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   primary: false,
                                   itemCount: allVenues.length,
                                   itemBuilder: (context, index) {
@@ -516,7 +515,7 @@ class _EventsScreenState extends State<EventsScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                   width: MediaQuery.of(context).size.height * 0.15,
                   child: CachedNetworkImage(
@@ -544,7 +543,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 ),
               ),
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -564,7 +563,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             fontSize: 13.0,
                             fontWeight: FontWeight.normal,
                           )),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Expanded(
                           child: Text(event.description.toString(),
                               style: const TextStyle(
@@ -594,7 +593,7 @@ class _EventsScreenState extends State<EventsScreen> {
             fontWeight: FontWeight.normal,
           ));
     } else {
-      return Text(parseDate(event.start) + " - " + parseDate(event.end),
+      return Text("${parseDate(event.start)} - ${parseDate(event.end)}",
           style: const TextStyle(
             color: Colors.grey,
             fontSize: 13.0,

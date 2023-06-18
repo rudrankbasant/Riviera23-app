@@ -12,6 +12,8 @@ import '../../utils/app_theme.dart';
 import '../methods/custom_flushbar.dart';
 
 class ContactScreen extends StatefulWidget {
+  const ContactScreen({super.key});
+
   @override
   State<ContactScreen> createState() => _ContactScreenState();
 }
@@ -30,13 +32,13 @@ class _ContactScreenState extends State<ContactScreen> {
         backgroundColor: AppColors.primaryColor,
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("MEET THE TEAM",
-                    style: AppTheme.appTheme.textTheme.headline6),
+                    style: AppTheme.appTheme.textTheme.titleLarge),
                 BlocBuilder<TeamCubit, TeamState>(
                   builder: (context, state) {
                     if (state is TeamSuccess) {
@@ -56,7 +58,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8),
-                                      child: Container(
+                                      child: SizedBox(
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
@@ -144,11 +146,11 @@ class _ContactScreenState extends State<ContactScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 Text("CONTACT US",
-                    style: AppTheme.appTheme.textTheme.headline6),
+                    style: AppTheme.appTheme.textTheme.titleLarge),
                 BlocBuilder<ContactsCubit, ContactsState>(
                   builder: (context, state) {
                     if (state is ContactsSuccess) {
@@ -210,14 +212,13 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 }
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURL(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

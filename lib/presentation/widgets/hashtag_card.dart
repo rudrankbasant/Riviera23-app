@@ -57,11 +57,11 @@ class _HashtagCardState extends State<HashtagCard> {
           child: RotationTransition(
             turns: (index != null)
                 ? (index! % 2 == 0
-                    ? AlwaysStoppedAnimation(12 / 360)
-                    : AlwaysStoppedAnimation(-12 / 360))
-                : AlwaysStoppedAnimation(0),
+                    ? const AlwaysStoppedAnimation(12 / 360)
+                    : const AlwaysStoppedAnimation(-12 / 360))
+                : const AlwaysStoppedAnimation(0),
             child: Container(
-              margin: EdgeInsets.all(40),
+              margin: const EdgeInsets.all(40),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: color,
@@ -84,27 +84,25 @@ class _HashtagCardState extends State<HashtagCard> {
                 children: [
                   Column(
                     children: [
-                      Container(
-                        child: CachedNetworkImage(
-                          height: height * 0.3,
-                          imageUrl: imgUrl.toString(),
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: imageProvider, fit: BoxFit.cover),
-                            ),
+                      CachedNetworkImage(
+                        height: height * 0.3,
+                        imageUrl: imgUrl.toString(),
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProvider, fit: BoxFit.cover),
                           ),
-                          placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: AppColors.primaryColor,
-                            highlightColor: Colors.grey,
-                            child: Container(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Image.asset("assets/app_icon.png"),
-                          fit: BoxFit.contain,
                         ),
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: AppColors.primaryColor,
+                          highlightColor: Colors.grey,
+                          child: Container(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Image.asset("assets/app_icon.png"),
+                        fit: BoxFit.contain,
                       ),
                       const SizedBox(
                         height: 20,
@@ -137,12 +135,6 @@ class _HashtagCardState extends State<HashtagCard> {
                       )
                     ],
                   ),
-                  // ExpandableText(
-                  //   caption,
-                  //   expandText: "more",
-                  //   collapseText: "see less",
-                  //   maxLines: 4,
-                  // ),
                 ],
               ),
             ),

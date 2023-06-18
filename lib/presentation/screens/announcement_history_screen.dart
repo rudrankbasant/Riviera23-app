@@ -11,6 +11,8 @@ import '../../data/models/announcement_model.dart';
 import '../methods/custom_flushbar.dart';
 
 class AnnouncementHistoryScreen extends StatefulWidget {
+  const AnnouncementHistoryScreen({super.key});
+
   @override
   State<AnnouncementHistoryScreen> createState() =>
       _AnnouncementHistoryScreenState();
@@ -33,7 +35,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Announcements',
           style: TextStyle(
               color: Colors.white,
@@ -46,7 +48,6 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
       body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
         builder: (context, state) {
           if (state is AnnouncementsSuccess) {
-            print(state.announcementsList.length);
             var groupedList = groupBy(state.announcementsList,
                     (Announcement announcement) => parseDate(announcement.date))
                 .entries
@@ -108,7 +109,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                                         fit: FlexFit.loose,
                                         child: ListView.builder(
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             primary: false,
                                             shrinkWrap: true,
                                             itemCount: groupedList[position]
@@ -241,14 +242,14 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
             backgroundColor: AppColors.cardBgColor,
             title: Text(
               announcement.heading,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w600),
             ),
             content: Text(
               announcement.desc,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             actions: [
               announcement.url != null && announcement.url != ""
@@ -264,7 +265,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                     )
                   : Container(),
               TextButton(
-                child: Text(
+                child: const Text(
                   "Close",
                   style: TextStyle(color: Colors.red),
                 ),
@@ -278,14 +279,13 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
   }
 }
 
-void _launchURL(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURL(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri)
+        : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
     showCustomFlushbar("Can't Open Link",
         "The link may be null or may have some issues.", context);
   }

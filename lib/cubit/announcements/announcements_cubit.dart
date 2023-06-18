@@ -5,7 +5,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:riviera23/data/models/announcement_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constants/strings.dart';
+import '../../constants/strings/shared_pref_keys.dart';
+import '../../constants/strings/strings.dart';
 
 part './announcements_state.dart';
 
@@ -25,7 +26,8 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           .doc('lq7FACaQrVL4hO3cM6Iq')
           .get(GetOptions(source: serverORcache));
 
-      Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       AnnouncementList announcementsListModel = AnnouncementList.fromMap(data);
 
@@ -38,8 +40,10 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
 
   Future<Source> _getSourceValue() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? remoteAnnouncementVersion = prefs.getInt(Strings.idRemoteAnnouncement);
-    int? localAnnouncementVersion = prefs.getInt(Strings.idLocalAnnouncement);
+    int? remoteAnnouncementVersion =
+        prefs.getInt(SharedPrefKeys.idRemoteAnnouncement);
+    int? localAnnouncementVersion =
+        prefs.getInt(SharedPrefKeys.idLocalAnnouncement);
 
     if (remoteAnnouncementVersion != null) {
       /*NOTE: Checking internet connection here is important because if the app is opened with internet connection (hence fetches all remote data versions)
@@ -53,11 +57,13 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           if (remoteAnnouncementVersion == localAnnouncementVersion) {
             return Source.cache;
           } else {
-            prefs.setInt(Strings.idLocalAnnouncement, remoteAnnouncementVersion);
+            prefs.setInt(
+                SharedPrefKeys.idLocalAnnouncement, remoteAnnouncementVersion);
             return Source.server;
           }
         } else {
-          prefs.setInt(Strings.idLocalAnnouncement, remoteAnnouncementVersion);
+          prefs.setInt(
+              SharedPrefKeys.idLocalAnnouncement, remoteAnnouncementVersion);
           return Source.server;
         }
       } else {

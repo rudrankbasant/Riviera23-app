@@ -11,14 +11,16 @@ import '../../utils/app_colors.dart';
 import '../widgets/hashtag_card.dart';
 
 class HashtagsScreen extends StatefulWidget {
+  const HashtagsScreen({super.key});
+
   @override
   State<HashtagsScreen> createState() => _HashtagsScreenState();
 }
 
 class _HashtagsScreenState extends State<HashtagsScreen> {
   List<Color> colorsList = [
-    Color(0xff466FFF),
-    Color(0xff4C3CB6),
+    const Color(0xff466FFF),
+    const Color(0xff4C3CB6),
   ];
 
   @override
@@ -41,7 +43,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
             padding: const EdgeInsets.fromLTRB(45, 45, 45, 10),
             child: Image.asset("assets/riviera_icon.png"),
           ),
-          Container(
+          SizedBox(
             width: double.infinity,
             child: RichText(
               textAlign: TextAlign.center,
@@ -95,7 +97,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           BlocBuilder<HashtagCubit, HashtagState>(
@@ -105,7 +107,7 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
                   return ListView.builder(
                       primary: false,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.hashtags.length,
                       itemBuilder: (context, itemIndex) {
                         return GestureDetector(
@@ -161,29 +163,27 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
     );
   }
 
-  void _launchURL(_url) async {
-    final Uri _uri = Uri.parse(_url);
+  void _launchURL(url) async {
+    final Uri uri = Uri.parse(url);
     try {
       // await canLaunchUrl(_uri)
       //     ? await launchUrl(_url)
       //     : throw 'Could not launch $_uri';
-      await canLaunchUrl(_uri);
-      await launchUrl(_uri);
+      await canLaunchUrl(uri);
+      await launchUrl(uri);
     } catch (e) {
-      print(e.toString());
       showCustomFlushbar("Can't Open Link",
           "The link may be null or may have some issues.", context);
     }
   }
 
-  void _launchURLBrowser(_url, BuildContext context) async {
-    final Uri _uri = Uri.parse(_url);
+  void _launchURLBrowser(url, BuildContext context) async {
+    final Uri uri = Uri.parse(url);
     try {
-      await canLaunchUrl(_uri)
-          ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
-          : throw 'Could not launch $_uri';
+      await canLaunchUrl(uri)
+          ? await launchUrl(uri, mode: LaunchMode.externalApplication)
+          : throw 'Could not launch $uri';
     } catch (e) {
-      print(e.toString());
       showCustomFlushbar("Can't Open Link",
           "The link may be null or may have some issues.", context);
     }

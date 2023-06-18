@@ -10,7 +10,7 @@ void _launchURL(url, BuildContext context) async {
         ? await launchUrl(uri)
         : throw 'Could not launch $uri';
   } catch (e) {
-    print(e.toString());
-    showCustomFlushbar("Can't Open Link", "The link may be null or may have some issues.", context);
+    showCustomFlushbar("Can't Open Link",
+        "The link may be null or may have some issues.", context);
   }
 }

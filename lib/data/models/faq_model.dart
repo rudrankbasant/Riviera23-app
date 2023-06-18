@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class FaqList {
   List<Faq> faqList;
 
@@ -8,7 +6,6 @@ class FaqList {
   factory FaqList.fromMap(Map<String, dynamic> map) {
     List<Faq> mFaqList = [];
     map['faqs'].forEach((v) {
-      debugPrint('Faq less = $v');
       mFaqList.add(Faq.fromMap(v));
     });
     return FaqList(faqList: mFaqList);

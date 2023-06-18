@@ -12,7 +12,7 @@ class MerchLoading extends MerchState {}
 class MerchSuccess extends MerchState {
   final List<Merch> merchsList;
 
-  MerchSuccess({required this.merchsList});
+  const MerchSuccess({required this.merchsList});
 
   @override
   List<Object> get props => [merchsList];
@@ -21,5 +21,5 @@ class MerchSuccess extends MerchState {
 class MerchFailed extends MerchState {
   final String error;
 
-  MerchFailed({required this.error});
+  const MerchFailed({required this.error});
 }

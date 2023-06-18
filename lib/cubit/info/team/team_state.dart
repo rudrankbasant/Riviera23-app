@@ -12,7 +12,7 @@ class TeamLoading extends TeamState {}
 class TeamSuccess extends TeamState {
   final List<TeamMember> teamList;
 
-  TeamSuccess({required this.teamList});
+  const TeamSuccess({required this.teamList});
 
   @override
   List<Object> get props => [teamList];
@@ -21,5 +21,5 @@ class TeamSuccess extends TeamState {
 class TeamFailed extends TeamState {
   final String error;
 
-  TeamFailed({required this.error});
+  const TeamFailed({required this.error});
 }

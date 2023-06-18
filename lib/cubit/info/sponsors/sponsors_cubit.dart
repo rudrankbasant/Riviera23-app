@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/data/models/sponsors_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,29 +40,24 @@ class SponsorsCubit extends Cubit<SponsorsState> {
 
 Future<Source> _getSourceValue() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  int? remoteSponsorVersion = prefs.getInt("remote_sponsors");
-  int? localSponsorVersion = prefs.getInt("local_sponsors");
+  int? remoteSponsorVersion = prefs.getInt(SharedPrefKeys.idRemoteSponsors);
+  int? localSponsorVersion = prefs.getInt(SharedPrefKeys.idLocalSponsors);
 
   if (remoteSponsorVersion != null) {
     bool result = await InternetConnectionChecker().hasConnection;
     if (result == true) {
       if (localSponsorVersion != null) {
         if (remoteSponsorVersion == localSponsorVersion) {
-          print("Sponsors serverORCache is set to cache");
           return Source.cache;
         } else {
-          print("Sponsors was not up to date, serverORCache is set to server");
-          prefs.setInt("local_sponsors", remoteSponsorVersion);
+          prefs.setInt(SharedPrefKeys.idLocalSponsors, remoteSponsorVersion);
           return Source.server;
         }
       } else {
-        print(
-            "local_sponsors was not even set up, serverORCache is set to server");
-        prefs.setInt("local_sponsors", remoteSponsorVersion);
+        prefs.setInt(SharedPrefKeys.idLocalSponsors, remoteSponsorVersion);
         return Source.server;
       }
     } else {
-      print("No internet connection, sponsors serverORCache is set to cache");
       return Source.cache;
     }
   } else {

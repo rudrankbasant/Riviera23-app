@@ -12,7 +12,7 @@ class FavouriteLoading extends FavouriteState {}
 class FavouriteSuccess extends FavouriteState {
   final FavouriteModel favouriteList;
 
-  FavouriteSuccess({required this.favouriteList});
+  const FavouriteSuccess({required this.favouriteList});
 
   @override
   List<Object> get props => [favouriteList];
@@ -21,5 +21,5 @@ class FavouriteSuccess extends FavouriteState {
 class FavouriteFailed extends FavouriteState {
   final String error;
 
-  FavouriteFailed({required this.error});
+  const FavouriteFailed({required this.error});
 }

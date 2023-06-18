@@ -19,7 +19,6 @@ import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cubit/data_version/version_cubit.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/merch/merch_cubit.dart';
@@ -32,8 +31,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
 }
 
 Future<void> main() async {
@@ -42,15 +39,12 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  print(" main dart Before");
   //Check for data updates
   await getDataUpdate();
   await setAppStarted();
-  print(" main dart After");
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  print(" main dart After 2");
-  messaging.getToken().then((value) => print("Token: $value"));
+  messaging.getToken();
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
@@ -58,15 +52,6 @@ Future<void> main() async {
     sound: true,
   );
 
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
   if (Platform.isAndroid) {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'riviera_notif_channel', // id
@@ -84,11 +69,9 @@ Future<void> main() async {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
-      print("Handling a open app message: ${message.messageId}");
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null) {
-        print('Message also contained a notification: ${message.notification}');
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -106,8 +89,6 @@ Future<void> main() async {
     });
   }
 
-  print('User granted permission: ${settings.authorizationStatus}');
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   //Setting SysemUIOverlay
@@ -119,7 +100,7 @@ Future<void> main() async {
         Platform.isAndroid ? Brightness.light : Brightness.dark,
   ));
 
-//Setting SystmeUIMode
+//Setting SystemUIMode
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
 
@@ -134,7 +115,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => VersionCubit()),
         BlocProvider(
           create: (context) => EventsCubit(EventsRepository()),
         ),
@@ -149,7 +129,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Riviera23',
         theme: AppTheme.appTheme,
-        home: SplashScreen(),
+        home: const SplashScreen(),
         onGenerateRoute: AppRouter().onGenerateRoute,
       ),
     );
@@ -173,9 +153,6 @@ getDataUpdate() async {
     final iosVersion = remoteConfig.getString("ios_version");
     var baseUrl = remoteConfig.getString("base_url");
     final showGdsc = remoteConfig.getBool("show_gdsc");
-    print("showGdsc fetched: $showGdsc");
-    print("main dart: $baseUrl");
-    print("android version: $androidVersion");
 
     prefs.setString("remote_app_version_android", androidVersion);
     prefs.setString("remote_app_version_ios", iosVersion);
@@ -184,20 +161,18 @@ getDataUpdate() async {
   }
 
   //Check for data updates
-  DataVersion RemoteVersions = await getRemoteVersion();
-  print("Remote Version: $RemoteVersions");
+  DataVersion remoteVersions = await getRemoteVersion();
 
-  //All other Data Versions are int (DONT CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
+  //All other Data Versions are int (DON'T CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
   prefs.setInt(
-      "remote_announcement", RemoteVersions.announcement_version_number);
-  prefs.setInt("remote_contacts", RemoteVersions.contacts_version_number);
-  prefs.setInt("remote_faq", RemoteVersions.faq_version_number);
-  prefs.setInt("remote_fav", RemoteVersions.favorites_version_number);
-  prefs.setInt("remote_places", RemoteVersions.places_version_number);
-  prefs.setInt("remote_sponsors", RemoteVersions.sponsors_version_number);
-  prefs.setInt("remote_team", RemoteVersions.team_version_number);
-  prefs.setInt("remote_merch", RemoteVersions.merch_version_number);
-  print("Merch Version: ${RemoteVersions.merch_version_number}");
+      "remote_announcement", remoteVersions.announcement_version_number);
+  prefs.setInt("remote_contacts", remoteVersions.contacts_version_number);
+  prefs.setInt("remote_faq", remoteVersions.faq_version_number);
+  prefs.setInt("remote_fav", remoteVersions.favorites_version_number);
+  prefs.setInt("remote_places", remoteVersions.places_version_number);
+  prefs.setInt("remote_sponsors", remoteVersions.sponsors_version_number);
+  prefs.setInt("remote_team", remoteVersions.team_version_number);
+  prefs.setInt("remote_merch", remoteVersions.merch_version_number);
 }
 
 Future<DataVersion> getRemoteVersion() async {
@@ -211,12 +186,10 @@ Future<DataVersion> getRemoteVersion() async {
 
     Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
 
-    debugPrint("this is version data" + data.toString());
     DataVersion dataVersion = DataVersion.fromMap(data);
 
     return dataVersion;
   } catch (e) {
-    print(e.toString());
     return DataVersion(
         app_version_number: "",
         announcement_version_number: -1,

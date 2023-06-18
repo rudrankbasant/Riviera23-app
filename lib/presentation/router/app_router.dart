@@ -12,11 +12,11 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (homeContext) {
-          return SplashScreen();
+          return const SplashScreen();
         });
       case '/home':
         return MaterialPageRoute(builder: (_) {
-          return HomeScreen(null);
+          return const HomeScreen(null);
         });
       case '/events/all':
         return MaterialPageRoute(builder: (_) {
@@ -28,15 +28,15 @@ class AppRouter {
         });
       case '/hashtags':
         return MaterialPageRoute(builder: (_) {
-          return HashtagsScreen();
+          return const HashtagsScreen();
         });
       case '/info':
         return MaterialPageRoute(builder: (_) {
-          return InfoScreen();
+          return const InfoScreen();
         });
       case '/profile':
         return MaterialPageRoute(builder: (_) {
-          return ProfileScreen();
+          return const ProfileScreen();
         });
       default:
         return MaterialPageRoute(builder: (_) {

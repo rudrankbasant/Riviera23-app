@@ -12,7 +12,7 @@ class VenueLoading extends VenueState {}
 class VenueSuccess extends VenueState {
   final List<Venue> venuesList;
 
-  VenueSuccess({required this.venuesList});
+  const VenueSuccess({required this.venuesList});
 
   @override
   List<Object> get props => [venuesList];
@@ -21,5 +21,5 @@ class VenueSuccess extends VenueState {
 class VenueFailed extends VenueState {
   final String error;
 
-  VenueFailed({required this.error});
+  const VenueFailed({required this.error});
 }

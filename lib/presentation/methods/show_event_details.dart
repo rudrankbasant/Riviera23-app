@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/presentation/screens/home_screen.dart';
@@ -16,6 +17,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/strings/shared_pref_keys.dart';
+import '../../constants/strings/strings.dart';
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
@@ -40,12 +43,12 @@ void showCustomBottomSheet(
                 isFavourite = favouritesIDs.contains(event.id);
               }
 
-              GlobalKey _favourite_guide = GlobalKey();
+              GlobalKey favouriteGuide = GlobalKey();
 
               return ShowCaseWidget(
                 builder: Builder(builder: (context) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) =>
-                      displayEventCardShowcase(context, _favourite_guide));
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => displayEventCardShowcase(context, favouriteGuide));
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -58,7 +61,7 @@ void showCustomBottomSheet(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Center(
@@ -71,7 +74,7 @@ void showCustomBottomSheet(
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Expanded(
@@ -93,7 +96,7 @@ void showCustomBottomSheet(
                                           0, 0, rect.width, rect.height));
                                     },
                                     blendMode: BlendMode.dstOut,
-                                    child: Container(
+                                    child: SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.4,
@@ -113,7 +116,7 @@ void showCustomBottomSheet(
                                           ),
                                           errorWidget: (context, url, error) =>
                                               Image.asset(
-                                                  "assets/placeholder.png"),
+                                                  AssetPaths.placeholder),
                                           fit: BoxFit.cover,
                                         )),
                                   ),
@@ -140,8 +143,8 @@ void showCustomBottomSheet(
                                                     color: Colors.white,
                                                   ))
                                               : CustomShowcase(
-                                                  _favourite_guide,
-                                                  "You will receive all important notifications for the events you favourite.",
+                                                  favouriteGuide,
+                                                  Strings.favouriteGuideMessage,
                                                   (isFavourite
                                                       ? const Icon(
                                                           Icons
@@ -160,7 +163,7 @@ void showCustomBottomSheet(
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Padding(
@@ -178,10 +181,10 @@ void showCustomBottomSheet(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: getDurationDateTime(event),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               InkWell(
@@ -206,7 +209,7 @@ void showCustomBottomSheet(
                                       child: Row(
                                         children: [
                                           SvgPicture.asset(
-                                            "assets/maps_icon.svg",
+                                            AssetPaths.mapIcon,
                                             color: AppColors.highlightColor,
                                           ),
                                           Expanded(
@@ -237,7 +240,7 @@ void showCustomBottomSheet(
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Text(
-                                  "ABOUT",
+                                  Strings.about,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
@@ -260,13 +263,13 @@ void showCustomBottomSheet(
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Text(
-                                  "ORGANIZER",
+                                  Strings.organizer,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
@@ -274,7 +277,7 @@ void showCustomBottomSheet(
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Padding(
@@ -289,13 +292,13 @@ void showCustomBottomSheet(
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Text(
-                                  "REGISTRATION AMOUNT",
+                                  Strings.amount,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
@@ -303,7 +306,7 @@ void showCustomBottomSheet(
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Padding(
@@ -311,8 +314,8 @@ void showCustomBottomSheet(
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
                                   event.total_cost.toString() == "0"
-                                      ? "Free"
-                                      : "\u{20B9}${event.total_cost} (Inc. GST)",
+                                      ? Strings.free
+                                      : Strings.getAmount(event.total_cost),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 15,
@@ -320,7 +323,7 @@ void showCustomBottomSheet(
                                       fontFamily: GoogleFonts.sora.toString()),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
@@ -339,7 +342,7 @@ void showCustomBottomSheet(
                                       showRegistrationDialog(context);
                                     },
                                     child: Text(
-                                      'REGISTER NOW',
+                                      Strings.register,
                                       style: TextStyle(
                                         color: AppColors.secondaryColor,
                                         fontSize: 15,
@@ -350,7 +353,7 @@ void showCustomBottomSheet(
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                             ],
@@ -364,7 +367,7 @@ void showCustomBottomSheet(
             } else if (state is FavouriteFailed) {
               return const Center(
                 child: Text(
-                  "Error Loading",
+                  Strings.errorLoading,
                   style: TextStyle(color: Colors.white),
                 ),
               );
@@ -388,9 +391,7 @@ void updateFavouritesAndSubscriptions(BuildContext context, EventModel event,
       newList.add(event.id.toString());
       await FirebaseMessaging.instance.subscribeToTopic(event.id.toString());
       showCustomFlushbar(
-          "Added to Favourites!",
-          "You will be receiving important notifications for this event.",
-          context);
+          Strings.favouriteTitle, Strings.favouriteMessage, context);
     }
     FavouriteModel newFavouriteModel = FavouriteModel(
         uniqueUserId: state.favouriteList.uniqueUserId,
@@ -403,15 +404,12 @@ void updateFavouritesAndSubscriptions(BuildContext context, EventModel event,
 displayEventCardShowcase(
     BuildContext context, GlobalKey<State<StatefulWidget>> key1) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool? showcaseVisibilityStatus = prefs.getBool("show_eventcard_showcase");
+  bool? showcaseVisibilityStatus =
+      prefs.getBool(SharedPrefKeys.idEventCardShowcase);
 
   if (showcaseVisibilityStatus == null) {
-    prefs.setBool("show_eventcard_showcase", false);
-    print("showcaseVisibilityStatus is null, showing event card showcase");
+    prefs.setBool(SharedPrefKeys.idEventCardShowcase, false);
     ShowCaseWidget.of(context).startShowCase([key1]);
-  } else {
-    print(
-        "showcaseVisibilityStatus is not null, not showing event card showcase");
   }
 }
 
@@ -447,16 +445,16 @@ void showRegistrationDialog(BuildContext context) {
           backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: AppColors.highlightColor),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(
                 20.0,
               ),
             ),
           ),
-          contentPadding: EdgeInsets.only(
+          contentPadding: const EdgeInsets.only(
             top: 10.0,
           ),
-          content: Container(
+          content: SizedBox(
             height: MediaQuery.of(context).size.height * 0.34,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(8.0),
@@ -468,7 +466,7 @@ void showRegistrationDialog(BuildContext context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
                     child: Text(
-                      "Registration",
+                      Strings.registration,
                       style: GoogleFonts.sora(
                           fontWeight: FontWeight.w600, color: Colors.white),
                     ),
@@ -476,7 +474,7 @@ void showRegistrationDialog(BuildContext context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
                     child: Text(
-                      "Register for events at Riviera 2023 as a VIT student, or as an external participant.",
+                      Strings.registrationGuide,
                       style: GoogleFonts.sora(
                           fontWeight: FontWeight.w300, color: Colors.white),
                     ),
@@ -494,11 +492,10 @@ void showRegistrationDialog(BuildContext context) {
                           ),
                         ),
                         onPressed: () {
-                          _launchURLBrowser(
-                              "https://vtop.vit.ac.in/vtop", context);
+                          _launchURLBrowser(Strings.vtopLink, context);
                         },
                         child: Text(
-                          'VIT STUDENT',
+                          Strings.vitStudent,
                           style: TextStyle(
                             color: AppColors.secondaryColor,
                             fontSize: 15,
@@ -511,8 +508,7 @@ void showRegistrationDialog(BuildContext context) {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _launchURLBrowser(
-                          "https://web.vit.ac.in/riviera/", context);
+                      _launchURLBrowser(Strings.websiteLink, context);
                     },
                     child: Container(
                       width: double.infinity,
@@ -527,7 +523,7 @@ void showRegistrationDialog(BuildContext context) {
                           ),
                           child: Center(
                             child: Text(
-                              'EXTERNAL PARTICIPANT',
+                              Strings.externalParticipant,
                               style: TextStyle(
                                 color: AppColors.highlightColor,
                                 fontSize: 15,
@@ -544,7 +540,7 @@ void showRegistrationDialog(BuildContext context) {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
                       child: Text(
-                        "External participants need to register on the portal.",
+                        Strings.externalParticipantGuide,
                         style: GoogleFonts.sora(
                             fontWeight: FontWeight.w300,
                             fontSize: 12,
@@ -562,15 +558,14 @@ void showRegistrationDialog(BuildContext context) {
   );
 }
 
-void _launchURLBrowser(_url, BuildContext context) async {
-  final Uri _uri = Uri.parse(_url);
+void _launchURLBrowser(url, BuildContext context) async {
+  final Uri uri = Uri.parse(url);
   try {
-    await canLaunchUrl(_uri)
-        ? await launchUrl(_uri, mode: LaunchMode.externalApplication)
-        : throw 'Could not launch $_uri';
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
+        : throw Strings.showURIError(uri);
   } catch (e) {
-    print(e.toString());
-    showCustomFlushbar("Can't Open Link",
-        "The link may be null or may have some issues.", context);
+    showCustomFlushbar(
+        Strings.cantOpenLinkTitle, Strings.cantOpenLinkMessage, context);
   }
 }

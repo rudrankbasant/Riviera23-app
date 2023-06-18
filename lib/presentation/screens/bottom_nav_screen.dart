@@ -16,7 +16,7 @@ import 'info_screen.dart';
 class BottomNavScreen extends StatefulWidget {
   int? eventScreenIndex;
 
-  BottomNavScreen(this.eventScreenIndex);
+  BottomNavScreen(this.eventScreenIndex, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +40,6 @@ class _BottomNavState extends State<BottomNavScreen> {
 
   Future<void> _startOperation() async {
     var showGDSC = await getGSDCBoolean();
-    print("showGDSC: $showGDSC");
     if (showGDSC) {
       _timer = Timer(const Duration(milliseconds: 4000), () {
         showCreatorDialog(context);
@@ -61,23 +60,23 @@ class _BottomNavState extends State<BottomNavScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = ScrollController();
+    final controller = ScrollController();
 
-    final List<Widget> _fragments = <Widget>[
+    final List<Widget> fragments = <Widget>[
       ShowCaseWidget(
-          scrollDuration: Duration(milliseconds: 500),
+          scrollDuration: const Duration(milliseconds: 500),
           onStart: (index, key) {
             if (index == 1) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                _controller.jumpTo(300);
+                controller.jumpTo(300);
               });
             }
           },
-          builder: Builder(builder: (context) => HomeScreen(_controller))),
+          builder: Builder(builder: (context) => HomeScreen(controller))),
       EventsScreen(widget.eventScreenIndex ?? 0),
-      HashtagsScreen(),
-      InfoScreen(),
-      ProfileScreen()
+      const HashtagsScreen(),
+      const InfoScreen(),
+      const ProfileScreen()
     ];
 
     if (widget.eventScreenIndex != null) {
@@ -91,7 +90,7 @@ class _BottomNavState extends State<BottomNavScreen> {
             backgroundColor: AppColors.primaryColor,
             resizeToAvoidBottomInset: false,
             body: Center(
-              child: _fragments[selectedIndex],
+              child: fragments[selectedIndex],
             ),
             bottomNavigationBar: Container(
               color: Colors.transparent,
