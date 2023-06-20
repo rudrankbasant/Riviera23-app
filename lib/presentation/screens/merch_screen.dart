@@ -38,57 +38,57 @@ class _MerchScreenState extends State<MerchScreen> {
 
   BlocBuilder<MerchCubit, MerchState> buildBody() {
     return BlocBuilder<MerchCubit, MerchState>(
-        builder: (context, state) {
-          if (state is MerchSuccess) {
-            var merchList = state.merchsList;
-            return Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: merchList.length,
-                    scrollDirection: Axis.vertical,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: (MediaQuery.of(context).size.width) /
-                          (MediaQuery.of(context).size.height * 0.7),
-                    ),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showSizeChart = false;
-                            });
-                            showBottomMerchScreen(
-                                context, merchList[index], showSizeChart);
-                          },
-                          child: getMerchCard(merchList[index], context));
-                    }));
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            );
-          }
-        },
-      );
+      builder: (context, state) {
+        if (state is MerchSuccess) {
+          var merchList = state.merchsList;
+          return Padding(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+              child: GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: merchList.length,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: (MediaQuery.of(context).size.width) /
+                        (MediaQuery.of(context).size.height * 0.7),
+                  ),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showSizeChart = false;
+                          });
+                          showBottomMerchScreen(
+                              context, merchList[index], showSizeChart);
+                        },
+                        child: getMerchCard(merchList[index], context));
+                  }));
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
+        }
+      },
+    );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-        backgroundColor: AppColors.primaryColor,
-        elevation: 0,
-        title: const Text(
-          Strings.merchTitle,
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-              fontFamily: 'Axis'),
-        ),
-        centerTitle: true,
-      );
+      backgroundColor: AppColors.primaryColor,
+      elevation: 0,
+      title: const Text(
+        Strings.merchTitle,
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            fontFamily: 'Axis'),
+      ),
+      centerTitle: true,
+    );
   }
 }
 

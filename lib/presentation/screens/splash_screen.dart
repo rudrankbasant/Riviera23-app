@@ -64,40 +64,40 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Column buildBody(BuildContext context) {
     return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildRivieraIcon(context),
-            leadtoGetStarted
-                ? Align(
-                    alignment: Alignment.bottomCenter,
-                    child: buildPageContent(context))
-                : const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: VitLogo(),
-                  )
-          ],
-        );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        buildRivieraIcon(context),
+        leadtoGetStarted
+            ? Align(
+                alignment: Alignment.bottomCenter,
+                child: buildPageContent(context))
+            : const Align(
+                alignment: Alignment.bottomCenter,
+                child: VitLogo(),
+              )
+      ],
+    );
   }
 
   Expanded buildRivieraIcon(BuildContext context) {
     return Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
-                    child: Image.asset(
-                      AssetPaths.rivieraIcon,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-              ],
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
+              child: Image.asset(
+                AssetPaths.rivieraIcon,
+                fit: BoxFit.contain,
+              ),
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -119,59 +119,59 @@ Padding buildPageContent(BuildContext context) {
 
 SizedBox getStartedButton(double width, BuildContext context) {
   return SizedBox(
-        height: 50,
-        width: width * 0.8,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed(
-              "/authentication",
-            );
-          },
-          child: Text(
-            Strings.getStarted,
-            style: TextStyle(
-              color: AppColors.secondaryColor,
-              fontSize: 15,
-              fontFamily: GoogleFonts.sora.toString(),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+    height: 50,
+    width: width * 0.8,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
-      );
+      ),
+      onPressed: () {
+        Navigator.of(context).pushReplacementNamed(
+          "/authentication",
+        );
+      },
+      child: Text(
+        Strings.getStarted,
+        style: TextStyle(
+          color: AppColors.secondaryColor,
+          fontSize: 15,
+          fontFamily: GoogleFonts.sora.toString(),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  );
 }
 
 Padding buildRivieraDesc(double width) {
   return Padding(
-        padding: EdgeInsets.fromLTRB(width * 0.1, 0, width * 0.1, 0),
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: Strings.riviera,
-            style: TextStyle(
-              color: AppColors.secondaryColor,
-              fontSize: 15,
-              fontFamily: GoogleFonts.sora.toString(),
-              fontWeight: FontWeight.bold,
-            ),
-            children: <TextSpan>[
-              TextSpan(
-                  text: Strings.rivieraDesc,
-                  style: TextStyle(
-                    color: AppColors.secondaryColor,
-                    fontSize: 15,
-                    fontFamily: GoogleFonts.sora.toString(),
-                    fontWeight: FontWeight.normal,
-                  )),
-            ],
-          ),
+    padding: EdgeInsets.fromLTRB(width * 0.1, 0, width * 0.1, 0),
+    child: RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: Strings.riviera,
+        style: TextStyle(
+          color: AppColors.secondaryColor,
+          fontSize: 15,
+          fontFamily: GoogleFonts.sora.toString(),
+          fontWeight: FontWeight.bold,
         ),
-      );
+        children: <TextSpan>[
+          TextSpan(
+              text: Strings.rivieraDesc,
+              style: TextStyle(
+                color: AppColors.secondaryColor,
+                fontSize: 15,
+                fontFamily: GoogleFonts.sora.toString(),
+                fontWeight: FontWeight.normal,
+              )),
+        ],
+      ),
+    ),
+  );
 }
 
 class VitLogo extends StatelessWidget {

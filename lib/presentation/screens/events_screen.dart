@@ -91,417 +91,413 @@ class _EventsScreenState extends State<EventsScreen> {
           key: _scaffoldKey,
           backgroundColor: AppColors.primaryColor,
           resizeToAvoidBottomInset: false,
-          appBar: defaultAppBar
-              ? buildAppBar()
-              : buildSearchBar(),
+          appBar: defaultAppBar ? buildAppBar() : buildSearchBar(),
           endDrawer: buildDrawer(context),
           body: TabBarView(
-            children: [
-              buildAllEvents(),
-              buildFavouriteEvents()
-            ],
+            children: [buildAllEvents(), buildFavouriteEvents()],
           ),
         ));
   }
 
   BlocBuilder<EventsCubit, EventsState> buildFavouriteEvents() {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
-              if (state is EventsSuccess) {
-                List<EventModel> allEvents = state.events;
-                return BlocBuilder<FavouriteCubit, FavouriteState>(
-                    builder: (context, state) {
-                  if (state is FavouriteSuccess) {
-                    List<String> favouritesIDs =
-                        state.favouriteList.favouriteEventIds;
-                    List<EventModel> favouriteEvents = getFavouriteEvents(favouritesIDs,allEvents);
+      if (state is EventsSuccess) {
+        List<EventModel> allEvents = state.events;
+        return BlocBuilder<FavouriteCubit, FavouriteState>(
+            builder: (context, state) {
+          if (state is FavouriteSuccess) {
+            List<String> favouritesIDs = state.favouriteList.favouriteEventIds;
+            List<EventModel> favouriteEvents =
+                getFavouriteEvents(favouritesIDs, allEvents);
 
-                    if (favouriteEvents.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Text(
-                            Strings.subsGuideEvents,
-                            style: GoogleFonts.sora(
-                                color: Colors.white, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                    }
+            if (favouriteEvents.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Text(
+                    Strings.subsGuideEvents,
+                    style: GoogleFonts.sora(color: Colors.white, fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
 
-                    return BlocBuilder<VenueCubit, VenueState>(
-                        builder: (context, venueState) {
-                      if (venueState is VenueSuccess) {
-                        List<Venue> allVenues = venueState.venuesList;
-                        List<EventModel> filteredFavEvents = runFilter(favouriteEvents, allVenues, placeSelections, daySelections);
-                        List<EventModel> searchedFavEvents = runSearch(filteredFavEvents, eventsSearchQuery);
-                        sortEvents(searchedFavEvents);
-                        putPastEventsAtBottom(searchedFavEvents);
-                        if (searchedFavEvents.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              Strings.noEvents,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }
-                        return ListView.builder(
-                          itemCount: searchedFavEvents.length,
-                          itemBuilder: (context, index) {
-                            EventModel event = searchedFavEvents[index];
-                            return buildEventCard(context, event, allVenues);
-                          },
-                        );
-                      } else {
-                        return Container();
-                      }
-                    });
-                  } else if (state is FavouriteFailed) {
-                    return const Center(
-                      child: Text(
-                        Strings.placeholderTextEvents,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
-                    );
-                  }
-                });
-              } else if (state is EventsError) {
-                return const Center(
-                  child: Text(Strings.errorLoading),
+            return BlocBuilder<VenueCubit, VenueState>(
+                builder: (context, venueState) {
+              if (venueState is VenueSuccess) {
+                List<Venue> allVenues = venueState.venuesList;
+                List<EventModel> filteredFavEvents = runFilter(
+                    favouriteEvents, allVenues, placeSelections, daySelections);
+                List<EventModel> searchedFavEvents =
+                    runSearch(filteredFavEvents, eventsSearchQuery);
+                sortEvents(searchedFavEvents);
+                putPastEventsAtBottom(searchedFavEvents);
+                if (searchedFavEvents.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      Strings.noEvents,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: searchedFavEvents.length,
+                  itemBuilder: (context, index) {
+                    EventModel event = searchedFavEvents[index];
+                    return buildEventCard(context, event, allVenues);
+                  },
                 );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
+                return Container();
               }
             });
+          } else if (state is FavouriteFailed) {
+            return const Center(
+              child: Text(
+                Strings.placeholderTextEvents,
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            );
+          }
+        });
+      } else if (state is EventsError) {
+        return const Center(
+          child: Text(Strings.errorLoading),
+        );
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(color: Colors.white),
+        );
+      }
+    });
   }
 
   BlocBuilder<EventsCubit, EventsState> buildAllEvents() {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
-              if (state is EventsSuccess) {
-                return BlocBuilder<VenueCubit, VenueState>(
-                    builder: (context, venueState) {
-                  if (venueState is VenueSuccess) {
-                    List<Venue> allVenues = venueState.venuesList;
-                    List<EventModel> filteredEvents = runFilter(state.events,allVenues, placeSelections, daySelections);
-                    List<EventModel> searchedEvents = runSearch(filteredEvents, eventsSearchQuery);
-                    sortEvents(searchedEvents);
-                    putPastEventsAtBottom(searchedEvents);
-                    if (searchedEvents.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          Strings.noEvents,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      itemCount: searchedEvents.length,
-                      itemBuilder: (context, index) {
-                        EventModel event = searchedEvents[index];
-                        return buildEventCard(context, event, allVenues);
-                      },
-                    );
-                  } else {
-                    return Container();
-                  }
-                });
-              } else if (state is EventsError) {
-                return const Center(
-                  child: Text(Strings.errorLoading),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                );
-              }
-            });
+      if (state is EventsSuccess) {
+        return BlocBuilder<VenueCubit, VenueState>(
+            builder: (context, venueState) {
+          if (venueState is VenueSuccess) {
+            List<Venue> allVenues = venueState.venuesList;
+            List<EventModel> filteredEvents = runFilter(
+                state.events, allVenues, placeSelections, daySelections);
+            List<EventModel> searchedEvents =
+                runSearch(filteredEvents, eventsSearchQuery);
+            sortEvents(searchedEvents);
+            putPastEventsAtBottom(searchedEvents);
+            if (searchedEvents.isEmpty) {
+              return const Center(
+                child: Text(
+                  Strings.noEvents,
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            }
+            return ListView.builder(
+              itemCount: searchedEvents.length,
+              itemBuilder: (context, index) {
+                EventModel event = searchedEvents[index];
+                return buildEventCard(context, event, allVenues);
+              },
+            );
+          } else {
+            return Container();
+          }
+        });
+      } else if (state is EventsError) {
+        return const Center(
+          child: Text(Strings.errorLoading),
+        );
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        );
+      }
+    });
   }
 
   Drawer buildDrawer(BuildContext context) {
     return Drawer(
-            backgroundColor: AppColors.primaryColor,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 20, 25, 12.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                          onTap: () {
-                            _closeEndDrawer(false);
-                          },
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          )),
-                      Text(
-                        Strings.eventFilter,
-                        style: AppTheme.appTheme.textTheme.titleLarge,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            _closeEndDrawer(true);
-                          },
-                          child: const Icon(
-                            Icons.check,
-                            color: Colors.white,
-                          ))
-                    ],
+        backgroundColor: AppColors.primaryColor,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(25, 20, 25, 12.5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        _closeEndDrawer(false);
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      )),
+                  Text(
+                    Strings.eventFilter,
+                    style: AppTheme.appTheme.textTheme.titleLarge,
                   ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        buildDateFilterHeading(),
-                        buildDateFilter(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        buildVenueFilterHeading(),
-                        buildVenueFilter(context),
-                      ],
+                  GestureDetector(
+                      onTap: () {
+                        _closeEndDrawer(true);
+                      },
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ))
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildDateFilterHeading(),
+                    buildDateFilter(),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                )
-              ],
-            ));
+                    buildVenueFilterHeading(),
+                    buildVenueFilter(context),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ));
   }
 
   Theme buildVenueFilter(BuildContext context) {
     return Theme(
-                        data: Theme.of(context).copyWith(
-                            unselectedWidgetColor: Colors.white,
-                            disabledColor: Colors.blue),
-                        child: BlocBuilder<VenueCubit, VenueState>(
-                            builder: (context, venueState) {
-                          if (venueState is VenueSuccess) {
-                            List<Venue> allVenues = venueState.venuesList;
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              primary: false,
-                              itemCount: allVenues.length,
-                              itemBuilder: (context, index) {
-                                return buildPlacesCheckBoxListTile(
-                                    index, allVenues[index].venue_name);
-                              },
-                            );
-                          } else {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 200),
-                                child: SpinKitThreeBounce(
-                                  color: AppColors.secondaryColor,
-                                  size: 30,
-                                ),
-                              ),
-                            );
-                          }
-                        }),
-                      );
+      data: Theme.of(context).copyWith(
+          unselectedWidgetColor: Colors.white, disabledColor: Colors.blue),
+      child:
+          BlocBuilder<VenueCubit, VenueState>(builder: (context, venueState) {
+        if (venueState is VenueSuccess) {
+          List<Venue> allVenues = venueState.venuesList;
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            itemCount: allVenues.length,
+            itemBuilder: (context, index) {
+              return buildPlacesCheckBoxListTile(
+                  index, allVenues[index].venue_name);
+            },
+          );
+        } else {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 200),
+              child: SpinKitThreeBounce(
+                color: AppColors.secondaryColor,
+                size: 30,
+              ),
+            ),
+          );
+        }
+      }),
+    );
   }
 
   Padding buildVenueFilterHeading() {
     return Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 0, 15, 10),
-                        child: SizedBox(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(Strings.venues,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            Visibility(
-                              visible: selectedPlaces.isNotEmpty,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedPlaces = [];
-                                  });
-                                },
-                                child: const Text(Strings.clearAll,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        )),
-                      );
+      padding: const EdgeInsets.fromLTRB(25, 0, 15, 10),
+      child: SizedBox(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(Strings.venues,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              )),
+          Visibility(
+            visible: selectedPlaces.isNotEmpty,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  selectedPlaces = [];
+                });
+              },
+              child: const Text(Strings.clearAll,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  )),
+            ),
+          ),
+        ],
+      )),
+    );
   }
 
   SizedBox buildDateFilter() {
     return SizedBox(
-                        height: 60,
-                        child: ListView(
-                          physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            buildDaysRadioListTile(0, Strings.day1),
-                            buildDaysRadioListTile(1, Strings.day2),
-                            buildDaysRadioListTile(2, Strings.day3),
-                            buildDaysRadioListTile(3, Strings.day4),
-                          ],
-                        ),
-                      );
+      height: 60,
+      child: ListView(
+        physics: const ClampingScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        children: [
+          buildDaysRadioListTile(0, Strings.day1),
+          buildDaysRadioListTile(1, Strings.day2),
+          buildDaysRadioListTile(2, Strings.day3),
+          buildDaysRadioListTile(3, Strings.day4),
+        ],
+      ),
+    );
   }
 
   Padding buildDateFilterHeading() {
     return Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(25, 12.5, 15, 10),
-                        child: SizedBox(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(Strings.eventDates,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            Visibility(
-                              visible: selectedDays.isNotEmpty,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    selectedDays = [];
-                                  });
-                                },
-                                child: const Text(Strings.clearAll,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            ),
-                          ],
-                        )),
-                      );
+      padding: const EdgeInsets.fromLTRB(25, 12.5, 15, 10),
+      child: SizedBox(
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(Strings.eventDates,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              )),
+          Visibility(
+            visible: selectedDays.isNotEmpty,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  selectedDays = [];
+                });
+              },
+              child: const Text(Strings.clearAll,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  )),
+            ),
+          ),
+        ],
+      )),
+    );
   }
 
   AppBar buildSearchBar() {
     return AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                titleSpacing: 0.0,
-                leading: const Icon(Icons.search),
-                title: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      eventsSearchQuery = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: Strings.search,
-                    hintStyle: TextStyle(color: AppColors.secondaryColor),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                  cursorColor: Colors.white,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          defaultAppBar = true;
-                          eventsSearchQuery = "";
-                        });
-                      },
-                      icon: const Icon(Icons.close))
-                ],
-                bottom: const TabBar(
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Tab(
-                      text: Strings.allEvents,
-                    ),
-                    Tab(
-                      text: Strings.favouriteEvents,
-                    )
-                  ],
-                ),
-              );
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      titleSpacing: 0.0,
+      leading: const Icon(Icons.search),
+      title: TextField(
+        onChanged: (value) {
+          setState(() {
+            eventsSearchQuery = value;
+          });
+        },
+        decoration: InputDecoration(
+          hintText: Strings.search,
+          hintStyle: TextStyle(color: AppColors.secondaryColor),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+        cursorColor: Colors.white,
+        style: const TextStyle(color: Colors.white),
+      ),
+      actions: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                defaultAppBar = true;
+                eventsSearchQuery = "";
+              });
+            },
+            icon: const Icon(Icons.close))
+      ],
+      bottom: const TabBar(
+        indicatorColor: Colors.white,
+        tabs: [
+          Tab(
+            text: Strings.allEvents,
+          ),
+          Tab(
+            text: Strings.favouriteEvents,
+          )
+        ],
+      ),
+    );
   }
 
   AppBar buildAppBar() {
     return AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                centerTitle: false,
-                titleSpacing: 0.0,
-                title: Transform(
-                    // you can forcefully translate values left side using Transform
-                    transform: Matrix4.translationValues(10.0, 2.0, 0.0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Image.asset(
-                        AssetPaths.rivieraIcon,
-                        height: 40,
-                        width: 90,
-                        fit: BoxFit.contain,
-                      ),
-                    )),
-                actions: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        defaultAppBar = false;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 30.0),
-                      child: SvgPicture.asset(AssetPaths.searchIcon,
-                          height: 20, width: 20),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        _openEndDrawer();
-                      },
-                      child: SvgPicture.asset(AssetPaths.filterIcon,
-                          height: 20, width: 20),
-                    ),
-                  ),
-                ],
-                bottom: const TabBar(
-                  indicatorColor: Colors.white,
-                  tabs: [
-                    Tab(
-                      text: Strings.allEvents,
-                    ),
-                    Tab(
-                      text: Strings.favouriteEvents,
-                    )
-                  ],
-                ),
-              );
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: false,
+      titleSpacing: 0.0,
+      title: Transform(
+          // you can forcefully translate values left side using Transform
+          transform: Matrix4.translationValues(10.0, 2.0, 0.0),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Image.asset(
+              AssetPaths.rivieraIcon,
+              height: 40,
+              width: 90,
+              fit: BoxFit.contain,
+            ),
+          )),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              defaultAppBar = false;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child:
+                SvgPicture.asset(AssetPaths.searchIcon, height: 20, width: 20),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 30.0),
+          child: GestureDetector(
+            onTap: () {
+              _openEndDrawer();
+            },
+            child:
+                SvgPicture.asset(AssetPaths.filterIcon, height: 20, width: 20),
+          ),
+        ),
+      ],
+      bottom: const TabBar(
+        indicatorColor: Colors.white,
+        tabs: [
+          Tab(
+            text: Strings.allEvents,
+          ),
+          Tab(
+            text: Strings.favouriteEvents,
+          )
+        ],
+      ),
+    );
   }
 
   GestureDetector buildEventCard(
@@ -747,7 +743,8 @@ class _EventsScreenState extends State<EventsScreen> {
     });
   }
 
-  List<EventModel> getFavouriteEvents(List<String> favouritesIDs, List<EventModel> allEvents) {
+  List<EventModel> getFavouriteEvents(
+      List<String> favouritesIDs, List<EventModel> allEvents) {
     List<EventModel> favouriteEvents = [];
     for (int i = 0; i < favouritesIDs.length; i++) {
       for (int j = 0; j < allEvents.length; j++) {

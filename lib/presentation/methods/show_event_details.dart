@@ -15,7 +15,6 @@ import 'package:riviera23/utils/map_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/strings/shared_pref_keys.dart';
 import '../../constants/strings/strings.dart';
@@ -558,5 +557,3 @@ void showRegistrationDialog(BuildContext context) {
     },
   );
 }
-
-

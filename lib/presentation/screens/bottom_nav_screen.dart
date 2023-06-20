@@ -32,8 +32,6 @@ class _BottomNavState extends State<BottomNavScreen> {
   int tapCount = 0;
   late Timer _timer;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -84,7 +82,7 @@ class _BottomNavState extends State<BottomNavScreen> {
               height: MediaQuery.of(context).size.height * 0.075,
               child: Row(
                 children: <Widget>[
-                buildSideButton(0, AssetPaths.homeIcon, Strings.home),
+                  buildSideButton(0, AssetPaths.homeIcon, Strings.home),
                   buildSideButton(1, AssetPaths.eventsIcon, Strings.events),
                   buildMiddleButton(),
                   buildSideButton(3, AssetPaths.infoIcon, Strings.info),
@@ -94,23 +92,21 @@ class _BottomNavState extends State<BottomNavScreen> {
             )));
   }
 
-
-
   InkWell buildSideButton(int index, String assetPath, String label) {
     return InkWell(
-                  radius: 10,
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-                  },
-                  child: CustomBottomNavBarItem(
-                    imgPath: assetPath,
-                    label: label,
-                    index: index,
-                    selectedIndex: selectedIndex,
-                  ),
-                );
+      radius: 10,
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child: CustomBottomNavBarItem(
+        imgPath: assetPath,
+        label: label,
+        index: index,
+        selectedIndex: selectedIndex,
+      ),
+    );
   }
 
   Expanded buildMiddleButton() {

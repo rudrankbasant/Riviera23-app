@@ -57,123 +57,120 @@ class _HashtagsScreenState extends State<HashtagsScreen> {
 
   Padding buildPageHashtag() {
     return Padding(
-          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: Strings.desc1,
-              style: GoogleFonts.sora(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15),
-              children: <TextSpan>[
-                TextSpan(
-                    text: Strings.rivieraHashtag,
-                    style: GoogleFonts.sora(
-                        color: AppColors.highlightColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15)),
-                TextSpan(
-                    text: Strings.desc2,
-                    style: GoogleFonts.sora(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15)),
-              ],
-            ),
-          ),
-        );
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: Strings.desc1,
+          style: GoogleFonts.sora(
+              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15),
+          children: <TextSpan>[
+            TextSpan(
+                text: Strings.rivieraHashtag,
+                style: GoogleFonts.sora(
+                    color: AppColors.highlightColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15)),
+            TextSpan(
+                text: Strings.desc2,
+                style: GoogleFonts.sora(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15)),
+          ],
+        ),
+      ),
+    );
   }
 
   SizedBox buildPageDesc() {
     return SizedBox(
-          width: double.infinity,
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: Strings.rivieraHashtag,
-              style: GoogleFonts.sora(
-                  color: AppColors.highlightColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 23),
-              children: <TextSpan>[
-                TextSpan(
-                    text: Strings.photowall,
-                    style: GoogleFonts.sora(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 23)),
-              ],
-            ),
-          ),
-        );
+      width: double.infinity,
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: Strings.rivieraHashtag,
+          style: GoogleFonts.sora(
+              color: AppColors.highlightColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 23),
+          children: <TextSpan>[
+            TextSpan(
+                text: Strings.photowall,
+                style: GoogleFonts.sora(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 23)),
+          ],
+        ),
+      ),
+    );
   }
 
   Padding buildEventIcon() {
     return Padding(
-          padding: const EdgeInsets.fromLTRB(45, 45, 45, 10),
-          child: Image.asset(AssetPaths.rivieraIcon),
-        );
+      padding: const EdgeInsets.fromLTRB(45, 45, 45, 10),
+      child: Image.asset(AssetPaths.rivieraIcon),
+    );
   }
 
   BlocBuilder<HashtagCubit, HashtagState> buildHashtagPosts() {
     return BlocBuilder<HashtagCubit, HashtagState>(
-          builder: (context, state) {
-            if (state is HashtagSuccess) {
-              if (state.hashtags.isNotEmpty) {
-                return ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.hashtags.length,
-                    itemBuilder: (context, itemIndex) {
-                      return GestureDetector(
-                        onTap: () {
-                          launchURL(
-                              state.hashtags[itemIndex].permalink, context, true);
-                        },
-                        child: Center(
-                          child: HashtagCard(
-                            index: itemIndex,
-                            caption: state.hashtags[itemIndex].caption,
-                            imgUrl: state.hashtags[itemIndex].mediaUrl,
-                            color: colorsList[itemIndex % 2],
-                            likeCount: state.hashtags[itemIndex].likeCount,
-                            commentCount:
-                                state.hashtags[itemIndex].commentsCount,
-                          ),
-                        ),
-                      );
-                    });
-              } else {
-                return Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 300,
+      builder: (context, state) {
+        if (state is HashtagSuccess) {
+          if (state.hashtags.isNotEmpty) {
+            return ListView.builder(
+                primary: false,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.hashtags.length,
+                itemBuilder: (context, itemIndex) {
+                  return GestureDetector(
+                    onTap: () {
+                      launchURL(
+                          state.hashtags[itemIndex].permalink, context, true);
+                    },
+                    child: Center(
+                      child: HashtagCard(
+                        index: itemIndex,
+                        caption: state.hashtags[itemIndex].caption,
+                        imgUrl: state.hashtags[itemIndex].mediaUrl,
+                        color: colorsList[itemIndex % 2],
+                        likeCount: state.hashtags[itemIndex].likeCount,
+                        commentCount: state.hashtags[itemIndex].commentsCount,
                       ),
-                      SpinKitThreeBounce(
-                        color: AppColors.secondaryColor,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                );
-              }
-            }
-            if (state is HashtagError) {
-              return Text(state.error);
-            }
+                    ),
+                  );
+                });
+          } else {
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 200),
-                child: SpinKitThreeBounce(
-                  color: AppColors.secondaryColor,
-                  size: 30,
-                ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 300,
+                  ),
+                  SpinKitThreeBounce(
+                    color: AppColors.secondaryColor,
+                    size: 30,
+                  ),
+                ],
               ),
             );
-          },
+          }
+        }
+        if (state is HashtagError) {
+          return Text(state.error);
+        }
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 200),
+            child: SpinKitThreeBounce(
+              color: AppColors.secondaryColor,
+              size: 30,
+            ),
+          ),
         );
+      },
+    );
   }
 }

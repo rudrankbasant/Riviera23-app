@@ -45,41 +45,41 @@ void showCreatorDialog(BuildContext context) {
 
 Material buildCreatorCard() {
   return Material(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Made with ',
-                    style: GoogleFonts.sora(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
-                  ),
-                  const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
-                  Text(
-                    ' by',
-                    style: GoogleFonts.sora(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Image.asset(AssetPaths.gdscLogo),
-                ),
-              )
-            ],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Made with ',
+              style: GoogleFonts.sora(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
+            ),
+            const Icon(
+              Icons.favorite,
+              color: Colors.red,
+            ),
+            Text(
+              ' by',
+              style: GoogleFonts.sora(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Image.asset(AssetPaths.gdscLogo),
           ),
-        );
+        )
+      ],
+    ),
+  );
 }

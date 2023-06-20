@@ -130,11 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: Padding(
             padding: const EdgeInsets.only(right: 25.0),
-            child: CustomShowcase(
-                _merch_guide,
-                Strings.seeAllMerch,
-                SvgPicture.asset(AssetPaths.merchIcon,
-                    height: 22, width: 22)),
+            child: CustomShowcase(_merch_guide, Strings.seeAllMerch,
+                SvgPicture.asset(AssetPaths.merchIcon, height: 22, width: 22)),
           ),
         ),
         GestureDetector(
