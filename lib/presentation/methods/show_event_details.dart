@@ -23,6 +23,7 @@ import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
 import 'custom_flushbar.dart';
+import 'launch_url.dart';
 
 void showCustomBottomSheet(
     BuildContext context, EventModel event, Venue venue) {
@@ -492,7 +493,7 @@ void showRegistrationDialog(BuildContext context) {
                           ),
                         ),
                         onPressed: () {
-                          _launchURLBrowser(Strings.vtopLink, context);
+                          launchURL(Strings.vtopLink, context, true);
                         },
                         child: Text(
                           Strings.vitStudent,
@@ -508,7 +509,7 @@ void showRegistrationDialog(BuildContext context) {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _launchURLBrowser(Strings.websiteLink, context);
+                      launchURL(Strings.websiteLink, context, true);
                     },
                     child: Container(
                       width: double.infinity,
@@ -558,14 +559,4 @@ void showRegistrationDialog(BuildContext context) {
   );
 }
 
-void _launchURLBrowser(url, BuildContext context) async {
-  final Uri uri = Uri.parse(url);
-  try {
-    await canLaunchUrl(uri)
-        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
-        : throw Strings.showURIError(uri);
-  } catch (e) {
-    showCustomFlushbar(
-        Strings.cantOpenLinkTitle, Strings.cantOpenLinkMessage, context);
-  }
-}
+

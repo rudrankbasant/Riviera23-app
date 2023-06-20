@@ -9,16 +9,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
 import 'package:riviera23/presentation/router/app_router.dart';
-import 'package:riviera23/presentation/screens/splash_screen.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constants/strings/strings.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/merch/merch_cubit.dart';
@@ -127,10 +128,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Riviera23',
+        title: Strings.appName,
         theme: AppTheme.appTheme,
-        home: const SplashScreen(),
-        onGenerateRoute: AppRouter().onGenerateRoute,
+        initialRoute: '/',
+        onGenerateRoute: AppRouter.onGenerateRoute,
       ),
     );
   }
@@ -149,30 +150,35 @@ getDataUpdate() async {
   bool isConnected = await InternetConnectionChecker().hasConnection;
   if (isConnected) {
     await remoteConfig.fetchAndActivate();
-    final androidVersion = remoteConfig.getString("android_version");
-    final iosVersion = remoteConfig.getString("ios_version");
-    var baseUrl = remoteConfig.getString("base_url");
-    final showGdsc = remoteConfig.getBool("show_gdsc");
+    final androidVersion = remoteConfig.getString(Strings.androidVersion);
+    final iosVersion = remoteConfig.getString(Strings.iosVersion);
+    var baseUrl = remoteConfig.getString(Strings.baseUrl);
+    final showGdsc = remoteConfig.getBool(Strings.showGdsc);
 
-    prefs.setString("remote_app_version_android", androidVersion);
-    prefs.setString("remote_app_version_ios", iosVersion);
-    prefs.setString("remote_base_url", baseUrl);
-    prefs.setBool("remote_show_gdsc", showGdsc);
+    prefs.setString(SharedPrefKeys.idRemoteAppVersionAndroid, androidVersion);
+    prefs.setString(SharedPrefKeys.idRemoteAppVersionIos, iosVersion);
+    prefs.setString(SharedPrefKeys.idRemoteBaseURL, baseUrl);
+    prefs.setBool(SharedPrefKeys.idRemoteShowGdsc, showGdsc);
   }
 
   //Check for data updates
   DataVersion remoteVersions = await getRemoteVersion();
 
   //All other Data Versions are int (DON'T CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
+  prefs.setInt(SharedPrefKeys.idRemoteAnnouncement,
+      remoteVersions.announcement_version_number);
   prefs.setInt(
-      "remote_announcement", remoteVersions.announcement_version_number);
-  prefs.setInt("remote_contacts", remoteVersions.contacts_version_number);
-  prefs.setInt("remote_faq", remoteVersions.faq_version_number);
-  prefs.setInt("remote_fav", remoteVersions.favorites_version_number);
-  prefs.setInt("remote_places", remoteVersions.places_version_number);
-  prefs.setInt("remote_sponsors", remoteVersions.sponsors_version_number);
-  prefs.setInt("remote_team", remoteVersions.team_version_number);
-  prefs.setInt("remote_merch", remoteVersions.merch_version_number);
+      SharedPrefKeys.idRemoteContacts, remoteVersions.contacts_version_number);
+  prefs.setInt(SharedPrefKeys.idRemoteFaq, remoteVersions.faq_version_number);
+  prefs.setInt(
+      SharedPrefKeys.idRemoteFav, remoteVersions.favorites_version_number);
+  prefs.setInt(
+      SharedPrefKeys.idRemotePlaces, remoteVersions.places_version_number);
+  prefs.setInt(
+      SharedPrefKeys.idRemoteSponsors, remoteVersions.sponsors_version_number);
+  prefs.setInt(SharedPrefKeys.idRemoteTeam, remoteVersions.team_version_number);
+  prefs.setInt(
+      SharedPrefKeys.idRemoteMerch, remoteVersions.merch_version_number);
 }
 
 Future<DataVersion> getRemoteVersion() async {
@@ -205,7 +211,7 @@ Future<DataVersion> getRemoteVersion() async {
 
 Future<void> setAppStarted() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('appStarted', true);
-  prefs.setBool('appStarted_events', true);
-  prefs.setBool("appStarted_hashtags", true);
+  prefs.setBool(SharedPrefKeys.appStarted, true);
+  prefs.setBool(SharedPrefKeys.appStartedEvents, true);
+  prefs.setBool(SharedPrefKeys.appStartedHashtags, true);
 }

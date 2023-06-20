@@ -1,46 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:riviera23/presentation/screens/announcement_history_screen.dart';
+import 'package:riviera23/presentation/screens/auth_screen.dart';
+import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
-import 'package:riviera23/presentation/screens/home_screen.dart';
-import 'package:riviera23/presentation/screens/info_screen.dart';
-import 'package:riviera23/presentation/screens/profile_screen.dart';
+import 'package:riviera23/presentation/screens/merch_screen.dart';
 
-import '../screens/hashtags_screen.dart';
 import '../screens/splash_screen.dart';
 
 class AppRouter {
-  Route onGenerateRoute(RouteSettings settings) {
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    final args = settings.arguments;
+
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (homeContext) {
           return const SplashScreen();
         });
-      case '/home':
-        return MaterialPageRoute(builder: (_) {
-          return const HomeScreen(null);
+      case '/bottomNavScreen':
+        return MaterialPageRoute(builder: (homeContext) {
+          return BottomNavScreen(args as int?);
         });
-      case '/events/all':
+      case '/authentication':
         return MaterialPageRoute(builder: (_) {
-          return EventsScreen(0);
+          return const AuthScreen();
         });
-      case '/events/favourites':
+      case '/announcements':
         return MaterialPageRoute(builder: (_) {
-          return EventsScreen(1);
+          return const AnnouncementHistoryScreen();
         });
-      case '/hashtags':
+      case '/merch':
         return MaterialPageRoute(builder: (_) {
-          return const HashtagsScreen();
+          return const MerchScreen();
         });
-      case '/info':
-        return MaterialPageRoute(builder: (_) {
-          return const InfoScreen();
-        });
-      case '/profile':
-        return MaterialPageRoute(builder: (_) {
-          return const ProfileScreen();
+      case '/events':
+        return MaterialPageRoute(builder: (homeContext) {
+          return EventsScreen(args as int?);
         });
       default:
         return MaterialPageRoute(builder: (_) {
-          return Container();
+          return const Center(
+            child: Text('Page Not Found'),
+          );
         });
     }
   }

@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/data/models/venue_model.dart';
 import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
@@ -13,46 +15,28 @@ import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
-import '../../data/models/venue_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/show_event_details.dart';
 
-class OnGoingEvents extends StatefulWidget {
+class FeaturedEvents extends StatefulWidget {
   List<Venue> allVenues;
 
-  OnGoingEvents({
-    super.key,
-    required this.allVenues,
-  });
+  FeaturedEvents({super.key, required this.allVenues});
 
   @override
-  _OnGoingEventsState createState() => _OnGoingEventsState();
+  _FeaturedEventsState createState() => _FeaturedEventsState();
 }
 
-class _OnGoingEventsState extends State<OnGoingEvents> {
+class _FeaturedEventsState extends State<FeaturedEvents> {
   int _current = 0;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
       if (state is EventsSuccess) {
-        List<EventModel> onGoingEvents =
-            state.events.where((element) => isGoingOn(element)).toList();
-
-        //sort in reverse order
-        onGoingEvents.sort((a, b) {
-          if (a.start == null && b.start == null) {
-            return 0;
-          } else if (a.start == null) {
-            return -1;
-          } else if (b.start == null) {
-            return 1;
-          } else {
-            return b.start!.compareTo(a.start!);
-          }
-        });
-
-        final List<Widget> imageSliders = onGoingEvents
+        List<EventModel> featuredEvents =
+            state.events.where((element) => element.featured == true).toList();
+        final List<Widget> imageSliders = featuredEvents
             .map((item) => GestureDetector(
                   onTap: () {
                     showCustomBottomSheet(
@@ -102,7 +86,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                             item.name.toString(),
                             style: GoogleFonts.sora(
                                 color: AppColors.highlightColor,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                                 fontSize: 16),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -131,6 +115,7 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                   ),
                 ))
             .toList();
+
         return Column(
           children: [
             Padding(
@@ -138,17 +123,24 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("ONGOING EVENTS",
+                  Text(Strings.featuredEventsTitle,
                       style: AppTheme.appTheme.textTheme.titleLarge),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed('/events', arguments: 0);
+                      },
+                      child: Text(Strings.seeMore,
+                          style: TextStyle(color: AppColors.highlightColor)))
                 ],
               ),
             ),
-            onGoingEvents.isEmpty
+            featuredEvents.isEmpty
                 ? const Center(
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(0, 100, 0, 100),
                       child: Text(
-                        "On-Going Events will be shown here",
+                        Strings.featuredEventsEmpty,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
@@ -160,9 +152,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
                 : CarouselSlider(
                     items: imageSliders,
                     options: CarouselOptions(
-                        scrollDirection: Axis.horizontal,
                         autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayInterval: const Duration(seconds: 6),
                         enlargeCenterPage: false,
                         aspectRatio: 1 / 0.95,
                         viewportFraction: 0.5,
@@ -176,27 +167,26 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
         );
       } else if (state is EventsError) {
         return const Center(
-          child: Text(Strings.errorLoading),
+          child: Text(
+            Strings.errorLoading,
+            style: TextStyle(color: Colors.white),
+          ),
         );
       } else {
-        return Container();
+        return Center(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 300,
+              ),
+              SpinKitThreeBounce(
+                color: AppColors.secondaryColor,
+                size: 30,
+              ),
+            ],
+          ),
+        );
       }
     });
-  }
-
-  bool isGoingOn(EventModel element) {
-    var currentDateTime = DateTime.now().toLocal();
-    if (element.start != null && element.end != null) {
-      var startDateTime = DateTime.parse(element.start.toString()).toLocal();
-      var endDateTime = DateTime.parse(element.end.toString()).toLocal();
-      if (currentDateTime.isAfter(startDateTime) &&
-          currentDateTime.isBefore(endDateTime)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    return false;
   }
 }

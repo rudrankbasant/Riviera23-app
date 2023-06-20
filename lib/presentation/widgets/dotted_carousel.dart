@@ -15,7 +15,6 @@ import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
 import '../../utils/app_theme.dart';
 import '../methods/get_venue.dart';
-import '../screens/merch_screen.dart';
 
 class CarouselWithDotsPage extends StatefulWidget {
   List<Venue> allVenues;
@@ -162,8 +161,9 @@ class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MerchScreen()));
+                Navigator.of(context).pushNamed(
+                  '/merch',
+                );
               },
               child: SizedBox(
                   width: MediaQuery.of(context).size.width,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constants/strings/asset_paths.dart';
 import '../../utils/app_colors.dart';
 
 void showCreatorDialog(BuildContext context) {
@@ -19,44 +20,7 @@ void showCreatorDialog(BuildContext context) {
           decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(10)),
-          child: Material(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Made with ',
-                      style: GoogleFonts.sora(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
-                    ),
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                    ),
-                    Text(
-                      ' by',
-                      style: GoogleFonts.sora(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Image.asset("assets/gdsc_vit_logo.png"),
-                  ),
-                )
-              ],
-            ),
-          ),
+          child: buildCreatorCard(),
         ),
       );
     },
@@ -77,4 +41,45 @@ void showCreatorDialog(BuildContext context) {
       );
     },
   );
+}
+
+Material buildCreatorCard() {
+  return Material(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Made with ',
+                    style: GoogleFonts.sora(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20),
+                  ),
+                  const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  ),
+                  Text(
+                    ' by',
+                    style: GoogleFonts.sora(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Image.asset(AssetPaths.gdscLogo),
+                ),
+              )
+            ],
+          ),
+        );
 }

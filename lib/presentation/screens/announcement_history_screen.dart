@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/strings/strings.dart';
 import '../../cubit/announcements/announcements_cubit.dart';
 import '../../data/models/announcement_model.dart';
-import '../methods/custom_flushbar.dart';
+import '../methods/launch_url.dart';
 
 class AnnouncementHistoryScreen extends StatefulWidget {
   const AnnouncementHistoryScreen({super.key});
@@ -36,7 +36,7 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
         title: const Text(
-          'Announcements',
+          Strings.announcements,
           style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w500,
@@ -48,185 +48,17 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
       body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
         builder: (context, state) {
           if (state is AnnouncementsSuccess) {
-            var groupedList = groupBy(state.announcementsList,
-                    (Announcement announcement) => parseDate(announcement.date))
-                .entries
-                .toList();
-            groupedList.sort((a, b) => b.key.compareTo(a.key));
-
+            var groupedList = getGroupedList(state.announcementsList);
             return ListView.builder(
                 itemCount: groupedList.length,
                 itemBuilder: (context, position) {
                   var groupedData = groupedList[position];
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 5,
-                                height: ((heightOfNotification + 5) *
-                                        groupedData.value.length) +
-                                    36,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                  color: position == 0
-                                      ? Colors.deepOrangeAccent
-                                      : Colors.blue,
-                                  shape: BoxShape.rectangle,
-                                ),
-                              ),
-                              Flexible(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 8, 0, 8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10, 0, 0, 10),
-                                        child: Text(
-                                          groupedData.key,
-                                          style: TextStyle(
-                                              color: position == 0
-                                                  ? Colors.deepOrangeAccent
-                                                  : Colors.blue,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                      Flexible(
-                                        fit: FlexFit.loose,
-                                        child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            itemCount: groupedList[position]
-                                                .value
-                                                .length,
-                                            itemBuilder: (context, itemIndex) {
-                                              groupedList[position].value.sort(
-                                                  (a, b) =>
-                                                      b.date.compareTo(a.date));
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  showAnnouncememt(
-                                                      groupedList[position]
-                                                          .value[itemIndex]);
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 5, 0, 0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    5)),
-                                                        color: AppColors
-                                                            .cardBgColor,
-                                                        shape:
-                                                            BoxShape.rectangle),
-                                                    height:
-                                                        heightOfNotification,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Text(
-                                                              groupedList[
-                                                                      position]
-                                                                  .value[
-                                                                      itemIndex]
-                                                                  .heading
-                                                                  .toString(),
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      20.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontFamily:
-                                                                      GoogleFonts
-                                                                          .sora
-                                                                          .toString())),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 5.0),
-                                                            child: Text(
-                                                                groupedList[position]
-                                                                    .value[
-                                                                        itemIndex]
-                                                                    .desc
-                                                                    .toString(),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize:
-                                                                        15.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    fontFamily:
-                                                                        GoogleFonts
-                                                                            .sora
-                                                                            .toString())),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                  return buildAnnouncementCard(
+                      heightOfNotification, groupedData, position, groupedList);
                 });
           } else {
             return Center(
-                child: Text("Loading Announcement History ...",
+                child: Text(Strings.loadingAnnouncement,
                     style: TextStyle(color: AppColors.secondaryColor)));
           }
         },
@@ -234,7 +66,144 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
     );
   }
 
-  showAnnouncememt(Announcement announcement) {
+  Column buildAnnouncementCard(
+      double heightOfNotification,
+      MapEntry<String, List<Announcement>> groupedData,
+      int position,
+      List<MapEntry<String, List<Announcement>>> groupedList) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          fit: FlexFit.loose,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildLeftBar(heightOfNotification, groupedData, position),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                          child: Text(
+                            groupedData.key,
+                            style: TextStyle(
+                                color: position == 0
+                                    ? Colors.deepOrangeAccent
+                                    : Colors.blue,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: groupedList[position].value.length,
+                              itemBuilder: (context, itemIndex) {
+                                groupedList[position]
+                                    .value
+                                    .sort((a, b) => b.date.compareTo(a.date));
+                                return buildAnnouncementData(groupedList,
+                                    position, itemIndex, heightOfNotification);
+                              }),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  GestureDetector buildAnnouncementData(
+      List<MapEntry<String, List<Announcement>>> groupedList,
+      int position,
+      int itemIndex,
+      double heightOfNotification) {
+    return GestureDetector(
+      onTap: () {
+        showAnnouncement(groupedList[position].value[itemIndex]);
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              color: AppColors.cardBgColor,
+              shape: BoxShape.rectangle),
+          height: heightOfNotification,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(groupedList[position].value[itemIndex].heading.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: GoogleFonts.sora.toString())),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Text(
+                      groupedList[position].value[itemIndex].desc.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: GoogleFonts.sora.toString())),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildLeftBar(double heightOfNotification,
+      MapEntry<String, List<Announcement>> groupedData, int position) {
+    return Container(
+      width: 5,
+      height: ((heightOfNotification + 5) * groupedData.value.length) + 36,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        color: position == 0 ? Colors.deepOrangeAccent : Colors.blue,
+        shape: BoxShape.rectangle,
+      ),
+    );
+  }
+
+  List<MapEntry<String, List<Announcement>>> getGroupedList(
+      List<Announcement> announcementsList) {
+    List<MapEntry<String, List<Announcement>>> groupedList = groupBy(
+            announcementsList,
+            (Announcement announcement) => parseDate(announcement.date))
+        .entries
+        .toList();
+    groupedList.sort((a, b) => b.key.compareTo(a.key));
+    return groupedList;
+  }
+
+  showAnnouncement(Announcement announcement) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -256,17 +225,17 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                   ? TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        _launchURL(announcement.url, context);
+                        launchURL(announcement.url, context);
                       },
                       child: const Text(
-                        "Open link",
+                        Strings.openLink,
                         style: TextStyle(color: Colors.blue),
                       ),
                     )
                   : Container(),
               TextButton(
                 child: const Text(
-                  "Close",
+                  Strings.close,
                   style: TextStyle(color: Colors.red),
                 ),
                 onPressed: () {
@@ -276,17 +245,5 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
             ],
           );
         });
-  }
-}
-
-void _launchURL(url, BuildContext context) async {
-  final Uri uri = Uri.parse(url);
-  try {
-    await canLaunchUrl(uri)
-        ? await launchUrl(uri)
-        : throw 'Could not launch $uri';
-  } catch (e) {
-    showCustomFlushbar("Can't Open Link",
-        "The link may be null or may have some issues.", context);
   }
 }

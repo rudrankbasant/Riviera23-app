@@ -47,7 +47,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
 
     if (remoteAnnouncementVersion != null) {
       /*NOTE: Checking internet connection here is important because if the app is opened with internet connection (hence fetches all remote data versions)
-      and then goes to announcement page for the first time  with no internet connection the app will have an issue because the localAnnouncementVersion
+      and then goes to announcement page for the first time with no internet connection the app will have an issue because the localAnnouncementVersion
       will be null and will update itself to the remoteAnnouncementVersion and hence will never fetch until remote version is updated.
       This is the case with all firebase calls, namely - contacts, sponsors, timeline, announcements, faq, team, venue*/
 

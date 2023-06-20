@@ -1,16 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/strings/strings.dart';
 import 'custom_flushbar.dart';
 
-void _launchURL(url, BuildContext context) async {
+void launchURL(url, BuildContext context, [bool browserMode = false]) async {
   final Uri uri = Uri.parse(url);
   try {
+    browserMode?
+    await canLaunchUrl(uri)
+        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
+        : throw Strings.showURIError(uri)
+        :
     await canLaunchUrl(uri)
         ? await launchUrl(uri)
-        : throw 'Could not launch $uri';
+        : throw Strings.showURIError(uri);
   } catch (e) {
-    showCustomFlushbar("Can't Open Link",
-        "The link may be null or may have some issues.", context);
+    showCustomFlushbar(Strings.cantOpenLinkTitle,
+        Strings.cantOpenLinkMessage, context);
   }
 }
+

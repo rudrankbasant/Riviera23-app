@@ -25,29 +25,7 @@ class ProfileInfo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-              child: Row(
-            children: [
-              Container(
-                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(imgPath)),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.05,
-              ),
-              Flexible(
-                child: Text(infoText,
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
-              ),
-            ],
-          )),
+          buildProfileData(context),
           isButton
               ? GestureDetector(
                   onTap: () {
@@ -63,5 +41,31 @@ class ProfileInfo extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Expanded buildProfileData(BuildContext context) {
+    return Expanded(
+            child: Row(
+          children: [
+            Container(
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: 50.0,
+                height: 50.0,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(imgPath)),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.05,
+            ),
+            Flexible(
+              child: Text(infoText,
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontFamily: GoogleFonts.getFont("Sora").fontFamily)),
+            ),
+          ],
+        ));
   }
 }

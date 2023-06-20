@@ -7,8 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
-import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 
+import '../../constants/strings/asset_paths.dart';
+import '../../constants/strings/strings.dart';
 import '../../utils/app_colors.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController cpasswordController = TextEditingController();
   var showConfirmPassword = false;
-  var resetlinkSent = false;
+  var resetLinkSent = false;
 
   void signUpUser() async {
     BlocProvider.of<AuthCubit>(context).signUpWithEmail(
@@ -45,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void initState() {
     super.initState();
     showConfirmPassword = false;
-    resetlinkSent = false;
+    resetLinkSent = false;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final cubit = context.read<AuthCubit>();
       cubit.checkAlreadySignedIn();
@@ -61,37 +62,20 @@ class _AuthScreenState extends State<AuthScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/auth_bg.png"),
+            image: AssetImage(AssetPaths.authBg),
             fit: BoxFit.cover,
           ),
         ),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is SignInSuccess) {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BottomNavScreen(null)));
+              Navigator.of(context)
+                  .pushReplacementNamed("/bottomNavScreen", arguments: null);
             }
           },
           builder: (context, state) {
             if (state is AuthLoading) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(color: Colors.white),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    'Reviving the Era...',
-                    style: GoogleFonts.sora(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
-                  )
-                ],
-              );
+              return buildAuthLoading();
             } else {
               return LayoutBuilder(builder: (context, constraint) {
                 return SingleChildScrollView(
@@ -103,366 +87,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           const SizedBox(height: 90),
-                          Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(45, 45, 45, 30),
-                                child: Image.asset("assets/riviera_icon.png"),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text("WELCOME TO RIVIERA'23",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w800,
-                                      fontFamily: GoogleFonts.sora.toString(),
-                                    )),
-                              ),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                                  child: TextField(
-                                    style: const TextStyle(color: Colors.white),
-                                    controller: emailController,
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      label: Text(
-                                        "Email",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(7)),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(7)),
-                                      ),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.white, width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7))),
-                                      hintText: 'Email',
-                                    ),
-                                  )),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                                  child: TextField(
-                                    obscureText: true,
-                                    style: const TextStyle(color: Colors.white),
-                                    controller: passwordController,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    decoration: const InputDecoration(
-                                      label: Text(
-                                        "Password",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(7)),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(7)),
-                                      ),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.white, width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7))),
-                                      hintText: 'Password',
-                                    ),
-                                  )),
-                              Visibility(
-                                visible: !showConfirmPassword,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      showForgotPasswordDialog(
-                                          context, resetlinkSent);
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 5, 25, 5),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        "Forgot Password?",
-                                        style: GoogleFonts.sora(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: showConfirmPassword,
-                                child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 10, 20, 5),
-                                    child: TextField(
-                                      obscureText: true,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      controller: cpasswordController,
-                                      keyboardType:
-                                          TextInputType.visiblePassword,
-                                      decoration: const InputDecoration(
-                                        label: Text(
-                                          "Confirm Password",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.white, width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7)),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.white, width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7)),
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white, width: 1),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(7))),
-                                        hintText: 'Confirm Password',
-                                      ),
-                                    )),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  if (emailController.text.trim().isNotEmpty &&
-                                      passwordController.text
-                                          .trim()
-                                          .isNotEmpty) {
-                                    if (showConfirmPassword) {
-                                      if (cpasswordController.text
-                                          .trim()
-                                          .isNotEmpty) {
-                                        if (passwordController.text.trim() ==
-                                            cpasswordController.text.trim()) {
-                                          signUpUser();
-                                        } else {
-                                          showCustomFlushbar("Error!",
-                                              "Passwords don't match", context);
-                                        }
-                                      } else {
-                                        showCustomFlushbar(
-                                            "Error!",
-                                            "Please Enter email and password",
-                                            context);
-                                      }
-                                    } else {
-                                      loginUser();
-                                    }
-                                  } else {
-                                    showCustomFlushbar(
-                                        "Error!",
-                                        "Please Enter email and password",
-                                        context);
-                                  }
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 20, 20, 5),
-                                    child: Container(
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7),
-                                        color: const Color(0xff466FFF),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            showConfirmPassword
-                                                ? const Text(
-                                                    "Sign Up",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  )
-                                                : const Text(
-                                                    "Sign In",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                child: Row(children: <Widget>[
-                                  Expanded(
-                                      child: Divider(
-                                    color: Colors.grey,
-                                  )),
-                                  Text("OR",
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                  Expanded(
-                                      child: Divider(
-                                    color: Colors.grey,
-                                  )),
-                                ]),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  BlocProvider.of<AuthCubit>(context)
-                                      .signInWithGoogle(context);
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 10, 20, 5),
-                                    child: Container(
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                "assets/google_logo.svg"),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            const Text(
-                                              "Continue with Google",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                              Platform.isAndroid
-                                  ? Container()
-                                  : GestureDetector(
-                                      onTap: () {
-                                        BlocProvider.of<AuthCubit>(context)
-                                            .signInWithApple(context);
-                                      },
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 10, 20, 5),
-                                          child: Container(
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      "assets/apple_logo.svg"),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  const Text(
-                                                    "Continue with Apple",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )),
-                                    ),
-                            ],
-                          ),
+                          buildAuthFields(context),
                           Expanded(
                             child: Container(
                               color: Colors.transparent,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showConfirmPassword = !showConfirmPassword;
-                              });
-                            },
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 20, 50),
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(color: Colors.white),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        showConfirmPassword
-                                            ? const Text(
-                                                "Already have an account? Login",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              )
-                                            : const Text(
-                                                "Don't have an account? Sign Up",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                          ),
+                          buildAuthOptions(),
                         ],
                       ),
                     ),
@@ -473,6 +104,333 @@ class _AuthScreenState extends State<AuthScreen> {
           },
         ),
       ),
+    );
+  }
+
+  Column buildAuthFields(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(45, 45, 45, 30),
+          child: Image.asset(AssetPaths.rivieraIcon),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Text(Strings.titleAuth,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                fontFamily: GoogleFonts.sora.toString(),
+              )),
+        ),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+            child: TextField(
+              style: const TextStyle(color: Colors.white),
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                label: Text(
+                  Strings.emailAuth,
+                  style: TextStyle(color: Colors.white),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                hintText: Strings.emailAuth,
+              ),
+            )),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+            child: TextField(
+              obscureText: true,
+              style: const TextStyle(color: Colors.white),
+              controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: const InputDecoration(
+                label: Text(
+                  Strings.passwordAuth,
+                  style: TextStyle(color: Colors.white),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                ),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                hintText: Strings.passwordAuth,
+              ),
+            )),
+        Visibility(
+          visible: !showConfirmPassword,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                showForgotPasswordDialog(context, resetLinkSent);
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 25, 5),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  Strings.forgotPasswordAuth,
+                  style: GoogleFonts.sora(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 10),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Visibility(
+          visible: showConfirmPassword,
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+              child: TextField(
+                obscureText: true,
+                style: const TextStyle(color: Colors.white),
+                controller: cpasswordController,
+                keyboardType: TextInputType.visiblePassword,
+                decoration: const InputDecoration(
+                  label: Text(
+                    Strings.confirmPasswordAuth,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(7))),
+                  hintText: Strings.confirmPasswordAuth,
+                ),
+              )),
+        ),
+        GestureDetector(
+          onTap: () {
+            if (emailController.text.trim().isNotEmpty &&
+                passwordController.text.trim().isNotEmpty) {
+              if (showConfirmPassword) {
+                if (cpasswordController.text.trim().isNotEmpty) {
+                  if (passwordController.text.trim() ==
+                      cpasswordController.text.trim()) {
+                    signUpUser();
+                  } else {
+                    showCustomFlushbar(Strings.generalErrorTitle,
+                        Strings.passwordsDontMatch, context);
+                  }
+                } else {
+                  showCustomFlushbar(Strings.generalErrorTitle,
+                      Strings.emailPasswordAuth, context);
+                }
+              } else {
+                loginUser();
+              }
+            } else {
+              showCustomFlushbar(Strings.generalErrorTitle,
+                  Strings.emailPasswordAuth, context);
+            }
+          },
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color: const Color(0xff466FFF),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      showConfirmPassword
+                          ? const Text(
+                              Strings.signupAuth,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          : const Text(
+                              Strings.signInAuth,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              )),
+        ),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: Divider(
+              color: Colors.grey,
+            )),
+            Text(Strings.or,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                )),
+            Expanded(
+                child: Divider(
+              color: Colors.grey,
+            )),
+          ]),
+        ),
+        GestureDetector(
+          onTap: () {
+            BlocProvider.of<AuthCubit>(context).signInWithGoogle(context);
+          },
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color: Colors.white,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(AssetPaths.googleLogo),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        Strings.googleAuth,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+        ),
+        Platform.isAndroid
+            ? Container()
+            : GestureDetector(
+                onTap: () {
+                  BlocProvider.of<AuthCubit>(context).signInWithApple(context);
+                },
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(AssetPaths.appleLogo),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              Strings.appleAuth,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              ),
+      ],
+    );
+  }
+
+  GestureDetector buildAuthOptions() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          showConfirmPassword = !showConfirmPassword;
+        });
+      },
+      child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              border: Border.all(color: Colors.white),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  showConfirmPassword
+                      ? const Text(
+                          Strings.loginGuideAuth,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      : const Text(
+                          Strings.signupGuideAuth,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          )),
+    );
+  }
+
+  Column buildAuthLoading() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const CircularProgressIndicator(color: Colors.white),
+        const SizedBox(
+          height: 40,
+        ),
+        Text(
+          Strings.loadingAuth,
+          style: GoogleFonts.sora(
+              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+        )
+      ],
     );
   }
 }
@@ -514,7 +472,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(50.0),
                                   child: Image.asset(
-                                    "assets/app_icon.png",
+                                    AssetPaths.appIcon,
                                     height: 100,
                                     width: 100,
                                   ),
@@ -523,7 +481,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                   height: 20,
                                 ),
                                 Text(
-                                  "Reset Password Link Sent",
+                                  Strings.resetLinkSentAuth,
                                   style: GoogleFonts.sora(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -534,7 +492,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 5, 10, 10),
                                   child: Text(
-                                    "Please check your email for a link to reset your password. \nIf it doesn’t appear within a few minutes, check your spam folder.",
+                                    Strings.resetLinkDescAuth,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.sora(
                                       color: Colors.white,
@@ -557,7 +515,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(8, 3, 8, 3),
                                 child: Text(
-                                  "Reset Password",
+                                  Strings.resetPasswordAuth,
                                   style: GoogleFonts.sora(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
@@ -567,7 +525,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Enter your email ID to reset your password",
+                                  Strings.resetDescAuth,
                                   style: GoogleFonts.sora(
                                       color: Colors.white, fontSize: 14),
                                 ),
@@ -593,10 +551,10 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                         ),
                                       ),
                                       enabled: true,
-                                      hintText: 'Email',
+                                      hintText: Strings.emailAuth,
                                       hintStyle: GoogleFonts.sora(
                                           color: Colors.white, fontSize: 14),
-                                      labelText: 'Email',
+                                      labelText: Strings.emailAuth,
                                       labelStyle: GoogleFonts.sora(
                                           color: Colors.white, fontSize: 14)),
                                 ),
@@ -630,7 +588,7 @@ showForgotPasswordDialog(BuildContext context, bool resetlinkSent) {
                                     // fixedSize: Size(250, 50),
                                   ),
                                   child: const Text(
-                                    "Send",
+                                    Strings.send,
                                   ),
                                 ),
                               ),

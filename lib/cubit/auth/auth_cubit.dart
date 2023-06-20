@@ -73,7 +73,7 @@ class AuthCubit extends Cubit<AuthState> {
             Strings.emailInUseTitle, Strings.emailInUseMessage, context);
         emit(NotSignedInState());
       }
-      showCustomFlushbar(Strings.generalTitle, e.message!, context);
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!, context);
       emit(NotSignedInState()); // Displaying the usual firebase error message
     }
   }
@@ -107,7 +107,7 @@ class AuthCubit extends Cubit<AuthState> {
             Strings.wrongPasswordTitle, Strings.wrongPasswordMessage, context);
         emit(NotSignedInState());
       }
-      showCustomFlushbar(Strings.generalTitle, e.message!, context);
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!, context);
       emit(NotSignedInState());
       return null;
     }
@@ -120,8 +120,8 @@ class AuthCubit extends Cubit<AuthState> {
       showCustomFlushbar(Strings.emailVerificationTitle,
           Strings.emailVerificationMessage, context);
     } on FirebaseAuthException catch (e) {
-      showCustomFlushbar(
-          Strings.generalTitle, e.message!, context); // Display error message
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!,
+          context); // Display error message
     }
   }
 
@@ -144,7 +144,7 @@ class AuthCubit extends Cubit<AuthState> {
             Strings.userNotFoundTitle, Strings.userNotFoundMessage, context);
         emit(NotSignedInState());
       } else {
-        showCustomFlushbar(Strings.generalTitle, e.message!, context);
+        showCustomFlushbar(Strings.generalErrorTitle, e.message!, context);
         emit(NotSignedInState());
       }
       emit(NotSignedInState());
@@ -174,7 +174,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccess(user: user));
       return firebaseCredential;
     } on FirebaseAuthException catch (e) {
-      showCustomFlushbar(Strings.generalTitle, e.message!,
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!,
           context); // Displaying the error message
       emit(NotSignedInState());
       return null;
@@ -205,7 +205,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInSuccess(user: user));
       return await firebaseCredential.user!.getIdToken(true);
     } on FirebaseAuthException catch (e) {
-      showCustomFlushbar(Strings.generalTitle, e.message!, context);
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!, context);
       emit(NotSignedInState());
       return null;
     }
@@ -220,7 +220,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _auth.signOut();
       return true;
     } on FirebaseAuthException catch (e) {
-      showCustomFlushbar(Strings.generalTitle, e.message!,
+      showCustomFlushbar(Strings.generalErrorTitle, e.message!,
           context); // Displaying the error message
       return false;
     }

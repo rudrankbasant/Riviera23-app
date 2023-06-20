@@ -2,13 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/cubit/merch/merch_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/strings/strings.dart';
 import '../../data/models/merch_model.dart';
-import '../methods/custom_flushbar.dart';
+import '../methods/launch_url.dart';
 
 class MerchScreen extends StatefulWidget {
   const MerchScreen({super.key});
@@ -31,55 +32,63 @@ class _MerchScreenState extends State<MerchScreen> {
     return Scaffold(
         backgroundColor: AppColors.primaryColor,
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-          elevation: 0,
-          title: const Text(
-            'Merchandise',
-            style: TextStyle(
+        appBar: buildAppBar(),
+        body: buildBody());
+  }
+
+  BlocBuilder<MerchCubit, MerchState> buildBody() {
+    return BlocBuilder<MerchCubit, MerchState>(
+        builder: (context, state) {
+          if (state is MerchSuccess) {
+            var merchList = state.merchsList;
+            return Padding(
+                padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: merchList.length,
+                    scrollDirection: Axis.vertical,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: (MediaQuery.of(context).size.width) /
+                          (MediaQuery.of(context).size.height * 0.7),
+                    ),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showSizeChart = false;
+                            });
+                            showBottomMerchScreen(
+                                context, merchList[index], showSizeChart);
+                          },
+                          child: getMerchCard(merchList[index], context));
+                    }));
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
                 color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-                fontFamily: 'Axis'),
-          ),
-          centerTitle: true,
+              ),
+            );
+          }
+        },
+      );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
+        title: const Text(
+          Strings.merchTitle,
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              fontFamily: 'Axis'),
         ),
-        body: BlocBuilder<MerchCubit, MerchState>(
-          builder: (context, state) {
-            if (state is MerchSuccess) {
-              var merchList = state.merchsList;
-              return Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: merchList.length,
-                      scrollDirection: Axis.vertical,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: (MediaQuery.of(context).size.width) /
-                            (MediaQuery.of(context).size.height * 0.7),
-                      ),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showSizeChart = false;
-                              });
-                              showBottomMerchScreen(
-                                  context, merchList[index], showSizeChart);
-                            },
-                            child: getMerchCard(merchList[index], context));
-                      }));
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              );
-            }
-          },
-        ));
+        centerTitle: true,
+      );
   }
 }
 
@@ -110,7 +119,7 @@ Widget getMerchCard(Merch merch, BuildContext context) {
                   ),
                 ),
                 errorWidget: (context, url, error) => Image.asset(
-                  'assets/placeholder.png',
+                  AssetPaths.placeholder,
                   fit: BoxFit.fitWidth,
                 ),
               )),
@@ -122,7 +131,7 @@ Widget getMerchCard(Merch merch, BuildContext context) {
               color: Colors.white, fontWeight: FontWeight.w500, fontSize: 17),
         ),
         Text(
-          "Rs ${merch.price}",
+          Strings.getMerchPrice(merch.price),
           style: GoogleFonts.sora(
               color: AppColors.highlightColor,
               fontWeight: FontWeight.w500,
@@ -194,7 +203,8 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                     ? SizedBox(
                                         height: 250,
                                         width: 200,
-                                        child: Image.asset("assets/size.jpg"),
+                                        child:
+                                            Image.asset(AssetPaths.sizeChart),
                                       )
                                     : CachedNetworkImage(
                                         height: 250,
@@ -209,8 +219,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                           ),
                                         ),
                                         errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                                "assets/placeholder.png"),
+                                            Image.asset(AssetPaths.placeholder),
                                         fit: BoxFit.cover,
                                       )),
                           ),
@@ -241,7 +250,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: Text(
-                                  "Size Chart",
+                                  Strings.sizeChart,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 15,
@@ -264,7 +273,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0),
                         child: Text(
-                          "Description",
+                          Strings.description,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
@@ -303,7 +312,7 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: Text(
-                                      "\u{20B9}${merch.price}",
+                                      Strings.getMerchPrice(merch.price),
                                       style: TextStyle(
                                         color: AppColors.highlightColor,
                                         fontSize: 25,
@@ -328,11 +337,10 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
                                     ),
                                   ),
                                   onPressed: () {
-                                    _launchURLBrowser(
-                                        "https://vtop.vit.ac.in/vtop", context);
+                                    launchURL(Strings.vtopLink, context, true);
                                   },
                                   child: Text(
-                                    'BUY NOW',
+                                    Strings.buyNow,
                                     style: TextStyle(
                                       color: AppColors.secondaryColor,
                                       fontSize: 15,
@@ -357,16 +365,4 @@ void showBottomMerchScreen(BuildContext context, Merch merch, showSizeChart) {
           );
         });
       });
-}
-
-void _launchURLBrowser(url, BuildContext context) async {
-  final Uri uri = Uri.parse(url);
-  try {
-    await canLaunchUrl(uri)
-        ? await launchUrl(uri, mode: LaunchMode.externalApplication)
-        : throw 'Could not launch $uri';
-  } catch (e) {
-    showCustomFlushbar("Can't Open Link",
-        "The link may be null or may have some issues.", context);
-  }
 }

@@ -1,5 +1,15 @@
+import 'dart:core';
+
 class Strings {
   Strings._();
+
+  static const String appName = "Riviera23";
+
+  //Remote Config Ids
+  static const String androidVersion = "android_version";
+  static const String iosVersion = "ios_version";
+  static const String baseUrl = "base_url";
+  static const String showGdsc = "show_gdsc";
 
   //Firebase Collection Name
   static const String announcementCollection = 'announcements';
@@ -63,11 +73,12 @@ class Strings {
   static const String cantOpenLinkTitle = "Can't Open Link";
   static const String cantOpenLinkMessage =
       "The link may be null or may have some issues.";
+  static const String close = "Close";
 
   static showURIError(Uri uri) => 'Could not launch $uri';
 
   //Auth Errors
-  static const String generalTitle = "Error!";
+  static const String generalErrorTitle = "Error!";
   static const String weakPasswordTitle = "Weak Password";
   static const String weakPasswordMessage =
       'The password provided is too weak.';
@@ -109,4 +120,126 @@ class Strings {
 
   static googleMapUrlForIos(double latitude, double longitude) =>
       "comgooglemaps://?saddr=&daddr=$latitude,$longitude&directionsmode=driving";
+
+  //Announcement Screen
+  static const String announcements = 'Announcements';
+  static const String loadingAnnouncement = "Loading Announcement History ...";
+  static const String openLink = "Open link";
+
+  //Auth Screen
+  static const String loadingAuth = 'Reviving the Era...';
+  static const String titleAuth = "WELCOME TO RIVIERA'23";
+  static const String emailAuth = "Email";
+  static const String passwordAuth = "Password";
+  static const String forgotPasswordAuth = "Forgot Password?";
+  static const String confirmPasswordAuth = "Confirm Password";
+  static const String passwordsDontMatch = "Passwords don't match";
+  static const String emailPasswordAuth = "Please Enter email and password";
+  static const String signupAuth = "Sign Up";
+  static const String signInAuth = "Sign In";
+  static const String or = "OR";
+  static const String googleAuth = "Continue with Google";
+  static const String appleAuth = "Continue with Apple";
+  static const String loginGuideAuth = "Already have an account? Login";
+  static const String signupGuideAuth = "Don't have an account? Sign Up";
+  static const String resetPasswordAuth = "Reset Password";
+  static const String resetDescAuth =
+      "Enter your email ID to reset your password";
+  static const String resetLinkSentAuth = "Reset Password Link Sent";
+  static const String resetLinkDescAuth =
+      "Please check your email for a link to reset your password. \nIf it doesn’t appear within a few minutes, check your spam folder.";
+  static const String send = "Send";
+
+  //Bottom Nav Screen
+  static const String home = "Home";
+  static const String events = "Events";
+  static const String hashtags = "Hashtags";
+  static const String info = "Info";
+  static const String profile = "Profile";
+
+  //Contacts Screen
+  static const String meetTheTeam = "Meet the Team";
+  static const String loadingTeam = "Loading Team ...";
+  static const String teamLink = "https://riviera.vit.ac.in/team";
+  static const String contactUs = "CONTACT US";
+  static const String loadingContacts = "Loading Contacts";
+
+  //Events Screen
+  static const String allEvents = "All Events";
+  static const String favouriteEvents = "Favourites";
+  static const String search = "Search";
+  static const String eventFilter = "Event Filter";
+  static const String eventDates = "Event Dates";
+  static const String clearAll = "Clear All";
+  static const String day1 = "23 FEB, 2023";
+  static const String day2 = "24 FEB, 2023";
+  static const String day3 = "25 FEB, 2023";
+  static const String day4 = "26 FEB, 2023";
+  static const String venues = "Venues";
+  static const String noEvents = "No Events Found.";
+  static const String subsGuideEvents =
+      "You will receive event-specific notifications for your favourite events. \n\nAdd some favourites by liking an event!";
+  static const String placeholderTextEvents =
+      "You will receive event-specific notifications for your favourite events. Add some favourites by liking an event!";
+
+  //Faq Screen
+  static const String sponsors = "Sponsors";
+  static const String placeholderTextSponsor = "Sponsors Will appear here";
+  static const String loadingFaq = "Loading FAQs...";
+  static const String faq = "FAQ";
+
+  //Hashtags
+  static const String rivieraHashtag = '#riviera23';
+  static const String photowall = ' photowall';
+  static const String desc1 = 'Use ';
+  static const String desc2 =
+      ' on your Instagram to get featured on this timeline.';
+
+  //Home Screen
+  static const String seeAllMerch = "See all Merch";
+  static const String placeholderTextEventOngoing =
+      "On Going Events will appear here.";
+  static const String appLinkApple =
+      'https://apps.apple.com/in/app/riviera-23/id1665459606';
+  static const String appLinkGoogle =
+      'https://play.google.com/store/apps/details?id=in.ac.vit.riviera23';
+  static const String updateTitle = "Update Available";
+  static const String updateDesc =
+      "A new version of the app is available. Please update to the latest version.";
+  static const String later = "Later";
+  static const String updateNow = "Update Now";
+
+  //Merch Screen
+  static const String merchTitle = 'Merchandise';
+
+  static getMerchPrice(String price) => "\u{20B9}${price}";
+  static const String sizeChart = "Size Chart";
+  static const String description = "Description";
+  static const String buyNow = 'BUY NOW';
+
+  //Profile Screen
+  static String delAccountEmailBody(String? email, String providerId) =>
+      'This request is initiated to delete account associated with ${email} created with ${providerId}';
+  static const String delAccountEmailSubject = "Request to Delete Account";
+  static const String dscEmailId = 'contact@dscvit.com';
+  static const String accDeletionTitle = "Request Account Deletion";
+  static const String accDeletionDesc =
+      "It may take upto 5-7 business days to delete your account after the process has been initiated."
+      "It may take upto 5-7 business days to delete your account after the process has been initiated.";
+  static const String cancel = "Cancel";
+  static const String deleteAccount = "Delete Account";
+  static const String more = "More";
+  static const String favEvents = "Favorite Events";
+  static const String signOut = "signOut";
+  static const String privacyPolicyLink = "https://dscvit.com/privacy-policy";
+  static const String termsAndConditions =
+      "Terms and Conditions | Privacy Policy";
+
+  static getVersion(String version) => "Version $version";
+
+  //Splash Screen
+  static const String getStarted = 'GET STARTED';
+  static const riviera = 'Riviera';
+  static const rivieraDesc =
+      ' is the Annual International Sports and Cultural Carnival of the Vellore Institute of Technology.';
 }
