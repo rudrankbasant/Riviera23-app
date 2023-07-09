@@ -3,11 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/shared_pref_keys.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../auth/auth_cubit.dart';
 
 part './favourite_state.dart';
@@ -70,7 +69,7 @@ class FavouriteCubit extends Cubit<FavouriteState> {
     if (showcaseVisibilityStatus == null) {
       prefs.setBool(SharedPrefKeys.subscribeExistingUsers, false);
 
-      for (var favID in userFavourites.favouriteEventIds) {
+      for (String favID in userFavourites.favouriteEventIds) {
         await FirebaseMessaging.instance.subscribeToTopic(favID);
       }
     }

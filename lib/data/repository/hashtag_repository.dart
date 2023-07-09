@@ -1,19 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../constants/strings/api_endpoints.dart';
-import '../../constants/strings/shared_pref_keys.dart';
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/api_endpoints.dart';
+import '../../utils/constants/strings/shared_pref_keys.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../models/hashtag_model.dart';
 
 class HashtagRepository {
   Future<List<HashtagModel>> getAllHashtag() async {
     Box hashtagsBox;
-    var dir = await getApplicationDocumentsDirectory();
+    Directory dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);
     hashtagsBox = await Hive.openBox(Strings.hashtagBox);
     return await getAllEventsData(hashtagsBox);
@@ -23,8 +23,8 @@ class HashtagRepository {
     List<HashtagModel> hashtags = [];
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var baseURL = prefs.getString(SharedPrefKeys.idRemoteBaseURL);
-    var url = APIEndpoints.getHashtag(baseURL);
+    String? baseURL = prefs.getString(SharedPrefKeys.idRemoteBaseURL);
+    String url = APIEndpoints.getHashtag(baseURL);
 
     bool? appStartedHashtags = prefs.getBool(Strings.appStartedHashtag);
 
@@ -32,7 +32,7 @@ class HashtagRepository {
     if (appStartedHashtags == true || myMap.isEmpty) {
       prefs.setBool(Strings.appStartedHashtag, false);
       try {
-        var response = await http.get(
+        http.Response response = await http.get(
           Uri.parse(url),
           headers: APIEndpoints.header,
         );

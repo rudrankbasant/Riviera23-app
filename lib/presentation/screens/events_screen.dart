@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/cubit/venue/venue_cubit.dart';
@@ -12,19 +11,19 @@ import 'package:riviera23/data/models/event_model.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/venue_model.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/get_venue.dart';
 import '../methods/parse_datetime.dart';
 
 class EventsScreen extends StatefulWidget {
-  int? index;
+  final int? index;
 
-  EventsScreen(this.index, {super.key});
+  const EventsScreen(this.index, {super.key});
 
   @override
   State<EventsScreen> createState() => _EventsScreenState();

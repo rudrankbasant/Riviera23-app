@@ -50,7 +50,7 @@ class _HashtagCardState extends State<HashtagCard> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return Row(
       children: [
         Expanded(

@@ -13,9 +13,9 @@ class InitHashtagState extends HashtagState {}
 class HashtagLoading extends HashtagState {}
 
 class HashtagSuccess extends HashtagState {
-  List<HashtagModel> hashtags;
+  final List<HashtagModel> hashtags;
 
-  HashtagSuccess(this.hashtags);
+  const HashtagSuccess(this.hashtags);
 
   @override
   List<Object> get props => [hashtags];

@@ -7,19 +7,19 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/cubit/announcements/announcements_cubit.dart';
 import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/cubit/favourites/favourite_cubit.dart';
 import 'package:riviera23/data/repository/hashtag_repository.dart';
-import 'package:riviera23/presentation/router/app_router.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:riviera23/utils/app_theme.dart';
+import 'package:riviera23/utils/constants/strings/shared_pref_keys.dart';
+import 'package:riviera23/utils/constants/strings/strings.dart';
+import 'package:riviera23/utils/router/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'constants/strings/strings.dart';
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/merch/merch_cubit.dart';
@@ -40,6 +40,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await dotenv.load(fileName: ".env");
   //Check for data updates
   await getDataUpdate();
   await setAppStarted();
@@ -139,9 +140,9 @@ class MyApp extends StatelessWidget {
 
 getDataUpdate() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  await remoteConfig.setDefaults(const {
+  await remoteConfig.setDefaults( {
     "android_version": "1.0.10",
-    "base_url": "https://riviera.fly.dev",
+    "base_url": dotenv.env['BASE_URL'],
     "ios_version": "1.0.10",
     "show_gdsc": false,
   });
@@ -150,11 +151,11 @@ getDataUpdate() async {
   bool isConnected = await InternetConnectionChecker().hasConnection;
   if (isConnected) {
     await remoteConfig.fetchAndActivate();
-    final androidVersion = remoteConfig.getString(Strings.androidVersion);
-    final iosVersion = remoteConfig.getString(Strings.iosVersion);
-    var baseUrl = remoteConfig.getString(Strings.baseUrl);
-    final showGdsc = remoteConfig.getBool(Strings.showGdsc);
-
+    String androidVersion = remoteConfig.getString(Strings.androidVersion);
+    String iosVersion = remoteConfig.getString(Strings.iosVersion);
+    String baseUrl = remoteConfig.getString(Strings.baseUrl);
+    bool showGdsc = remoteConfig.getBool(Strings.showGdsc);
+    print("BASE URL: $baseUrl");
     prefs.setString(SharedPrefKeys.idRemoteAppVersionAndroid, androidVersion);
     prefs.setString(SharedPrefKeys.idRemoteAppVersionIos, iosVersion);
     prefs.setString(SharedPrefKeys.idRemoteBaseURL, baseUrl);

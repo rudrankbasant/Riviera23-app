@@ -4,11 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/info/sponsors/sponsors_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/asset_paths.dart';
-import '../../constants/strings/strings.dart';
 import '../../cubit/info/faq/faq_cubit.dart';
+import '../../data/models/faq_model.dart';
+import '../../data/models/sponsors_model.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 
 class FAQScreen extends StatefulWidget {
   const FAQScreen({super.key});
@@ -62,13 +63,13 @@ class _FAQScreenState extends State<FAQScreen> {
       builder: (context, state) {
         if (state is FaqSuccess) {
           state.faqList.sort((a, b) => a.id.compareTo(b.id));
-          var sortedFaqList = state.faqList;
+          List<Faq> sortedFaqList = state.faqList;
           return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: sortedFaqList.length,
               itemBuilder: (context, position) {
-                var faqQuestion = sortedFaqList[position];
+                Faq faqQuestion = sortedFaqList[position];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -137,7 +138,7 @@ class _FAQScreenState extends State<FAQScreen> {
     return BlocBuilder<SponsorsCubit, SponsorsState>(
       builder: (context, state) {
         if (state is SponsorsSuccess) {
-          var regularList = state.sponsorsList
+          List<Sponsor> regularList = state.sponsorsList
               .where((element) => element.prior == false)
               .toList();
           regularList.sort((a, b) => a.id.compareTo(b.id));
@@ -203,7 +204,7 @@ class _FAQScreenState extends State<FAQScreen> {
     return BlocBuilder<SponsorsCubit, SponsorsState>(
       builder: (context, state) {
         if (state is SponsorsSuccess) {
-          var priorList = state.sponsorsList
+          List<Sponsor> priorList = state.sponsorsList
               .where((element) => element.prior == true)
               .toList();
           priorList.sort((a, b) => a.id.compareTo(b.id));
@@ -216,7 +217,7 @@ class _FAQScreenState extends State<FAQScreen> {
               primary: false,
               itemCount: priorList.length,
               itemBuilder: (context, position) {
-                var sponsor = priorList[position];
+                Sponsor sponsor = priorList[position];
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                   child: Card(

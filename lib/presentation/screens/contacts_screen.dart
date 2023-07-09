@@ -2,15 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/data/models/team_member_model.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/strings.dart';
 import '../../cubit/info/contacts/contacts_cubit.dart';
 import '../../cubit/info/team/team_cubit.dart';
+import '../../data/models/contact_model.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/launch_url.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -62,44 +62,14 @@ class _ContactScreenState extends State<ContactScreen> {
       builder: (context, state) {
         if (state is ContactsSuccess) {
           state.contactsList.sort((a, b) => a.id.compareTo(b.id));
-          var sortedContactList = state.contactsList;
+          List<Contact> sortedContactList = state.contactsList;
           return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: sortedContactList.length,
               itemBuilder: (context, position) {
-                var contact = sortedContactList[position];
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                  child: Card(
-                    color: AppColors.primaryColor,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(contact.name.toString(),
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: GoogleFonts.sora.toString())),
-                        Text(contact.designation,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.normal,
-                            )),
-                        Text(contact.email,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.normal,
-                            )),
-                      ],
-                    ),
-                  ),
-                );
+                Contact contact = sortedContactList[position];
+                return buildContactCard(contact);
               });
         }
 
@@ -109,6 +79,40 @@ class _ContactScreenState extends State<ContactScreen> {
         );
       },
     );
+  }
+
+  Padding buildContactCard(Contact contact) {
+    return Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                child: Card(
+                  color: AppColors.primaryColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(contact.name.toString(),
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: GoogleFonts.sora.toString())),
+                      Text(contact.designation,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text(contact.email,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.normal,
+                          )),
+                    ],
+                  ),
+                ),
+              );
   }
 
   InkWell buildMoreTeamInfo(BuildContext context) {
@@ -131,13 +135,13 @@ class _ContactScreenState extends State<ContactScreen> {
       builder: (context, state) {
         if (state is TeamSuccess) {
           state.teamList.sort((a, b) => a.id.compareTo(b.id));
-          var sortedTeamList = state.teamList;
+          List<TeamMember> sortedTeamList = state.teamList;
           return ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: sortedTeamList.length,
               itemBuilder: (context, position) {
-                var teamMember = sortedTeamList[position];
+                TeamMember teamMember = sortedTeamList[position];
                 return buildTeamMemberCard(context, teamMember);
               });
         }

@@ -4,10 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
-
-import '../../constants/strings/strings.dart';
 import '../../cubit/announcements/announcements_cubit.dart';
 import '../../data/models/announcement_model.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/launch_url.dart';
 
 class AnnouncementHistoryScreen extends StatefulWidget {
@@ -28,41 +27,49 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var heightOfNotification = MediaQuery.of(context).size.height * 0.1;
+    double heightOfNotification = MediaQuery.of(context).size.height * 0.1;
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryColor,
-        elevation: 0,
-        title: const Text(
-          Strings.announcements,
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-              fontFamily: 'Axis'),
-        ),
-        centerTitle: true,
+      appBar: buildAppBar(),
+      body: buildBody(heightOfNotification),
+    );
+  }
+
+  BlocBuilder<AnnouncementsCubit, AnnouncementsState> buildBody(double heightOfNotification) {
+    return BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
+      builder: (context, state) {
+        if (state is AnnouncementsSuccess) {
+          List<MapEntry<String, List<Announcement>>> groupedList = getGroupedList(state.announcementsList);
+          return ListView.builder(
+              itemCount: groupedList.length,
+              itemBuilder: (context, position) {
+                MapEntry<String, List<Announcement>> groupedData = groupedList[position];
+                return buildAnnouncementCard(
+                    heightOfNotification, groupedData, position, groupedList);
+              });
+        } else {
+          return Center(
+              child: Text(Strings.loadingAnnouncement,
+                  style: TextStyle(color: AppColors.secondaryColor)));
+        }
+      },
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.primaryColor,
+      elevation: 0,
+      title: const Text(
+        Strings.announcements,
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            fontFamily: 'Axis'),
       ),
-      body: BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
-        builder: (context, state) {
-          if (state is AnnouncementsSuccess) {
-            var groupedList = getGroupedList(state.announcementsList);
-            return ListView.builder(
-                itemCount: groupedList.length,
-                itemBuilder: (context, position) {
-                  var groupedData = groupedList[position];
-                  return buildAnnouncementCard(
-                      heightOfNotification, groupedData, position, groupedList);
-                });
-          } else {
-            return Center(
-                child: Text(Strings.loadingAnnouncement,
-                    style: TextStyle(color: AppColors.secondaryColor)));
-          }
-        },
-      ),
+      centerTitle: true,
     );
   }
 
@@ -91,32 +98,8 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
-                          child: Text(
-                            groupedData.key,
-                            style: TextStyle(
-                                color: position == 0
-                                    ? Colors.deepOrangeAccent
-                                    : Colors.blue,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              primary: false,
-                              shrinkWrap: true,
-                              itemCount: groupedList[position].value.length,
-                              itemBuilder: (context, itemIndex) {
-                                groupedList[position]
-                                    .value
-                                    .sort((a, b) => b.date.compareTo(a.date));
-                                return buildAnnouncementData(groupedList,
-                                    position, itemIndex, heightOfNotification);
-                              }),
-                        )
+                        buildCardHeading(groupedData, position),
+                        buildCardData(groupedList, position, heightOfNotification)
                       ],
                     ),
                   ),
@@ -127,6 +110,38 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         ),
       ],
     );
+  }
+
+  Flexible buildCardData(List<MapEntry<String, List<Announcement>>> groupedList, int position, double heightOfNotification) {
+    return Flexible(
+                        fit: FlexFit.loose,
+                        child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            primary: false,
+                            shrinkWrap: true,
+                            itemCount: groupedList[position].value.length,
+                            itemBuilder: (context, itemIndex) {
+                              groupedList[position]
+                                  .value
+                                  .sort((a, b) => b.date.compareTo(a.date));
+                              return buildAnnouncementData(groupedList,
+                                  position, itemIndex, heightOfNotification);
+                            }),
+                      );
+  }
+
+  Padding buildCardHeading(MapEntry<String, List<Announcement>> groupedData, int position) {
+    return Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                        child: Text(
+                          groupedData.key,
+                          style: TextStyle(
+                              color: position == 0
+                                  ? Colors.deepOrangeAccent
+                                  : Colors.blue,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      );
   }
 
   GestureDetector buildAnnouncementData(
@@ -207,43 +222,55 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: AppColors.cardBgColor,
-            title: Text(
-              announcement.heading,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600),
-            ),
-            content: Text(
-              announcement.desc,
-              style: const TextStyle(color: Colors.white),
-            ),
-            actions: [
-              announcement.url != null && announcement.url != ""
-                  ? TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        launchURL(announcement.url, context);
-                      },
-                      child: const Text(
-                        Strings.openLink,
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    )
-                  : Container(),
-              TextButton(
-                child: const Text(
-                  Strings.close,
-                  style: TextStyle(color: Colors.red),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
+          return buildAnnouncementDialog(announcement, context);
         });
+  }
+
+  AlertDialog buildAnnouncementDialog(Announcement announcement, BuildContext context) {
+    return AlertDialog(
+          backgroundColor: AppColors.cardBgColor,
+          title: Text(
+            announcement.heading,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+          ),
+          content: Text(
+            announcement.desc,
+            style: const TextStyle(color: Colors.white),
+          ),
+          actions: [
+            announcement.url != null && announcement.url != ""
+                ? buildLinkButton(context, announcement)
+                : Container(),
+            buildCloseButton(context),
+          ],
+        );
+  }
+
+  TextButton buildCloseButton(BuildContext context) {
+    return TextButton(
+              child: const Text(
+                Strings.close,
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            );
+  }
+
+  TextButton buildLinkButton(BuildContext context, Announcement announcement) {
+    return TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      launchURL(announcement.url, context);
+                    },
+                    child: const Text(
+                      Strings.openLink,
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  );
   }
 }

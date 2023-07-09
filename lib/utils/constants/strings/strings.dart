@@ -212,14 +212,14 @@ class Strings {
   //Merch Screen
   static const String merchTitle = 'Merchandise';
 
-  static getMerchPrice(String price) => "\u{20B9}${price}";
+  static getMerchPrice(String price) => "\u{20B9}$price";
   static const String sizeChart = "Size Chart";
   static const String description = "Description";
   static const String buyNow = 'BUY NOW';
 
   //Profile Screen
   static String delAccountEmailBody(String? email, String providerId) =>
-      'This request is initiated to delete account associated with ${email} created with ${providerId}';
+      'This request is initiated to delete account associated with $email created with $providerId';
   static const String delAccountEmailSubject = "Request to Delete Account";
   static const String dscEmailId = 'contact@dscvit.com';
   static const String accDeletionTitle = "Request Account Deletion";

@@ -10,11 +10,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/asset_paths.dart';
-import '../../constants/strings/strings.dart';
 import '../../cubit/auth/auth_cubit.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/launch_url.dart';
 import '../widgets/profile_info.dart';
 
@@ -26,7 +25,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  var version = '';
+  String version = '';
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await FlutterEmailSender.send(email);
     }
 
-    _showDeletionDialog(context) async {
+    showDeletionDialog(context) async {
       await showDialog<String>(
         context: context,
         barrierDismissible: false,
@@ -69,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context, _showDeletionDialog),
+      appBar: buildAppBar(context, showDeletionDialog),
       body: buildBody(user),
     );
   }
@@ -283,7 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   AppBar buildAppBar(
-      BuildContext context, Future<Null> _showDeletionDialog(dynamic context)) {
+      BuildContext context, Future<void> Function(dynamic context) showDeletionDialog) {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
@@ -292,15 +291,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       titleSpacing: 0.0,
       title: Transform(
           transform: Matrix4.translationValues(10.0, 2.0, 0.0),
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Image.asset(
-                AssetPaths.rivieraIcon,
-                height: 40,
-                width: 90,
-                fit: BoxFit.contain,
-              ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Image.asset(
+              AssetPaths.rivieraIcon,
+              height: 40,
+              width: 90,
+              fit: BoxFit.contain,
             ),
           )),
       actions: [
@@ -319,7 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        _showDeletionDialog(context);
+                        showDeletionDialog(context);
                       },
                       child: const Text(
                         Strings.accDeletionTitle,
@@ -340,7 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String btnLabelCancel,
       BuildContext context,
       String btnLabel,
-      Future<void> requestAccountDeletion()) {
+      Future<void> Function() requestAccountDeletion) {
     return AlertDialog(
       backgroundColor: AppColors.cardBgColor,
       title: Text(
@@ -378,7 +375,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String message,
       BuildContext context,
       String btnLabelCancel,
-      Future<void> requestAccountDeletion(),
+      Future<void> Function() requestAccountDeletion,
       String btnLabel) {
     return CupertinoAlertDialog(
       title: Text(title),

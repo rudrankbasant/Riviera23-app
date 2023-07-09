@@ -13,9 +13,9 @@ class InitEventsState extends EventsState {}
 class EventsLoading extends EventsState {}
 
 class EventsSuccess extends EventsState {
-  List<EventModel> events;
+  final List<EventModel> events;
 
-  EventsSuccess(this.events);
+  const EventsSuccess(this.events);
 
   @override
   List<Object> get props => [events];

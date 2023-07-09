@@ -9,19 +9,18 @@ import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/asset_paths.dart';
-import '../../constants/strings/strings.dart';
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/show_event_details.dart';
 
 class FeaturedEvents extends StatefulWidget {
-  List<Venue> allVenues;
+  final List<Venue> allVenues;
 
-  FeaturedEvents({super.key, required this.allVenues});
+  const FeaturedEvents({super.key, required this.allVenues});
 
   @override
   _FeaturedEventsState createState() => _FeaturedEventsState();

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+
 
 class ProfileInfo extends StatelessWidget {
   final String imgPath;

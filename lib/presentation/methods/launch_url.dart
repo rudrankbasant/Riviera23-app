@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/strings.dart';
 import 'custom_flushbar.dart';
 
 void launchURL(url, BuildContext context, [bool browserMode = false]) async {

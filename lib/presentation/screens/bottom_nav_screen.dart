@@ -1,25 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
-import 'package:riviera23/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/presentation/methods/gdsc_dialog.dart';
 import 'package:riviera23/presentation/screens/profile_screen.dart';
 import 'package:riviera23/presentation/widgets/bottomnavbar_item.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
-
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/shared_pref_keys.dart';
+import '../../utils/constants/strings/strings.dart';
 import 'events_screen.dart';
 import 'hashtags_screen.dart';
 import 'home_screen.dart';
 import 'info_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
-  int? eventScreenIndex;
+  final int? eventScreenIndex;
 
-  BottomNavScreen(this.eventScreenIndex, {super.key});
+  const BottomNavScreen(this.eventScreenIndex, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -100,7 +99,7 @@ class _BottomNavState extends State<BottomNavScreen> {
           selectedIndex = index;
         });
       },
-      child: CustomBottomNavBarItem(
+      child: BottomNavBarItem(
         imgPath: assetPath,
         label: label,
         index: index,
@@ -126,7 +125,7 @@ class _BottomNavState extends State<BottomNavScreen> {
         },
         child: Column(
           children: [
-            CustomBottomNavBarItem(
+            BottomNavBarItem(
                 label: Strings.hashtags,
                 index: 2,
                 selectedIndex: selectedIndex,
@@ -147,7 +146,7 @@ class _BottomNavState extends State<BottomNavScreen> {
   }
 
   Future<void> _startOperation() async {
-    var showGDSC = await getGSDCBoolean();
+    bool showGDSC = await getGSDCBoolean();
     if (showGDSC) {
       _timer = Timer(const Duration(milliseconds: 4000), () {
         showCreatorDialog(context);

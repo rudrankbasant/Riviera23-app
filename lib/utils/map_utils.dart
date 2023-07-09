@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../constants/strings/strings.dart';
 import '../presentation/methods/custom_flushbar.dart';
+import 'constants/strings/strings.dart';
 
 class MapUtils {
   MapUtils._();

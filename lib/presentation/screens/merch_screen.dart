@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/cubit/merch/merch_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../../constants/strings/strings.dart';
 import '../../data/models/merch_model.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 import '../methods/launch_url.dart';
 
 class MerchScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class MerchScreen extends StatefulWidget {
 }
 
 class _MerchScreenState extends State<MerchScreen> {
-  var showSizeChart = false;
+  bool showSizeChart = false;
 
   @override
   void initState() {
@@ -40,7 +39,7 @@ class _MerchScreenState extends State<MerchScreen> {
     return BlocBuilder<MerchCubit, MerchState>(
       builder: (context, state) {
         if (state is MerchSuccess) {
-          var merchList = state.merchsList;
+          List<Merch> merchList = state.merchsList;
           return Padding(
               padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
               child: GridView.builder(

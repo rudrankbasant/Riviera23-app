@@ -4,8 +4,8 @@ import 'package:riviera23/presentation/screens/auth_screen.dart';
 import 'package:riviera23/presentation/screens/bottom_nav_screen.dart';
 import 'package:riviera23/presentation/screens/events_screen.dart';
 import 'package:riviera23/presentation/screens/merch_screen.dart';
+import '../../presentation/screens/splash_screen.dart';
 
-import '../screens/splash_screen.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {

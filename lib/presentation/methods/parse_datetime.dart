@@ -1,13 +1,12 @@
 import 'package:intl/intl.dart';
-
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/strings.dart';
 
 String parseDate(String? datetime) {
   if (datetime != null) {
-    var dateTime = DateFormat(Strings.dateTimeFormat).parse(datetime, true);
-    var date = dateTime.toLocal();
-    var formatter = DateFormat(Strings.date);
-    var formatted = formatter.format(date);
+    DateTime dateTime = DateFormat(Strings.dateTimeFormat).parse(datetime, true);
+    DateTime date = dateTime.toLocal();
+    DateFormat formatter = DateFormat(Strings.date);
+    String formatted = formatter.format(date);
     return formatted.toUpperCase();
   }
   return Strings.datesToBeDeclared;
@@ -15,10 +14,10 @@ String parseDate(String? datetime) {
 
 String parseTime(String? datetime) {
   if (datetime != null) {
-    var dateTime = DateFormat(Strings.dateTimeFormat).parse(datetime, true);
-    var date = dateTime.toLocal();
-    var formatter = DateFormat(Strings.time);
-    var formatted = formatter.format(date);
+    DateTime dateTime = DateFormat(Strings.dateTimeFormat).parse(datetime, true);
+    DateTime date = dateTime.toLocal();
+    DateFormat formatter = DateFormat(Strings.time);
+    String formatted = formatter.format(date);
     return formatted;
   }
   return Strings.datesToBeDeclared;

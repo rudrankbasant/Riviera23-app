@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/presentation/screens/contacts_screen.dart';
 import 'package:riviera23/presentation/screens/faq_screen.dart';
-
-import '../../constants/strings/strings.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/strings.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({Key? key}) : super(key: key);
