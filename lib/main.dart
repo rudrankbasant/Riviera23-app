@@ -20,6 +20,7 @@ import 'package:riviera23/utils/constants/strings/shared_pref_keys.dart';
 import 'package:riviera23/utils/constants/strings/strings.dart';
 import 'package:riviera23/utils/router/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'cubit/events/events_cubit.dart';
 import 'cubit/hashtag/hashtag_cubit.dart';
 import 'cubit/merch/merch_cubit.dart';
@@ -140,7 +141,7 @@ class MyApp extends StatelessWidget {
 
 getDataUpdate() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  await remoteConfig.setDefaults( {
+  await remoteConfig.setDefaults({
     "android_version": "1.0.10",
     "base_url": dotenv.env['BASE_URL'],
     "ios_version": "1.0.10",
@@ -155,7 +156,6 @@ getDataUpdate() async {
     String iosVersion = remoteConfig.getString(Strings.iosVersion);
     String baseUrl = remoteConfig.getString(Strings.baseUrl);
     bool showGdsc = remoteConfig.getBool(Strings.showGdsc);
-    print("BASE URL: $baseUrl");
     prefs.setString(SharedPrefKeys.idRemoteAppVersionAndroid, androidVersion);
     prefs.setString(SharedPrefKeys.idRemoteAppVersionIos, iosVersion);
     prefs.setString(SharedPrefKeys.idRemoteBaseURL, baseUrl);
@@ -167,19 +167,18 @@ getDataUpdate() async {
 
   //All other Data Versions are int (DON'T CACHE FAVOURITES EVEN THOUGH TAKING VERSION NUMBER)
   prefs.setInt(SharedPrefKeys.idRemoteAnnouncement,
-      remoteVersions.announcement_version_number);
+      remoteVersions.announcementVersionNumber);
   prefs.setInt(
-      SharedPrefKeys.idRemoteContacts, remoteVersions.contacts_version_number);
-  prefs.setInt(SharedPrefKeys.idRemoteFaq, remoteVersions.faq_version_number);
+      SharedPrefKeys.idRemoteContacts, remoteVersions.contactsVersionNumber);
+  prefs.setInt(SharedPrefKeys.idRemoteFaq, remoteVersions.faqVersionNumber);
   prefs.setInt(
-      SharedPrefKeys.idRemoteFav, remoteVersions.favorites_version_number);
+      SharedPrefKeys.idRemoteFav, remoteVersions.favouritesVersionNumber);
   prefs.setInt(
-      SharedPrefKeys.idRemotePlaces, remoteVersions.places_version_number);
+      SharedPrefKeys.idRemotePlaces, remoteVersions.placesVersionNumber);
   prefs.setInt(
-      SharedPrefKeys.idRemoteSponsors, remoteVersions.sponsors_version_number);
-  prefs.setInt(SharedPrefKeys.idRemoteTeam, remoteVersions.team_version_number);
-  prefs.setInt(
-      SharedPrefKeys.idRemoteMerch, remoteVersions.merch_version_number);
+      SharedPrefKeys.idRemoteSponsors, remoteVersions.sponsorsVersionNumber);
+  prefs.setInt(SharedPrefKeys.idRemoteTeam, remoteVersions.teamVersionNumber);
+  prefs.setInt(SharedPrefKeys.idRemoteMerch, remoteVersions.merchVersionNumber);
 }
 
 Future<DataVersion> getRemoteVersion() async {
@@ -198,15 +197,15 @@ Future<DataVersion> getRemoteVersion() async {
     return dataVersion;
   } catch (e) {
     return DataVersion(
-        app_version_number: "",
-        announcement_version_number: -1,
-        contacts_version_number: -1,
-        faq_version_number: -1,
-        favorites_version_number: -1,
-        places_version_number: -1,
-        sponsors_version_number: -1,
-        team_version_number: -1,
-        merch_version_number: -1);
+        appVersionNumber: "",
+        announcementVersionNumber: -1,
+        contactsVersionNumber: -1,
+        faqVersionNumber: -1,
+        favouritesVersionNumber: -1,
+        placesVersionNumber: -1,
+        sponsorsVersionNumber: -1,
+        teamVersionNumber: -1,
+        merchVersionNumber: -1);
   }
 }
 

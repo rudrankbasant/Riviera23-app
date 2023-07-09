@@ -35,6 +35,7 @@ class VenueCubit extends Cubit<VenueState> {
   }
 
   Future<Source> _getSourceValue() async {
-    return getSource(SharedPrefKeys.idLocalPlaces, SharedPrefKeys.idRemotePlaces);
+    return getSource(
+        SharedPrefKeys.idLocalPlaces, SharedPrefKeys.idRemotePlaces);
   }
 }

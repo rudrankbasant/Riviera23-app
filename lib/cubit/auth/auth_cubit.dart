@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import '../../utils/constants/strings/strings.dart';
 
 part 'auth_state.dart';
@@ -60,7 +61,9 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         password: password,
       );
-      await sendEmailVerification(context);
+      if (context.mounted) {
+        await sendEmailVerification(context);
+      }
       emit(NotSignedInState());
     } on FirebaseAuthException catch (e) {
       if (e.code == Strings.weakPassword) {
@@ -90,7 +93,9 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       if (!user.emailVerified) {
-        await sendEmailVerification(context);
+        if (context.mounted) {
+          await sendEmailVerification(context);
+        }
         emit(NotSignedInState());
         return null;
       }
@@ -130,8 +135,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       emit(NotSignedInState());
-      showCustomFlushbar(
-          Strings.passwordResetTitle, Strings.passwordResetMessage, context);
+      if (context.mounted) {
+        showCustomFlushbar(
+            Strings.passwordResetTitle, Strings.passwordResetMessage, context);
+      }
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == Strings.badEmailFormat) {

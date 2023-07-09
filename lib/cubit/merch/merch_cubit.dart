@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riviera23/cubit/cubit_utils/get_source.dart';
+
 import '../../data/models/merch_model.dart';
 import '../../utils/constants/strings/shared_pref_keys.dart';
 
@@ -22,7 +23,8 @@ class MerchCubit extends Cubit<MerchState> {
           .collection('merch')
           .doc('tnD9TzV0iVoq77moYpIl')
           .get(GetOptions(source: serverORcache));
-      Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       MerchList merchListModel = MerchList.fromMap(data);
 

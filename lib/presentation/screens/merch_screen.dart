@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/cubit/merch/merch_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../data/models/merch_model.dart';
 import '../../utils/constants/strings/asset_paths.dart';
 import '../../utils/constants/strings/strings.dart';

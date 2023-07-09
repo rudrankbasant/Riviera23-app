@@ -11,6 +11,7 @@ import 'package:riviera23/data/models/event_model.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/venue_model.dart';
@@ -289,7 +290,7 @@ class _EventsScreenState extends State<EventsScreen> {
             itemCount: allVenues.length,
             itemBuilder: (context, index) {
               return buildPlacesCheckBoxListTile(
-                  index, allVenues[index].venue_name);
+                  index, allVenues[index].venueName);
             },
           );
         } else {
@@ -555,7 +556,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               fontSize: 20)),
                       getDurationDate(event),
                       Text(
-                          "${event.loc.toString()} |  ${event.total_cost.toString() == "0" ? Strings.free : Strings.getAmount(event.total_cost)}",
+                          "${event.loc.toString()} |  ${event.totalCost.toString() == "0" ? Strings.free : Strings.getAmount(event.totalCost)}",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13.0,
@@ -621,7 +622,7 @@ class _EventsScreenState extends State<EventsScreen> {
     if (places.isNotEmpty && dates.isEmpty) {
       filteredEvents = [];
       for (EventModel event in events) {
-        if (places.contains(getVenue(allVenues, event).venue_name)) {
+        if (places.contains(getVenue(allVenues, event).venueName)) {
           filteredEvents.add(event);
         }
       }
@@ -638,7 +639,7 @@ class _EventsScreenState extends State<EventsScreen> {
       filteredEvents = [];
       for (EventModel event in events) {
         if (dates.contains(parseDate(event.start)) &&
-            places.contains(getVenue(allVenues, event).venue_name)) {
+            places.contains(getVenue(allVenues, event).venueName)) {
           filteredEvents.add(event);
         }
       }

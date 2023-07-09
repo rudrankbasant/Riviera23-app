@@ -36,8 +36,7 @@ class SponsorsCubit extends Cubit<SponsorsState> {
   }
 
   Future<Source> _getSourceValue() async {
-    return getSource(SharedPrefKeys.idLocalSponsors, SharedPrefKeys.idRemoteSponsors);
+    return getSource(
+        SharedPrefKeys.idLocalSponsors, SharedPrefKeys.idRemoteSponsors);
   }
 }
-
-

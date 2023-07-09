@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../presentation/methods/custom_flushbar.dart';
 import 'constants/strings/strings.dart';
 
@@ -34,11 +35,13 @@ class MapUtils {
         throw e.toString();
       }
     } else {
-      showCustomFlushbar(
-        Strings.errorLoading,
-        Strings.mapError,
-        context,
-      );
+      if (context.mounted) {
+        showCustomFlushbar(
+          Strings.errorLoading,
+          Strings.mapError,
+          context,
+        );
+      }
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../cubit/auth/auth_cubit.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/constants/strings/asset_paths.dart';
@@ -281,8 +282,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  AppBar buildAppBar(
-      BuildContext context, Future<void> Function(dynamic context) showDeletionDialog) {
+  AppBar buildAppBar(BuildContext context,
+      Future<void> Function(dynamic context) showDeletionDialog) {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,

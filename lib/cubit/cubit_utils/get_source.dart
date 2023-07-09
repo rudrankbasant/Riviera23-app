@@ -18,13 +18,11 @@ Future<Source> getSource(String idLocalVersion, String idRemoteVersion) async {
         if (remoteVersion == localVersion) {
           return Source.cache;
         } else {
-          prefs.setInt(
-              idLocalVersion, remoteVersion);
+          prefs.setInt(idLocalVersion, remoteVersion);
           return Source.server;
         }
       } else {
-        prefs.setInt(
-            idLocalVersion, remoteVersion);
+        prefs.setInt(idLocalVersion, remoteVersion);
         return Source.server;
       }
     } else {

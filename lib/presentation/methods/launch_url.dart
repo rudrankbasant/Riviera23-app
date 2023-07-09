@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../utils/constants/strings/strings.dart';
 import 'custom_flushbar.dart';
 

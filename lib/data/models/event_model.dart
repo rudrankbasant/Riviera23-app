@@ -7,7 +7,7 @@ class EventModel {
     this.start,
     this.end,
     this.loc,
-    this.total_cost,
+    this.totalCost,
     this.description,
     this.instructions,
     this.eventType,
@@ -22,7 +22,7 @@ class EventModel {
     start = json['start'];
     end = json['end'];
     loc = json['loc'];
-    total_cost = json['total_cost'];
+    totalCost = json['total_cost'];
     description = json['description'];
     instructions = json['instructions'];
     eventType = json['event_type'];
@@ -36,7 +36,7 @@ class EventModel {
   String? start;
   String? end;
   String? loc;
-  String? total_cost;
+  String? totalCost;
   String? description;
   String? instructions;
   String? eventType;
@@ -51,7 +51,7 @@ class EventModel {
     map['start'] = start;
     map['end'] = end;
     map['loc'] = loc;
-    map['total_cost'] = total_cost;
+    map['total_cost'] = totalCost;
     map['description'] = description;
     map['instructions'] = instructions;
     map['event_type'] = eventType;

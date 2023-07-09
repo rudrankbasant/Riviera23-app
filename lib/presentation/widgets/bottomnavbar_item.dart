@@ -56,34 +56,34 @@ class BottomNavBarItem extends StatelessWidget {
 
   Container buildIcon() {
     return Container(
-          child: index == 2
-              ? (selectedIndex == index
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                      child: Image.asset(imgPath,
-                          color: AppColors.highlightColor,
-                          height: 50,
-                          width: 120,
-                          fit: BoxFit.scaleDown))
-                  : Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 7, 0, 0),
-                      child: Image.asset(imgPath,
-                          color: AppColors.secondaryColor,
-                          height: 40,
-                          width: 90,
-                          fit: BoxFit.scaleDown),
-                    ))
-              : (selectedIndex == index
-                  ? SvgPicture.asset(imgPath,
+      child: index == 2
+          ? (selectedIndex == index
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: Image.asset(imgPath,
                       color: AppColors.highlightColor,
-                      height: 20,
-                      width: 20,
-                      fit: BoxFit.scaleDown)
-                  : SvgPicture.asset(imgPath,
+                      height: 50,
+                      width: 120,
+                      fit: BoxFit.scaleDown))
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 7, 0, 0),
+                  child: Image.asset(imgPath,
                       color: AppColors.secondaryColor,
-                      height: 15,
-                      width: 15,
-                      fit: BoxFit.scaleDown)),
-        );
+                      height: 40,
+                      width: 90,
+                      fit: BoxFit.scaleDown),
+                ))
+          : (selectedIndex == index
+              ? SvgPicture.asset(imgPath,
+                  color: AppColors.highlightColor,
+                  height: 20,
+                  width: 20,
+                  fit: BoxFit.scaleDown)
+              : SvgPicture.asset(imgPath,
+                  color: AppColors.secondaryColor,
+                  height: 15,
+                  width: 15,
+                  fit: BoxFit.scaleDown)),
+    );
   }
 }

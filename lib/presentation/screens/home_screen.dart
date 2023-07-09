@@ -9,6 +9,7 @@ import 'package:riviera23/cubit/auth/auth_cubit.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
+
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../cubit/venue/venue_cubit.dart';
@@ -173,7 +174,10 @@ void checkForAppUpdate(BuildContext context) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? appStarted = prefs.getBool(SharedPrefKeys.appStarted);
   if (appStarted == true) {
-    _notifyForAppUpdate(context);
+    if (context.mounted) {
+      _notifyForAppUpdate(context);
+    }
+
     prefs.setBool(SharedPrefKeys.appStarted, false);
   }
 }
@@ -198,7 +202,9 @@ void _notifyForAppUpdate(BuildContext context) async {
         double.parse(remoteVersionApp.trim().replaceAll(".", ""));
 
     if (latestVersion > localVersion) {
-      _showVersionDialog(context);
+      if (context.mounted) {
+        _showVersionDialog(context);
+      }
     }
   }
 }
@@ -280,6 +286,8 @@ displayShowcase(BuildContext context, GlobalKey<State<StatefulWidget>> key1,
   if (showcaseVisibilityStatus == null) {
     prefs.setBool(SharedPrefKeys.homeScreenGuide, false);
 
-    ShowCaseWidget.of(context).startShowCase([key1, key2]);
+    if (context.mounted) {
+      ShowCaseWidget.of(context).startShowCase([key1, key2]);
+    }
   }
 }

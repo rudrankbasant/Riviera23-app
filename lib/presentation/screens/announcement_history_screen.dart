@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
+
 import '../../cubit/announcements/announcements_cubit.dart';
 import '../../data/models/announcement_model.dart';
 import '../../utils/constants/strings/strings.dart';
@@ -36,15 +37,18 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
     );
   }
 
-  BlocBuilder<AnnouncementsCubit, AnnouncementsState> buildBody(double heightOfNotification) {
+  BlocBuilder<AnnouncementsCubit, AnnouncementsState> buildBody(
+      double heightOfNotification) {
     return BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
       builder: (context, state) {
         if (state is AnnouncementsSuccess) {
-          List<MapEntry<String, List<Announcement>>> groupedList = getGroupedList(state.announcementsList);
+          List<MapEntry<String, List<Announcement>>> groupedList =
+              getGroupedList(state.announcementsList);
           return ListView.builder(
               itemCount: groupedList.length,
               itemBuilder: (context, position) {
-                MapEntry<String, List<Announcement>> groupedData = groupedList[position];
+                MapEntry<String, List<Announcement>> groupedData =
+                    groupedList[position];
                 return buildAnnouncementCard(
                     heightOfNotification, groupedData, position, groupedList);
               });
@@ -99,7 +103,8 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         buildCardHeading(groupedData, position),
-                        buildCardData(groupedList, position, heightOfNotification)
+                        buildCardData(
+                            groupedList, position, heightOfNotification)
                       ],
                     ),
                   ),
@@ -112,36 +117,36 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
     );
   }
 
-  Flexible buildCardData(List<MapEntry<String, List<Announcement>>> groupedList, int position, double heightOfNotification) {
+  Flexible buildCardData(List<MapEntry<String, List<Announcement>>> groupedList,
+      int position, double heightOfNotification) {
     return Flexible(
-                        fit: FlexFit.loose,
-                        child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            primary: false,
-                            shrinkWrap: true,
-                            itemCount: groupedList[position].value.length,
-                            itemBuilder: (context, itemIndex) {
-                              groupedList[position]
-                                  .value
-                                  .sort((a, b) => b.date.compareTo(a.date));
-                              return buildAnnouncementData(groupedList,
-                                  position, itemIndex, heightOfNotification);
-                            }),
-                      );
+      fit: FlexFit.loose,
+      child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          primary: false,
+          shrinkWrap: true,
+          itemCount: groupedList[position].value.length,
+          itemBuilder: (context, itemIndex) {
+            groupedList[position]
+                .value
+                .sort((a, b) => b.date.compareTo(a.date));
+            return buildAnnouncementData(
+                groupedList, position, itemIndex, heightOfNotification);
+          }),
+    );
   }
 
-  Padding buildCardHeading(MapEntry<String, List<Announcement>> groupedData, int position) {
+  Padding buildCardHeading(
+      MapEntry<String, List<Announcement>> groupedData, int position) {
     return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
-                        child: Text(
-                          groupedData.key,
-                          style: TextStyle(
-                              color: position == 0
-                                  ? Colors.deepOrangeAccent
-                                  : Colors.blue,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      );
+      padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+      child: Text(
+        groupedData.key,
+        style: TextStyle(
+            color: position == 0 ? Colors.deepOrangeAccent : Colors.blue,
+            fontWeight: FontWeight.w600),
+      ),
+    );
   }
 
   GestureDetector buildAnnouncementData(
@@ -226,51 +231,50 @@ class _AnnouncementHistoryScreenState extends State<AnnouncementHistoryScreen> {
         });
   }
 
-  AlertDialog buildAnnouncementDialog(Announcement announcement, BuildContext context) {
+  AlertDialog buildAnnouncementDialog(
+      Announcement announcement, BuildContext context) {
     return AlertDialog(
-          backgroundColor: AppColors.cardBgColor,
-          title: Text(
-            announcement.heading,
-            style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w600),
-          ),
-          content: Text(
-            announcement.desc,
-            style: const TextStyle(color: Colors.white),
-          ),
-          actions: [
-            announcement.url != null && announcement.url != ""
-                ? buildLinkButton(context, announcement)
-                : Container(),
-            buildCloseButton(context),
-          ],
-        );
+      backgroundColor: AppColors.cardBgColor,
+      title: Text(
+        announcement.heading,
+        style: const TextStyle(
+            color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+      ),
+      content: Text(
+        announcement.desc,
+        style: const TextStyle(color: Colors.white),
+      ),
+      actions: [
+        announcement.url != null && announcement.url != ""
+            ? buildLinkButton(context, announcement)
+            : Container(),
+        buildCloseButton(context),
+      ],
+    );
   }
 
   TextButton buildCloseButton(BuildContext context) {
     return TextButton(
-              child: const Text(
-                Strings.close,
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            );
+      child: const Text(
+        Strings.close,
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   TextButton buildLinkButton(BuildContext context, Announcement announcement) {
     return TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      launchURL(announcement.url, context);
-                    },
-                    child: const Text(
-                      Strings.openLink,
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  );
+      onPressed: () {
+        Navigator.pop(context);
+        launchURL(announcement.url, context);
+      },
+      child: const Text(
+        Strings.openLink,
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
   }
 }

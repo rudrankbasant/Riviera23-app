@@ -23,31 +23,10 @@ class HashtagCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<HashtagCard> createState() => _HashtagCardState(
-      index: index,
-      caption: caption,
-      imgUrl: imgUrl,
-      color: color,
-      likeCount: likeCount,
-      commentCount: commentCount);
+  State<HashtagCard> createState() => _HashtagCardState();
 }
 
 class _HashtagCardState extends State<HashtagCard> {
-  final int? index;
-  final String? caption;
-  final String? imgUrl;
-  final Color? color;
-  final int? likeCount;
-  final int? commentCount;
-
-  _HashtagCardState(
-      {required this.index,
-      required this.caption,
-      required this.imgUrl,
-      required this.color,
-      required this.likeCount,
-      required this.commentCount});
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -55,25 +34,22 @@ class _HashtagCardState extends State<HashtagCard> {
       children: [
         Expanded(
           child: RotationTransition(
-            turns: (index != null)
-                ? (index! % 2 == 0
-                    ? const AlwaysStoppedAnimation(12 / 360)
-                    : const AlwaysStoppedAnimation(-12 / 360))
-                : const AlwaysStoppedAnimation(0),
+            turns: (widget.index % 2 == 0
+                ? const AlwaysStoppedAnimation(12 / 360)
+                : const AlwaysStoppedAnimation(-12 / 360)),
             child: Container(
               margin: const EdgeInsets.all(40),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: color,
+                color: widget.color,
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x40A3A3A3),
-                    blurRadius: 4, // soften the shadow
+                    blurRadius: 4,
                     spreadRadius: 0,
-                    //extend the shadow
                     offset: Offset(
-                      0, // Move to right 10  horizontally
-                      4, // Move to bottom 10 Vertically
+                      0,
+                      4,
                     ),
                   )
                 ],
@@ -86,7 +62,7 @@ class _HashtagCardState extends State<HashtagCard> {
                     children: [
                       CachedNetworkImage(
                         height: height * 0.3,
-                        imageUrl: imgUrl.toString(),
+                        imageUrl: widget.imgUrl.toString(),
                         imageBuilder: (context, imageProvider) => Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -116,7 +92,7 @@ class _HashtagCardState extends State<HashtagCard> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              Text("${likeCount ?? ""}")
+                              Text("${widget.likeCount ?? ""}")
                             ],
                           ),
                           const SizedBox(
@@ -128,7 +104,7 @@ class _HashtagCardState extends State<HashtagCard> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              Text("${commentCount ?? ""}")
+                              Text("${widget.commentCount ?? ""}")
                             ],
                           ),
                         ],

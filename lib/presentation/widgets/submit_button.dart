@@ -27,19 +27,19 @@ class SubmitButton extends StatelessWidget {
               children: [
                 showConfirmPassword
                     ? const Text(
-                  Strings.signupAuth,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
+                        Strings.signupAuth,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
                     : const Text(
-                  Strings.signInAuth,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                        Strings.signInAuth,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
               ],
             ),
           ),

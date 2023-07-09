@@ -34,6 +34,7 @@ class ContactsCubit extends Cubit<ContactsState> {
   }
 
   Future<Source> _getSourceValue() async {
-    return getSource( SharedPrefKeys.idLocalContacts, SharedPrefKeys.idRemoteContacts);
+    return getSource(
+        SharedPrefKeys.idLocalContacts, SharedPrefKeys.idRemoteContacts);
   }
 }

@@ -5,7 +5,10 @@ import '../../utils/constants/strings/strings.dart';
 class AuthFormField extends StatelessWidget {
   const AuthFormField({
     super.key,
-    required this.textController, required this.textInputType, required this.label, required this.obscureText,
+    required this.textController,
+    required this.textInputType,
+    required this.label,
+    required this.obscureText,
   });
 
   final TextEditingController textController;

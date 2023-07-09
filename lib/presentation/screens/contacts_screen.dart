@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riviera23/data/models/team_member_model.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../cubit/info/contacts/contacts_cubit.dart';
 import '../../cubit/info/team/team_cubit.dart';
 import '../../data/models/contact_model.dart';
@@ -83,36 +84,36 @@ class _ContactScreenState extends State<ContactScreen> {
 
   Padding buildContactCard(Contact contact) {
     return Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                child: Card(
-                  color: AppColors.primaryColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(contact.name.toString(),
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.sora.toString())),
-                      Text(contact.designation,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.normal,
-                          )),
-                      Text(contact.email,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.normal,
-                          )),
-                    ],
-                  ),
-                ),
-              );
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      child: Card(
+        color: AppColors.primaryColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(contact.name.toString(),
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.sora.toString())),
+            Text(contact.designation,
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.normal,
+                )),
+            Text(contact.email,
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.normal,
+                )),
+          ],
+        ),
+      ),
+    );
   }
 
   InkWell buildMoreTeamInfo(BuildContext context) {

@@ -25,17 +25,20 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           .doc('lq7FACaQrVL4hO3cM6Iq')
           .get(GetOptions(source: serverORcache));
 
-      Map<String, dynamic> data = timelineSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> data =
+          timelineSnapshot.data() as Map<String, dynamic>;
 
       AnnouncementList announcementsListModel = AnnouncementList.fromMap(data);
 
-      emit(AnnouncementsSuccess(announcementsList: announcementsListModel.announcementList));
+      emit(AnnouncementsSuccess(
+          announcementsList: announcementsListModel.announcementList));
     } catch (e) {
       emit(AnnouncementsFailed(error: e.toString()));
     }
   }
 
   Future<Source> _getSourceValue() async {
-    return getSource(SharedPrefKeys.idLocalAnnouncement, SharedPrefKeys.idRemoteAnnouncement);
+    return getSource(SharedPrefKeys.idLocalAnnouncement,
+        SharedPrefKeys.idRemoteAnnouncement);
   }
 }

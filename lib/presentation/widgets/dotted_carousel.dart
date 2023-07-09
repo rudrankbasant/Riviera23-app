@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:riviera23/presentation/methods/show_event_details.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
@@ -21,7 +22,9 @@ class CarouselWithDotsPage extends StatefulWidget {
   const CarouselWithDotsPage({super.key, required this.allVenues});
 
   @override
-  _CarouselWithDotsPageState createState() => _CarouselWithDotsPageState();
+  State<CarouselWithDotsPage> createState() {
+    return _CarouselWithDotsPageState();
+  }
 }
 
 class _CarouselWithDotsPageState extends State<CarouselWithDotsPage> {

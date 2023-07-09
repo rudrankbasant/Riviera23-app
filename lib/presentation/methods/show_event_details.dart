@@ -14,6 +14,7 @@ import 'package:riviera23/utils/map_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
+
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
@@ -312,9 +313,9 @@ void showCustomBottomSheet(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
-                                  event.total_cost.toString() == "0"
+                                  event.totalCost.toString() == "0"
                                       ? Strings.free
-                                      : Strings.getAmount(event.total_cost),
+                                      : Strings.getAmount(event.totalCost),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 15,
@@ -389,16 +390,18 @@ void updateFavouritesAndSubscriptions(BuildContext context, EventModel event,
     } else {
       newList.add(event.id.toString());
       await FirebaseMessaging.instance.subscribeToTopic(event.id.toString());
-
-
-      showCustomFlushbar(
-          Strings.favouriteTitle, Strings.favouriteMessage, context);
+      if (context.mounted) {
+        showCustomFlushbar(
+            Strings.favouriteTitle, Strings.favouriteMessage, context);
+      }
     }
     FavouriteModel newFavouriteModel = FavouriteModel(
         uniqueUserId: state.favouriteList.uniqueUserId,
         favouriteEventIds: newList);
-    BlocProvider.of<FavouriteCubit>(context)
-        .upDateFavourites(newFavouriteModel);
+    if (context.mounted) {
+      BlocProvider.of<FavouriteCubit>(context)
+          .upDateFavourites(newFavouriteModel);
+    }
   }
 }
 
@@ -410,14 +413,15 @@ displayEventCardShowcase(
 
   if (showcaseVisibilityStatus == null) {
     prefs.setBool(SharedPrefKeys.idEventCardShowcase, false);
-    ShowCaseWidget.of(context).startShowCase([key1]);
+    if (context.mounted) {
+      ShowCaseWidget.of(context).startShowCase([key1]);
+    }
   }
 }
 
 Text getDurationDateTime(EventModel event) {
-
   return Text(
-   getDurationDateTimeString(event),
+    getDurationDateTimeString(event),
     style: TextStyle(
         fontWeight: FontWeight.w300,
         fontSize: 14,
@@ -427,7 +431,6 @@ Text getDurationDateTime(EventModel event) {
 }
 
 String getDurationDateTimeString(EventModel event) {
-
   if (parseDate(event.start) == parseDate(event.end)) {
     return "${parseDate(event.start)} ${parseTime(event.start)} - ${parseTime(event.end)}";
   } else {

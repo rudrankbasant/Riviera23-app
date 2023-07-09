@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riviera23/presentation/screens/contacts_screen.dart';
 import 'package:riviera23/presentation/screens/faq_screen.dart';
+
 import '../../utils/app_colors.dart';
 import '../../utils/constants/strings/asset_paths.dart';
 import '../../utils/constants/strings/strings.dart';

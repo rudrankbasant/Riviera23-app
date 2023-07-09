@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/constants/strings/asset_paths.dart';
 
-
 class ProfileInfo extends StatelessWidget {
   final String imgPath;
   final String infoText;

@@ -7,6 +7,7 @@ import 'package:riviera23/presentation/methods/get_venue.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
+
 import '../../cubit/events/events_cubit.dart';
 import '../../cubit/events/events_state.dart';
 import '../../data/models/event_model.dart';
@@ -25,7 +26,9 @@ class OnGoingEvents extends StatefulWidget {
   });
 
   @override
-  _OnGoingEventsState createState() => _OnGoingEventsState();
+  State<OnGoingEvents> createState() {
+    return _OnGoingEventsState();
+  }
 }
 
 class _OnGoingEventsState extends State<OnGoingEvents> {
@@ -93,7 +96,8 @@ class _OnGoingEventsState extends State<OnGoingEvents> {
   bool isGoingOn(EventModel element) {
     DateTime currentDateTime = DateTime.now().toLocal();
     if (element.start != null && element.end != null) {
-      DateTime startDateTime = DateTime.parse(element.start.toString()).toLocal();
+      DateTime startDateTime =
+          DateTime.parse(element.start.toString()).toLocal();
       DateTime endDateTime = DateTime.parse(element.end.toString()).toLocal();
       if (currentDateTime.isAfter(startDateTime) &&
           currentDateTime.isBefore(endDateTime)) {
