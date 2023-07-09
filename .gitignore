@@ -185,4 +185,4 @@ app.*.symbols
 
 
 #Environment Variable
-.env
+*.env

@@ -9,8 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riviera23/presentation/methods/custom_flushbar.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-import '../../constants/strings/strings.dart';
+import '../../utils/constants/strings/strings.dart';
 
 part 'auth_state.dart';
 
