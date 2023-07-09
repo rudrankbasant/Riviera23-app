@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:riviera23/constants/strings/asset_paths.dart';
 import 'package:riviera23/data/models/favourite_model.dart';
 import 'package:riviera23/presentation/methods/parse_datetime.dart';
 import 'package:riviera23/presentation/screens/home_screen.dart';
@@ -15,19 +14,19 @@ import 'package:riviera23/utils/map_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:showcaseview/showcaseview.dart';
-
-import '../../constants/strings/shared_pref_keys.dart';
-import '../../constants/strings/strings.dart';
 import '../../cubit/favourites/favourite_cubit.dart';
 import '../../data/models/event_model.dart';
 import '../../data/models/venue_model.dart';
+import '../../utils/constants/strings/asset_paths.dart';
+import '../../utils/constants/strings/shared_pref_keys.dart';
+import '../../utils/constants/strings/strings.dart';
 import 'custom_flushbar.dart';
 import 'launch_url.dart';
 
 void showCustomBottomSheet(
     BuildContext context, EventModel event, Venue venue) {
   List<String> favouritesIDs = [];
-  var isFavourite = false;
+  bool isFavourite = false;
 
   showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -382,7 +381,7 @@ void showCustomBottomSheet(
 void updateFavouritesAndSubscriptions(BuildContext context, EventModel event,
     List<String> favouritesIDs, FavouriteState state) async {
   if (state is FavouriteSuccess) {
-    var newList = favouritesIDs;
+    List<String> newList = favouritesIDs;
     if (favouritesIDs.contains(event.id)) {
       newList.remove(event.id);
       await FirebaseMessaging.instance
@@ -390,6 +389,8 @@ void updateFavouritesAndSubscriptions(BuildContext context, EventModel event,
     } else {
       newList.add(event.id.toString());
       await FirebaseMessaging.instance.subscribeToTopic(event.id.toString());
+
+
       showCustomFlushbar(
           Strings.favouriteTitle, Strings.favouriteMessage, context);
     }
@@ -414,24 +415,23 @@ displayEventCardShowcase(
 }
 
 Text getDurationDateTime(EventModel event) {
+
+  return Text(
+   getDurationDateTimeString(event),
+    style: TextStyle(
+        fontWeight: FontWeight.w300,
+        fontSize: 14,
+        color: Colors.grey,
+        fontFamily: GoogleFonts.sora.toString()),
+  );
+}
+
+String getDurationDateTimeString(EventModel event) {
+
   if (parseDate(event.start) == parseDate(event.end)) {
-    return Text(
-      "${parseDate(event.start)} ${parseTime(event.start)} - ${parseTime(event.end)}",
-      style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 14,
-          color: Colors.grey,
-          fontFamily: GoogleFonts.sora.toString()),
-    );
+    return "${parseDate(event.start)} ${parseTime(event.start)} - ${parseTime(event.end)}";
   } else {
-    return Text(
-      "${parseDate(event.start)} ${parseTime(event.start)} - ${parseDate(event.end)} ${parseTime(event.end)}",
-      style: TextStyle(
-          fontWeight: FontWeight.w300,
-          fontSize: 14,
-          color: Colors.grey,
-          fontFamily: GoogleFonts.sora.toString()),
-    );
+    return "${parseDate(event.start)} ${parseTime(event.start)} - ${parseDate(event.end)} ${parseTime(event.end)}";
   }
 }
 
