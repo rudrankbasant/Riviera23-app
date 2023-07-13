@@ -13,6 +13,11 @@
 </div>
 
 ---
+## Screens
+
+![Group 128](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/0827057c-86ce-45cd-b42a-36d5c0d66729)
+![Group 130](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/2f8900c9-de91-4ed8-8ee9-651c1a1c9b0d)
+
 
 ## Implementation / App Design
 
@@ -28,9 +33,7 @@ The app sends notifications in all three states the smartphone is in - Foregroun
 ### 4. Topic Subscription: 
 Whenever a user favourites an event, a new topic is created using the event id (if it didn't already exist) and the user is subscribed to the topic (and unsubscribed when unfavourited). Hence apart from the general notifications, users can receive event-specific notifications as well. This feature was added later on as an update, hence there's a one-time function that syncs the favourite events and topic subscriptions.
 
-
 ### 5. Authentication:
-
  The authentication functionality supports three types of Firebase authentication methods, ensuring flexibility for users to choose their preferred login options:
   - [X] **Email and password authentication**:
 	  - Users can create an account by providing their email address and setting up a secure password.
@@ -39,7 +42,6 @@ Whenever a user favourites an event, a new topic is created using the event id (
   - [X] **Google authentication**: Users can sign in using their Google accounts.
   - [X] **Apple authentication**: For users with Apple devices, the application supports authentication through their Apple accounts.
         
-<br>
 
 ### 6. App Showcase / Guide:
 The showcase functionality provides three essential guides that users should be made aware of immediately.
@@ -47,8 +49,8 @@ The showcase functionality provides three essential guides that users should be 
   - [X] **Ongoing Events**: This guide offers insights into the ongoing events featured in the application, as this section is at the bottom of the home screen.
   - [X] **Favorite Event Button**: This guide focuses on the functionality of the "Favorite Event" button, that users come across when they click on an event. This guide is essential  as it notifies users that they will receive event-specific notifications once they favourite an event.
 
-<br>
-        
+![Group 131](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/8494ea9b-1872-41a0-aad4-8cde40e8083e)
+
 ### 7. Bloc/Cubit: The state management in the app is handled by the bloc/cubit architecture and has separate components for the following business logics:
 - Authentication
 - Announcements
