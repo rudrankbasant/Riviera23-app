@@ -4,7 +4,7 @@
 </p>
 
 <h2 align="center"> Official Riviera App </h2>
-	<h4 align="center"> Riviera 23 is a mobile app designed for the vibrant cultural event called Riviera. With a user base of over 8000+ users, Riviera 23  quickly became the go-to platform for event information, announcements, merchandise, and real-time notifications. <h4>
+	<h4 align="center"> Riviera 23 is a mobile app designed for the vibrant cultural event called Riviera. With a user base of over 8000+ users, Riviera 23  quickly became the go-to platform for event information, announcements, merchandise, and real-time notifications. The app provides information about over 130+ cultural and sports event spanning over three days. <h4>
 
 </a> 
 
@@ -12,10 +12,11 @@
     <img src="https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4c413c21-5c74-4bff-aa8d-88c29f260822" alt="Download Our App (640 × 320px)" />
 </div>
 
+
 ---
 ## Screens
 
-### 1.Initial and Authentication:
+### 1. Initial and Authentication:
 ![Group 132](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4153dd4b-05fd-4c2b-bbcb-8357591c4589)
 
 ### 2. Five Main Screens: 
@@ -28,7 +29,7 @@
 
 ![Group 128](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/0827057c-86ce-45cd-b42a-36d5c0d66729)
 
-### 3.Sub Screens:
+### 3. Sub Screens:
 - [x] **Merch Screen** - all merchandise listed, with option to view more.
 - [x] **Announcement Screen** - all important announcements sorted and nested by date.
 
@@ -41,13 +42,13 @@
 The app utilizes the Hive library to cache all data, resulting in improved app performance. This caching mechanism allows for faster data access and enables the app to function offline seamlessly.
 
 ### 2. Reducing Firebase Reads: 
-One major feature of this app is that the app is designed to utilize fewer Firebase reads. Instead of fetching all data every time, or fetching after a particular period of time, the app makes calls only when data is updated at the firebase. For this, a collection of data versions is stored on the Firestore. Only this collection is fetched every time the app is opened. If the version of any data kind of data is changed, the remote data version is changed for that model only. Hence only a few data are fetched (and cached), and the local data version is updated to prevent unnecessary future API calls.
+One major feature of this app is that the app is designed to utilize fewer Firebase reads. Instead of fetching all data every time, or fetching after a particular period of time, the app makes calls only when data is updated at the Firebase. For this, a collection of remote data versions is stored on the Firestore. Only this collection is fetched every time the app is opened, instead of all data. If the local and remote data version for any data model is different, only that data model is fetched. Hence only a few data are fetched (and cached), and the local data version is updated to prevent unnecessary future API calls.
 
 ### 3.Notification in all three states: 
 The app sends notifications in all three states the smartphone is in - Foreground, Background and Terminated. 
 
 ### 4. Topic Subscription: 
-Whenever a user favourites an event, a new topic is created using the event id (if it didn't already exist) and the user is subscribed to the topic (and unsubscribed when unfavourited). Hence apart from the general notifications, users can receive event-specific notifications as well. This feature was added later on as an update, hence there's a one-time function that syncs the favourite events and topic subscriptions.
+Whenever a user favourites an event, a new topic is created using the event id (if it didn't already exist) and the user is subscribed to the topic (and unsubscribed when unfavourited). Hence apart from the general notifications, users can receive event-specific notifications as well. This feature was added later on as an update, hence there's a one-time function that syncs the already favourited events with topic subscriptions.
 
 ### 5. Authentication:
  The authentication functionality supports three types of Firebase authentication methods, ensuring flexibility for users to choose their preferred login options:
@@ -83,6 +84,8 @@ The showcase functionality provides three essential guides that users should be 
 ### 8. Repository Pattern: 
 The app utilizes a combination of Firebase and backend API calls to fetch data, allowing for seamless integration of real-time updates from Firebase as well as accessing additional data and functionality from the backend server. The app follows the Repository Pattern for the business logic coming from the backend API - namely Events and Hashtags/Instagram Posts.
 
+### 9. Tests: 
+The app has implemented a series of basic unit tests specifically designed to ensure the accuracy and reliability of event duration, date, and time information. These aspects hold paramount importance to users, as they heavily rely on accurate scheduling and timing to plan their attendance since there are over 130+ events happening overall.
 
 <br>
 
@@ -106,6 +109,8 @@ flutter pub get
 ```bash
 flutter run
 ```
+## Download
+Here are the [Google Play](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) and [App Store](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) links.
 
 ## Contributors
 
