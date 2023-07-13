@@ -12,51 +12,61 @@
     <img src="https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4c413c21-5c74-4bff-aa8d-88c29f260822" alt="Download Our App (640 × 320px)" />
 </div>
 
-
-
-
-
-
 ---
 
-## Features
+## Implementation / App Design
+
+### 1. Caching: 
+The app utilizes the Hive library to cache all data, resulting in improved app performance. This caching mechanism allows for faster data access and enables the app to function offline seamlessly.
+
+### 2. Reducing Firebase Reads: 
+One major feature of this app is that the app is designed to utilize fewer Firebase reads. Instead of fetching all data every time, or fetching after a particular period of time, the app makes calls only when data is updated at the firebase. For this, a collection of data versions is stored on the Firestore. Only this collection is fetched every time the app is opened. If the version of any data kind of data is changed, the remote data version is changed for that model only. Hence only a few data are fetched (and cached), and the local data version is updated to prevent unnecessary future API calls.
+
+### 3.Notification in all three states: 
+The app sends notifications in all three states the smartphone is in - Foreground, Background and Terminated. 
+
+### 4. Topic Subscription: 
+Whenever a user favourites an event, a new topic is created using the event id (if it didn't already exist) and the user is subscribed to the topic (and unsubscribed when unfavourited). Hence apart from the general notifications, users can receive event-specific notifications as well. This feature was added later on as an update, hence there's a one-time function that syncs the favourite events and topic subscriptions.
 
 
-### 1. Authentication:
+### 5. Authentication:
 
  The authentication functionality supports three types of Firebase authentication methods, ensuring flexibility for users to choose their preferred login options:
   - [X] **Email and password authentication**:
 	  - Users can create an account by providing their email address and setting up a secure password.
 	  - Email Verification: Users receive an email verification link upon registration to confirm their email addresses.
-	  - Password Reset: In case users forget their passwords, they can initiate a password reset process, which involves receiving a password reset link via email.
-  - [X] **Google authentication**: Users can also choose to sign in using their Google accounts.
+	  - Password Reset: If users forget their passwords, they can initiate a password reset process, which involves receiving a password reset link via email.
+  - [X] **Google authentication**: Users can sign in using their Google accounts.
   - [X] **Apple authentication**: For users with Apple devices, the application supports authentication through their Apple accounts.
         
 <br>
 
-### 2. App Showcase / Guide:
-The showcase functionality provides with three important guides that users should be made aware of immediately.
-  - [X] **Merch Section**: This guide provides users with a walkthrough of the merchandise section.
-  - [X] **Ongoing Events**: This guide offers insights into the ongoing events featured in the application. 
-  - [X] **Favorite Event Button**: This guide focuses on the functionality of the "Favorite Event" button.
+### 6. App Showcase / Guide:
+The showcase functionality provides three essential guides that users should be made aware of immediately.
+  - [X] **Merch Section**: This guide provides users with the merch button location, for the boost of merch sales.
+  - [X] **Ongoing Events**: This guide offers insights into the ongoing events featured in the application, as this section is at the bottom of the home screen.
+  - [X] **Favorite Event Button**: This guide focuses on the functionality of the "Favorite Event" button, that users come across when they click on an event. This guide is essential  as it notifies users that they will receive event-specific notifications once they favourite an event.
 
 <br>
         
-### 3. Bloc/Cubit:
-### 4. Repository Pattern:
-### 5. Caching:
-### 6. Reducing Firebase Reads:
-### 7. Firebase and Backend API calls:
-### 8. Notification in all three states:
-### 9. Topic Subscription:
+### 7. Bloc/Cubit: The state management in the app is handled by the bloc/cubit architecture and has separate components for the following business logics:
+- Authentication
+- Announcements
+- Events
+- Favourites
+- Hashtags/Instagram Posts (related to the event)
+- Contacts
+- Team
+- FAQ
+- Sponsors
+- Merch
+- Venues
+  
+### 8. Repository Pattern: 
+The app utilizes a combination of Firebase and backend API calls to fetch data, allowing for seamless integration of real-time updates from Firebase as well as accessing additional data and functionality from the backend server. The app follows the Repository Pattern for the business logic coming from the backend API - namely Events and Hashtags/Instagram Posts.
 
 
 <br>
-
-## Dependencies
-
-- < dependency >
-- < dependency >
 
 ## Running
 
