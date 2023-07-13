@@ -4,7 +4,7 @@
 </p>
 
 <h2 align="center"> Official Riviera App </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h4 align="center"> Riviera 23 is a mobile app designed for the vibrant cultural event called Riviera. With a user base of over 8000+ users, Riviera 23  quickly became the go-to platform for event information, announcements, merchandise, and real-time notifications. <h4>
 
 </a> 
 
@@ -15,7 +15,23 @@
 ---
 ## Screens
 
+### 1.Initial and Authentication:
+![Group 132](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4153dd4b-05fd-4c2b-bbcb-8357591c4589)
+
+### 2. Five Main Screens: 
+
+- [x] **Home Screen**: contains Main events, featured events and ongoing events with navigation to merch and announcement section.
+- [x] **Event Screen** - contains all events and favourite events, with search and filter options.
+- [x] **Riviera Screen** - contains all the Instagram Posts related to the event.
+- [x] **Info Screen** - contains FAQs, Sponsors, Organizers, and Contact Info.
+- [x] **Profile Screen** - Profile Info about the user.
+
 ![Group 128](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/0827057c-86ce-45cd-b42a-36d5c0d66729)
+
+### 3.Sub Screens:
+- [x] **Merch Screen** - all merchandise listed, with option to view more.
+- [x] **Announcement Screen** - all important announcements sorted and nested by date.
+
 ![Group 130](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/2f8900c9-de91-4ed8-8ee9-651c1a1c9b0d)
 
 
