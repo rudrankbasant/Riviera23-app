@@ -25,20 +25,20 @@ class AuthFormField extends StatelessWidget {
           style: const TextStyle(color: Colors.white),
           controller: textController,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             label: Text(
-              Strings.emailAuth,
-              style: TextStyle(color: Colors.white),
+              label,
+              style: const TextStyle(color: Colors.white),
             ),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white, width: 1),
               borderRadius: BorderRadius.all(Radius.circular(7)),
             ),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white, width: 1),
               borderRadius: BorderRadius.all(Radius.circular(7)),
             ),
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white, width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(7))),
             hintText: Strings.emailAuth,
