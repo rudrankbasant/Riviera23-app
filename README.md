@@ -27,10 +27,11 @@
 - [x] **Info Screen** - contains FAQs, Sponsors, Organizers, and Contact Info.
 - [x] **Profile Screen** - Profile Info about the user.
 
-![Group 128](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/0827057c-86ce-45cd-b42a-36d5c0d66729)
+![Group 128 (1)](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/6d0cc024-5c4d-497e-a993-dbb07a6629b6)
+![Group 133](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/cd5cce99-06a1-45b3-b978-1ff85d6bc613)
 
 ### 3. Sub Screens:
-- [x] **Merch Screen** - all merchandise listed, with option to view more.
+- [x] **Merch Screen** - all merchandise listed, with the option to view more.
 - [x] **Announcement Screen** - all important announcements sorted and nested by date.
 
 ![Group 130](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/2f8900c9-de91-4ed8-8ee9-651c1a1c9b0d)
@@ -110,7 +111,8 @@ flutter pub get
 flutter run
 ```
 ## Download
-Here are the [Google Play](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) and [App Store](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) links.
+Here are the [Google Play](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) and [App Store](https://play.google.com/store/apps/details?id=in.ac.vit.riviera23&hl=en&gl=US) links. 
+> **NOTE:**  The app has been removed from the App Store by the client few weeks after the event concluded.
 
 ## Contributors
 
