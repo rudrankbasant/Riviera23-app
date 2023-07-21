@@ -4,12 +4,12 @@
 </p>
 
 <h2 align="center"> Official Riviera App </h2>
-	<h4 align="center"> Riviera 23 is a mobile app designed for the vibrant cultural event called Riviera. With a user base of over 8000+ users, Riviera 23  quickly became the go-to platform for event information, announcements, merchandise, and real-time notifications. The app provides information about over 130+ cultural and sports event spanning over three days. <h4>
+	<h4 align="center"> Riviera 23 is a mobile app designed for the vibrant cultural event called Riviera. With a user base of over 8000+ users, Riviera 23  quickly became the go-to platform for event information, announcements, merchandise, and real-time notifications. The app provides information about over 130+ cultural and sports events spanning over three days. <h4>
 
 </a> 
 
 <div align="center">
-    <img src="https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4c413c21-5c74-4bff-aa8d-88c29f260822" alt="Download Our App (640 × 320px)" />
+    <img src="https://github.com/rudrankbasant/Riviera23-app/assets/85751479/10d99d5e-e159-4dfd-83bb-176e692ca05b" alt="Download Our App (640 × 320px)" />
 </div>
 
 
@@ -17,7 +17,7 @@
 ## Screens
 
 ### 1. Initial and Authentication:
-![Group 132](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/4153dd4b-05fd-4c2b-bbcb-8357591c4589)
+![Group 132](https://github.com/rudrankbasant/Riviera23-app/assets/85751479/c5117737-e021-402b-bd31-ea1fb1d3cab8)
 
 ### 2. Five Main Screens: 
 
@@ -27,14 +27,14 @@
 - [x] **Info Screen** - contains FAQs, Sponsors, Organizers, and Contact Info.
 - [x] **Profile Screen** - Profile Info about the user.
 
-![Group 128 (1)](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/6d0cc024-5c4d-497e-a993-dbb07a6629b6)
-![Group 133](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/cd5cce99-06a1-45b3-b978-1ff85d6bc613)
+![Group 128](https://github.com/rudrankbasant/Riviera23-app/assets/85751479/71368045-7bcf-4483-b34f-0afb677aa794)
+![Group 133](https://github.com/rudrankbasant/Riviera23-app/assets/85751479/fdcbaf3d-d2d4-4b83-a96b-e116bb8cad56)
 
 ### 3. Sub Screens:
 - [x] **Merch Screen** - all merchandise listed, with the option to view more.
 - [x] **Announcement Screen** - all important announcements sorted and nested by date.
 
-![Group 130](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/2f8900c9-de91-4ed8-8ee9-651c1a1c9b0d)
+![Group 130](https://github.com/rudrankbasant/Riviera23-app/assets/85751479/869682ab-f358-4492-9d6b-c91befc81cc2)
 
 
 ## Implementation / App Design
@@ -67,7 +67,8 @@ The showcase functionality provides three essential guides that users should be 
   - [X] **Ongoing Events**: This guide offers insights into the ongoing events featured in the application, as this section is at the bottom of the home screen.
   - [X] **Favorite Event Button**: This guide focuses on the functionality of the "Favorite Event" button, that users come across when they click on an event. This guide is essential  as it notifies users that they will receive event-specific notifications once they favourite an event.
 
-![Group 131](https://github.com/rudrankbasant/riviera2023-app/assets/85751479/8494ea9b-1872-41a0-aad4-8cde40e8083e)
+![Group 131](https://github.com/rudrankbasant/Riviera23-app/assets/85751479/71e38ad6-c7e2-47b1-a090-57baa9c2e511)
+
 
 ### 7. Bloc/Cubit: The state management in the app is handled by the bloc/cubit architecture and has separate components for the following business logics:
 - Authentication
