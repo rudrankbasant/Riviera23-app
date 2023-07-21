@@ -95,7 +95,7 @@ The app has implemented a series of basic unit tests specifically designed to en
 ### 1. Clone the project
 
 ```bash
-git clone https://github.com/GDGVIT/riviera2023-app.git
+git clone https://github.com/rudrankbasant/Riviera23-app.git
 ```
 
 ### 2. Install Flutter Packages
